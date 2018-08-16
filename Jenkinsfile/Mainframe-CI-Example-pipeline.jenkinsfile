@@ -20,9 +20,9 @@ import java.net.URL
  XebiaLabs XL Release Plugin - https://plugins.jenkins.io/xlrelease-plugin
  
  This Pipeline Requires the below Parameters to be defined in the Jenkins Job
- The Jenkins Parameters can be supplied by a ISPW Webhook by defining a webhook like the example below.  
+ The Jenkins Parameters can be supplied by a ISPW webhook by defining a webhook like the example below.  
  Please note that the assignment is not currently available in the webhook, but will be added in a future release.
- http://<<your jenkins server>>/job/<<you jenkins job>>/buildWithParameters?ISPW_Stream=$$stream$$&ISPW_Container=$$release$$&ISPW_Level=$$levels$$&SetId=$$setID$$&ISPW_Release=$$release$$&Owner=$$owner$$
+ http://<<your jenkins server>>/job/<<you jenkins job>>/buildWithParameters?ISPW_Stream=$$stream$$&ISPW_Container=$$release$$&ISPW_Level=$$level$$&SetId=$$setID$$&ISPW_Release=$$release$$&Owner=$$owner$$
  
  ISPW Webhook Parameter List below
  @param ISPW_Stream - ISPW Stream that had the code promotion
@@ -34,7 +34,7 @@ import java.net.URL
 
  The Pipeline also takes the following parameters from the Jenkins Job
  @param CES_Token - CES Personal Access Token.  These are configured in Compuware Enterprise Services / Security / Personal Access Tokens 
- @param HCI_Conn_ID - HCI Connection ID configured in the Compuware Common Configuration Plugin.  Use Pipepline Syntax Generator to determine this value. 
+ @param HCI_Conn_ID - HCI Connection ID configured in the Compuware Common Configuration Plugin.  Use Pipeline Syntax Generator to determine this value. 
  @param HCI_Token - The ID of the Jenkins Credential for the TSO ID that will used to execute the pipeline
  @param CES_Connection - The URL of Compuware Enterprise Services
  @param CC_repository - The Compuware Xpediter Code Coverage Repository that the Pipeline will use
@@ -45,7 +45,7 @@ import java.net.URL
  @param Git_Credentials - Jenkins credentials for logging into git
  @param Git_URL - Url that will be used in various git commands
  @param Git_TTT_Repo - Git repo that contains Topaz for Total Test Projects
- @param Git_Branch - Git brnach to be used by the pipeline
+ @param Git_Branch - Git branch to be used by the pipeline
  @param SQ_Scanner_Name - Name of SonarQube Scanner installation in "Manage Jenkins" -> "Global Tool Configuration" -> "SonarQube Scanner Installations"
  @param SQ_Server_Name - Name of SonarQube Server in "Manage Jenkins" -> "Configure System" -> "Sonar Qube servers"
  @param MF_Source - directory that contains cobol source downloaded from ISPW
@@ -121,7 +121,7 @@ node{
     }*/
 
     /* 
-     This stage is used to retieve source from ISPW
+     This stage is used to retrieve source from ISPW
      */ 
     stage("Retrieve Code From ISPW")
     {
@@ -138,7 +138,7 @@ node{
     }
 
     /* 
-     This stage is used to retieve Topaz for Total Tests from Git
+     This stage is used to retrieve Topaz for Total Tests from Git
      */ 
     stage("Retrieve Tests")
     {
@@ -163,7 +163,7 @@ node{
     ListOfSources.each
     {
         // The split method uses regex to search for patterns, therefore
-        // Backslahes, Dots and Underscores which mean certain patterns in regex need to be escaped 
+        // Backslashes, Dots and Underscores which mean certain patterns in regex need to be escaped 
         // The backslash in Windows paths is duplicated in Java, therefore it need to be escaped twice
         // Trim ./cbl from the Source members to populate the array of program names
         ListOfPrograms.add(it.name.trim().split("\\.")[0])
@@ -178,15 +178,15 @@ node{
         TTTListOfScenarios.each
         {
 
-            // Get root node of the path, i.e. the name of the TTT project
-            def TTTScenarioPath        = it.path // Fully qualifed name of the Total Test Scenario file
+            // Get root node of the path, i.e. the name of the Total Test project
+            def TTTScenarioPath        = it.path // Fully qualified name of the Total Test Scenario file
             def TTTProjectName         = it.path.trim().split("\\\\")[0] + "\\"+ it.path.trim().split("\\\\")[1]  // Total Test Project name is the root folder of the full path to the testscenario 
             def TTTScenarioFullName    = it.name  // Get the full name of the testscenario file i.e. "name.testscenario"
             def TTTScenarioName        = it.name.trim().split("\\.")[0]  // Get the name of the scenario file without ".testscenario"
             def TTTScenarioTarget      = TTTScenarioName.split("\\_")[0]  // Target Program will be the first part of the scenario name (convention)
     
-            // For each of the scenarios walk through the list of new scources and determine if the target matches one of the programs
-            // In that case, execute the unit test.  Determine if the program name matches the target of the TTT scenario
+            // For each of the scenarios walk through the list of source files and determine if the target matches one of the programs
+            // In that case, execute the unit test.  Determine if the program name matches the target of the Total Test scenario
             if(ListOfPrograms.contains(TTTScenarioTarget))
             {
                 // Log which 
@@ -200,7 +200,7 @@ node{
                     ccClearStats: false,                // Clear out any existing Code Coverage stats for the given ccSystem and ccTestId
                     ccRepo: "${CC_repository}",
                     ccSystem: "${ISPW_Application}", 
-                    ccTestId: "${BUILD_NUMBER}",        // Jenkins environemnt variable, resolves to build number, i.e. #177 
+                    ccTestId: "${BUILD_NUMBER}",        // Jenkins environment variable, resolves to build number, i.e. #177 
                     credentialsId: "${HCI_Token}", 
                     deleteTemp: true,                   // (true|false) Automatically delete any temp files created during the execution
                     hlq: '',                            // Optional - high level qualifier used when allocation datasets
@@ -236,7 +236,7 @@ node{
     }
 
     /* 
-     This stage pushes the Source Code, Test Metrics and Coverage metrices into SonarQube and then checks the status of the SonarQube Quality Gate.  
+     This stage pushes the Source Code, Test Metrics and Coverage metrics into SonarQube and then checks the status of the SonarQube Quality Gate.  
      If the SonarQube quality date fails, the Pipeline fails and stops
      */ 
     stage("Check SonarQube Quality Gate") 
