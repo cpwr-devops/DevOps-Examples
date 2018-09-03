@@ -23,14 +23,14 @@ import java.net.URL
  This Pipeline Requires the below Parameters to be defined in the Jenkins Job
  The Jenkins Parameters can be supplied by a ISPW webhook by defining a webhook like the example below.  
  Please note that the assignment is not currently available in the webhook, but will be added in a future release.
- http://<<your jenkins server>>/job/<<you jenkins job>>/buildWithParameters?ISPW_Stream=$$stream$$&ISPW_Container=$$release$$&ISPW_Level=$$level$$&SetId=$$setID$$&ISPW_Release=$$release$$&Owner=$$owner$$
+ http://<<your jenkins server>>/job/<<you jenkins job>>/buildWithParameters?ISPW_Stream=$$stream$$&ISPW_Container=$$release$$&ISPW_Src_Level=$$level$$&SetId=$$setID$$&ISPW_Release=$$release$$&Owner=$$owner$$
  
  ISPW Webhook Parameter List below
  @param ISPW_Stream - ISPW Stream that had the code promotion
  @param ISPW_Container - ISPW Container that had the code promotion
  @param ISPW_Container_Type - Type of ISPW Container that had the code promotion, 0 - Assignment, 1 - Release, 3 - Set
  @param ISPW_Release - The ISPW Release Value that will be passed to XL Release
- @param ISPW_Level - ISPW Level that code was promoted from
+ @param ISPW_Src_Level - ISPW Level that code was promoted from
  @param ISPW_Owner - The ISPW Owner value from the ISPW Set that was created for the promotion
 
  The Pipeline also takes the following parameters from the Jenkins Job
@@ -124,7 +124,7 @@ import java.net.URL
     in methods in a @NonCPS section 
 */
 @NonCPS
- def ArrayList getSetTaskIdList(ResponseContentSupplier response)
+ def ArrayList getSetTaskIdList(ResponseContentSupplier response, String level)
  {
     def jsonSlurper = new JsonSlurper()
     def returnList  = []
@@ -141,7 +141,7 @@ import java.net.URL
 
         taskList.each
         {
-            if(it.moduleType == 'COB' && it.level == 'QA3')
+            if(it.moduleType == 'COB' && it.level == level)
             {
                 returnList.add(it.taskId)
             }
@@ -229,7 +229,7 @@ node{
     )
 
     // Use method getSetTaskIdList to extract the list of Task IDs from the response of the httpRequest
-    def setTaskIdList          = getSetTaskIdList(response1)
+    def setTaskIdList          = getSetTaskIdList(response1, ISPW_Target_Level)
 
     // Use httpRequest to get all Assignments for the Release
     // Need to use two separate objects to store the responses for the httpRequests, 
