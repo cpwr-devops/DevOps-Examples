@@ -35,7 +35,6 @@ import java.net.URL
 
  The Pipeline also takes the following parameters from the Jenkins Job
  @param CES_Token - CES Personal Access Token.  These are configured in Compuware Enterprise Services / Security / Personal Access Tokens 
- @param CES_Token_Clear - Name of the CES Token in Clear Text
  @param HCI_Conn_ID - HCI Connection ID configured in the Compuware Common Configuration Plugin.  Use Pipeline Syntax Generator to determine this value. 
  @param HCI_Token - The ID of the Jenkins Credential for the TSO ID that will used to execute the pipeline
  @param CES_Connection - The URL of Compuware Enterprise Services
@@ -222,11 +221,25 @@ node{
     /*************************************************************************************************************/
     // Build a list of Assignments based on a Set
     // Use httpRequest to get all Tasks for the Set
-    def response1 = steps.httpRequest(url: "${ISPW_URL}/ispw/${ISPW_Runtime}/sets/${ISPW_Container}/tasks",
-        httpMode: 'GET',
-        consoleLogResponseBody: false,
-        customHeaders: [[maskValue: true, name: 'authorization', value: "${CES_Token_Clear}"]]
-    )
+    def ResponseContentSupplier response1
+    def ResponseContentSupplier response2
+    def ResponseContentSupplier response3
+
+    withCredentials(
+        [string(credentialsId: "${CES_Token}", variable: 'cesToken')]
+    ) 
+    {
+        response1 = steps.httpRequest(
+            url:                        "${ISPW_URL}/ispw/${ISPW_Runtime}/sets/${ISPW_Container}/tasks",
+            httpMode:                   'GET',
+            consoleLogResponseBody:     false,
+            customHeaders:              [[
+                                        maskValue:  true, 
+                                        name:       'authorization', 
+                                        value:      "${cesToken}"
+                                        ]]
+        )
+    }
 
     // Use method getSetTaskIdList to extract the list of Task IDs from the response of the httpRequest
     def setTaskIdList          = getSetTaskIdList(response1, ISPW_Target_Level)
@@ -234,10 +247,20 @@ node{
     // Use httpRequest to get all Assignments for the Release
     // Need to use two separate objects to store the responses for the httpRequests, 
     // otherwise the script will fail with a NotSerializable Exception
-    def response2 = steps.httpRequest(url: "${ISPW_URL}/ispw/${ISPW_Runtime}/releases/${ISPW_Release}/tasks",
-        consoleLogResponseBody: false, 
-        customHeaders: [[maskValue: true, name: 'authorization', value: "${CES_Token_Clear}"]]
-    )
+    withCredentials(
+        [string(credentialsId: "${CES_Token}", variable: 'cesToken')]
+    ) 
+    {
+        response2 = steps.httpRequest(
+            url:                        "${ISPW_URL}/ispw/${ISPW_Runtime}/releases/${ISPW_Release}/tasks",
+            consoleLogResponseBody:     false, 
+            customHeaders:              [[
+                                        maskValue:  true, 
+                                        name:       'authorization', 
+                                        value:      "${cesToken}"
+                                        ]]
+            )
+    }
 
     // Use method getAssigmentList to get all Assignments from the Release,
     // that belong to Tasks in the Set
@@ -251,16 +274,18 @@ node{
      */ 
     stage("Retrieve Code From ISPW")
     {
-            //Retrieve the code from ISPW that has been promoted 
-            checkout([$class: 'IspwContainerConfiguration', 
-            componentType: '',                          // optional filter for component types in ISPW
-            connectionId: "${HCI_Conn_ID}",     
-            credentialsId: "${HCI_Token}",      
-            containerName: "${ISPW_Container}",   
-            containerType: "${ISPW_Container_Type}",    // 0-Assignment 1-Release 2-Set
-            ispwDownloadAll: false,                     // false will not download files that exist in the workspace and haven't previous changed
-            serverConfig: '',                           // ISPW runtime config.  if blank ISPW will use the default runtime config
-            serverLevel: ''])                           // level to download the components from
+        //Retrieve the code from ISPW that has been promoted 
+        checkout([
+            $class: 'IspwContainerConfiguration', 
+                componentType:      '',                          // optional filter for component types in ISPW
+                connectionId:       "${HCI_Conn_ID}",     
+                credentialsId:      "${HCI_Token}",      
+                containerName:      "${ISPW_Container}",   
+                containerType:      "${ISPW_Container_Type}",    // 0-Assignment 1-Release 2-Set
+                ispwDownloadAll:    false,                     // false will not download files that exist in the workspace and haven't previous changed
+                serverConfig:       '',                           // ISPW runtime config.  if blank ISPW will use the default runtime config
+                serverLevel:        ''
+        ])                           // level to download the components from
     }
 
     /* 
@@ -322,24 +347,28 @@ node{
                 println "Project " + TTTProjectName
                 println "*************************"
             
-                step([$class: 'TotalTestBuilder', 
-                    ccClearStats: false,                // Clear out any existing Code Coverage stats for the given ccSystem and ccTestId
-                    ccRepo: "${CC_repository}",
-                    ccSystem: "${ISPW_Application}", 
-                    ccTestId: "${BUILD_NUMBER}",        // Jenkins environment variable, resolves to build number, i.e. #177 
-                    credentialsId: "${HCI_Token}", 
-                    deleteTemp: true,                   // (true|false) Automatically delete any temp files created during the execution
-                    hlq: '',                            // Optional - high level qualifier used when allocation datasets
-                    connectionId: "${HCI_Conn_ID}",    
-                    jcl: "${TTT_Jcl}",                  // Name of the JCL file in the Total Test Project to execute
-                    projectFolder: "${TTTProjectName}", // Name of the Folder in the file system that contains the Total Test Project.  
-                    testSuite: "${TTTScenarioFullName}",// Name of the Total Test Scenario to execute
-                    useStubs: true])                   // (true|false) - Execute with or without stubs
+                step([
+                    $class: 'TotalTestBuilder', 
+                        ccClearStats:   false,                // Clear out any existing Code Coverage stats for the given ccSystem and ccTestId
+                        ccRepo:         "${CC_repository}",
+                        ccSystem:       "${ISPW_Application}", 
+                        ccTestId:       "${BUILD_NUMBER}",        // Jenkins environment variable, resolves to build number, i.e. #177 
+                        credentialsId:  "${HCI_Token}", 
+                        deleteTemp:     true,                   // (true|false) Automatically delete any temp files created during the execution
+                        hlq:            '',                            // Optional - high level qualifier used when allocation datasets
+                        connectionId:   "${HCI_Conn_ID}",    
+                        jcl:            "${TTT_Jcl}",                  // Name of the JCL file in the Total Test Project to execute
+                        projectFolder:  "${TTTProjectName}", // Name of the Folder in the file system that contains the Total Test Project.  
+                        testSuite:      "${TTTScenarioFullName}",// Name of the Total Test Scenario to execute
+                        useStubs:       true
+                ])                   // (true|false) - Execute with or without stubs
             }
         }
 
         // Process the Total Test Junit result files into Jenkins
-        junit allowEmptyResults: true, keepLongStdio: true, testResults: "TTTUnit/*.xml"
+        junit allowEmptyResults:    true, 
+            keepLongStdio:          true, 
+            testResults:            "TTTUnit/*.xml"
     }
 
     /* 
@@ -354,11 +383,13 @@ node{
             // The Code Coverage Plugin passes it's primary configuration in the string or a file
             def ccproperties = 'cc.sources=' + sources + '\rcc.repos=' + CC_repository + '\rcc.system=' + ISPW_Application  + '\rcc.test=' + BUILD_NUMBER
 
-            step([$class: 'CodeCoverageBuilder',
-            analysisProperties: ccproperties,       // Pass in the analysisProperties as a string
-            analysisPropertiesPath: '',             // Pass in the analysisProperties as a file.  Not used in this example
-            connectionId: "${HCI_Conn_ID}", 
-            credentialsId: "${HCI_Token}"])
+            step([
+                $class: 'CodeCoverageBuilder',
+                    analysisProperties:     ccproperties,       // Pass in the analysisProperties as a string
+                    analysisPropertiesPath: '',             // Pass in the analysisProperties as a file.  Not used in this example
+                    connectionId:           "${HCI_Conn_ID}", 
+                    credentialsId:          "${HCI_Token}"
+            ])
     }
 
     /* 
@@ -392,13 +423,13 @@ node{
             // Test and Coverage results
             def SQ_Scanner_Properties   = " -Dsonar.tests=tests ${SQ_TestResult} -Dsonar.coverageReportPaths=Coverage/CodeCoverage.xml"
             // SonarQube project to load results into
-            SQ_Scanner_Properties = SQ_Scanner_Properties + " -Dsonar.projectKey=${JOB_NAME} -Dsonar.projectName=${JOB_NAME} -Dsonar.projectVersion=1.0"
+            SQ_Scanner_Properties       = SQ_Scanner_Properties + " -Dsonar.projectKey=${JOB_NAME} -Dsonar.projectName=${JOB_NAME} -Dsonar.projectVersion=1.0"
             // Location of the Cobol Source Code to scan
-            SQ_Scanner_Properties = SQ_Scanner_Properties + " -Dsonar.sources=${ISPW_Application}\\MF_Source"
+            SQ_Scanner_Properties       = SQ_Scanner_Properties + " -Dsonar.sources=${ISPW_Application}\\MF_Source"
             // Location of the Cobol copybooks to scan
-            SQ_Scanner_Properties = SQ_Scanner_Properties + " -Dsonar.cobol.copy.directories=${ISPW_Application}\\MF_Source"  
+            SQ_Scanner_Properties       = SQ_Scanner_Properties + " -Dsonar.cobol.copy.directories=${ISPW_Application}\\MF_Source"  
             // File extensions for Cobol and Copybook files.  The Total Test files need that contain tests need to be defined as cobol for SonarQube to process the results
-            SQ_Scanner_Properties = SQ_Scanner_Properties + " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub -Dsonar.cobol.copy.suffixes=cpy -Dsonar.sourceEncoding=UTF-8"
+            SQ_Scanner_Properties       = SQ_Scanner_Properties + " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub -Dsonar.cobol.copy.suffixes=cpy -Dsonar.sourceEncoding=UTF-8"
             
             // Call the SonarQube Scanner with properties defined above
             bat "${scannerHome}/bin/sonar-scanner" + SQ_Scanner_Properties
@@ -425,24 +456,31 @@ node{
                         "runtimeConfiguration": "''' + ISPW_Runtime + '''"
                     }'''
 
-                    response3 = steps.httpRequest(url: "${ISPW_URL}/ispw/${ISPW_Runtime}/assignments/${assignmentList[i].toString()}/tasks/regress?level=${ISPW_Target_Level}",
-                        httpMode: 'POST',
-                        consoleLogResponseBody: true,
-                        contentType: 'APPLICATION_JSON',
-                        requestBody: requestBodyParm,
-                        customHeaders: [[maskValue: true, name: 'authorization', value: "${CES_Token_Clear}"]]
-                    )
-                
+                    withCredentials(
+                        [string(credentialsId: "${CES_Token}", variable: 'cesToken')]
+                    ) 
+                    {
+
+                        response3 = steps.httpRequest(
+                            url:                    "${ISPW_URL}/ispw/${ISPW_Runtime}/assignments/${assignmentList[i].toString()}/tasks/regress?level=${ISPW_Target_Level}",
+                            httpMode:               'POST',
+                            consoleLogResponseBody: true,
+                            contentType:            'APPLICATION_JSON',
+                            requestBody:            requestBodyParm,
+                            customHeaders:          [[
+                                                    maskValue:    true, 
+                                                    name:           'authorization', 
+                                                    value:          "${cesToken}"
+                                                    ]]
+                        )
+                    }                    
                 }
                     
                 // Email
-                emailext subject: '$DEFAULT_SUBJECT',
-                            body: '$DEFAULT_CONTENT',
-                            //body: '$DEFAULT_CONTENT',
-                            replyTo: '$DEFAULT_REPLYTO',
-                            //attachmentsPattern: 'reports/*.zip',
-                            to: "${mailRecipient}"
-
+                emailext subject:       '$DEFAULT_SUBJECT',
+                            body:       '$DEFAULT_CONTENT',
+                            replyTo:    '$DEFAULT_REPLYTO',
+                            to:         "${mailRecipient}"
                 
                 error "Exiting Pipeline" // Exit the pipeline with an error if the SonarQube Quality Gate is failing
             }
@@ -454,17 +492,20 @@ node{
      */ 
     stage("Start release in XL Release")
     {
-            // Use the Path Number to determine what QA Path to Promote the code from in ISPW.  This example has seperate QA paths in ISPW Lifecycle (i.e. DEV1->QA1->STG->PRD / DEV2->QA2->STG->PRD)
-            def XLRPath = "QA" + PathNum 
+        // Use the Path Number to determine what QA Path to Promote the code from in ISPW.  This example has seperate QA paths in ISPW Lifecycle (i.e. DEV1->QA1->STG->PRD / DEV2->QA2->STG->PRD)
+        def XLRPath = "QA" + PathNum 
 
-            // Trigger XL Release Jenkins Plugin to kickoff a Release
-            xlrCreateRelease releaseTitle: 'A Release for $BUILD_TAG',
-            serverCredentials: "${XLR_User}",
-            startRelease: true,
-            template: "${XLR_Template}"
-            variables:
-            [[propertyName:'ISPW_Dev_level', propertyValue: "${ISPW_Target_Level}"], // Level in ISPW that the Code resides currently
-            [propertyName: 'ISPW_RELEASE_ID', propertyValue: "${ISPW_Release}"],     // ISPW Release value from the ISPW Webhook
-            [propertyName: 'CES_Token', propertyValue: "${CES_Token}"]]
+        // Trigger XL Release Jenkins Plugin to kickoff a Release
+        xlrCreateRelease(
+            releaseTitle:       'A Release for $BUILD_TAG',
+            serverCredentials:  "${XLR_User}",
+            startRelease:       true,
+            template:           "${XLR_Template}"
+            variables:          [
+                                    [propertyName:'ISPW_Dev_level', propertyValue: "${ISPW_Target_Level}"], // Level in ISPW that the Code resides currently
+                                    [propertyName: 'ISPW_RELEASE_ID', propertyValue: "${ISPW_Release}"],     // ISPW Release value from the ISPW Webhook
+                                    [propertyName: 'CES_Token', propertyValue: "${CES_Token}"]
+                                ]
+        )
     }
 }
