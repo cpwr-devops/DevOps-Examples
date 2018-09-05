@@ -500,7 +500,7 @@ node{
             releaseTitle:       'A Release for $BUILD_TAG',
             serverCredentials:  "${XLR_User}",
             startRelease:       true,
-            template:           "${XLR_Template}"
+            template:           "${XLR_Template}",
             variables:          [
                                     [propertyName:'ISPW_Dev_level', propertyValue: "${ISPW_Target_Level}"], // Level in ISPW that the Code resides currently
                                     [propertyName: 'ISPW_RELEASE_ID', propertyValue: "${ISPW_Release}"],     // ISPW Release value from the ISPW Webhook
