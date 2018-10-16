@@ -17,8 +17,8 @@ Everyone perusing these pages is welcome to provide feedback, input and suggesti
 
 ### Primary examples
 Currently, we have published two examples of "complete" pipelines which show partly different process steps and different techniques in Jenkins. 
-- [Mainframe-CI-Example-pipeline.jenkinsfile](./Mainframe-CI-Example-pipeline.md) - ([code](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/Jenkinsfile/Mainframe-CI-Example-pipeline.jenkinsfile)) - is a scripted pipeline using parameters
-- [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./Mainframe_CI_Pipeline_from_Shared_Lib.md) - ([code](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/vars/Mainframe_CI_Pipeline_from_Shared_Lib.groovy)) - is a pipeline loaded from a Jenkins shared library.
+- [Mainframe-CI-Example-pipeline.jenkinsfile](./pipelines/Mainframe-CI-Example-pipeline.md) - ([code](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/Jenkinsfile/Mainframe-CI-Example-pipeline.jenkinsfile)) - is a scripted pipeline using parameters
+- [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.md) - ([code](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/vars/Mainframe_CI_Pipeline_from_Shared_Lib.groovy)) - is a pipeline loaded from a Jenkins shared library.
 
 Currently, both examples use a development scenario based on
 - [ISPW](https://compuware.com/ispw-source-code-management/) as SCM to store and govern mainframe sources
