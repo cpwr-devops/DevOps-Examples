@@ -31,9 +31,9 @@ The settings under `Manage Jenkins` -> `Global Tool Configuration` will be requi
 
 ### Manage Jenkins / Credentials
 Use the credentials manager to store the following credentials for use in the examples
-- A secret text credential token to mask the [CES credentials ID created and retreieved from CES](CES_credentials_token.md)
-- A user ID / password token for a valid logon to the required mainframe LPAR used by plugins that do not use the CES credentials token
-- A user ID / password token for a valid logon to the GitHub repository storing Topaz for Total Test unit test assets
+- A secret text credential token to mask the [CES credentials ID created and retreieved from CES](CES_credentials_token.md) (used as parameter `CES_Token`)
+- A user ID / password token for a valid logon to the required mainframe LPAR used by plugins that do not use the CES credentials token (used as parameter `HCI_Token`)
+- A user ID / password token for a valid logon to the GitHub repository storing Topaz for Total Test unit test assets 
 
 ### Manage Jenkins / Managed Files
 The option `Manage Jenkins` -> `Managed Files` will be available after installation of the [Config File Provider](https://wiki.jenkins.io/display/JENKINS/Config+File+Provider+Plugin) plugin. The examples make use of configuration files handled and stored by this plugin. Especially this will be a list of TSO user IDs and [corresponding mail addresses](./Config_Files.md). Over time other configuration files will use the same technology.
