@@ -16,5 +16,5 @@ Naming conventions are used to correlate Topaz for Total Test unit test projects
 
 ## Inside Jenkins - the two primary pipelines
 The [ISPW webhooks](../tool_configuration/webhhok_setup.md) will then trigger one of the following pipeline jobs
-- [Mainframe-CI-Example-pipeline_config.jenkinsfile](./Mainframe-CI-Example-pipeline_config.md)
+- [Mainframe-CI-Example-pipeline_config.jenkinsfile](./Mainframe-CI-Example-pipeline.md)
 - [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.md)
