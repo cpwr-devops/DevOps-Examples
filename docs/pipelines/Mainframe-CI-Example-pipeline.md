@@ -20,83 +20,24 @@ and succesively adding the following string parameters (the default values are t
 ![Adding parameters](./images/Adding parameters.png)
 
 The parameters in this first set are specific to the individual execution of the pipeline
-<table>
-    <tr>
-        <td>**Name**</td>
-        <td>**Default value**</td>
-        <td>**Description**</td>
-    </tr>
-    <tr>
-        <td>ISPW_Stream</td>
-        <td>FTSDEMO</td>
-        <td>ISPW Stream Name</td>
-    </tr>
-    <tr>
-        <td>ISPW_Application</td>
-        <td>RXN3</td>
-        <td>ISPW Application</td>
-    </tr>
-    <tr>
-        <td>ISPW_Src_Level</td>
-        <td>DEV1</td>
-        <td>ISPW Level the promote has been started from</td>
-    </tr>
-    <tr>
-        <td>ISPW_Release</td>
-        <td></td>
-        <td>ISPW Release Name</td>
-    </tr>
-    <tr>
-        <td>ISPW_Container</td>
-        <td></td>
-        <td>ISPW Set ID</td>
-    </tr>
-    <tr>
-        <td>ISPW_Container_Type</td>
-        <td>2</td>
-        <td>ISPW Container Type
+| **Name** | **Default value** | **Description** |
+-----------|-------------------|-----------------|
+| ISPW_Stream | FTSDEMO | ISPW Stream Name |
+| ISPW_Application | RXN3 | ISPW Application |
+| ISPW_Src_Level | DEV1 | ISPW Level the promote has been started from |
+| ISPW_Release | | ISPW Release Name |
+| ISPW_Container | | ISPW Set ID |
+| ISPW_Container_Type | 2 | ISPW Container Type
     0 - assignment
     1 - release
-    2 - set
-        </td>
-    </tr>
-    <tr>
-        <td>ISPW_Owner</td>
-        <td></td>
-        <td>ISPW Owner User ID</td>
-    </tr>
-</table>
+    2 - set |
+| ISPW_Owner | | ISPW Owner User ID |
 
 The second set of parameters is installation specific and reference tokens and other IDs that have been defined during the configuration phase
-<table>
-    <tr>
-        <td>**Name**</td>
-        <td>**Default value**</td>
-        <td>**Description**</td>
-    </tr>
-    <tr>
-        <td>CES_Token</td>
-        <td></td>
-        <td>Jenkins internal Token ID for the CES Token</td>
-    </tr>
-    <tr>
-        <td>HCI_Conn_ID</td>
-        <td></td>
-        <td>Jenkins internal ID for HCI Connection</td>
-    </tr>
-    <tr>
-        <td>HCI_Token</td>
-        <td></td>
-        <td>Jenkins internal ID for HCI Token</td>
-    </tr>
-    <tr>
-        <td>CC_repository</td>
-        <td></td>
-        <td>Code Coverage Repository - Check with your Xpedietr Code Coverage administrator for the name to use</td>
-    </tr>
-    <tr>
-        <td>Git_Project</td>
-        <td></td>
-        <td>Github (or other Git based repository) project used to store the Topaz for Total Test Projects</td>
-    </tr>
-</table>
+| **Name** | **Default value** | **Description** |
+| CES_Token | | Jenkins internal Token ID for the CES Token |
+| HCI_Conn_ID | | Jenkins internal ID for HCI Connection |
+| HCI_Token | | Jenkins internal ID for HCI Token |
+| CC_repository | | Code Coverage Repository
+Check with your Xpedietr Code Coverage administrator for the name to use |
+| Git_Project | | Github (or other Git based repository) project used to store the Topaz for Total Test Projects |
