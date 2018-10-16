@@ -2,13 +2,13 @@
 
 param(
  [string]$ISPWFunction = "TaskLoad",              #ContainerCreate, ContainerOperation,TaskLoad
- [string]$ces = "cwcc:2020",                                #dtw-pmsonarqube.nasa.cpwr.corp:2020
+ [string]$ces = "cwca:2077",                                #dtw-pmsonarqube.nasa.cpwr.corp:2020
  [string]$runtimeconfig = "ISPW",
  [string]$containerType = "releases",                    #assignments, releases
  [string]$operation = "deploy",                            #generate, promote, deploy, regress
  [string]$container = "BAW1000004",
  [string]$level = "DEV1",
- [string]$token = "d01c2aa5-5ee9-4d95-8368-7a5effd6e79f",   #cwcc f06cbdf8-5273-4664-8c54-1dc21cc8f3d9   #pm 02790e36-dd1b-464e-8c84-3415b79c2ccd CW09 aa84e1b0-34ef-4c34-b7f9-29768c8b68d8
+ [string]$token = "hjghg2aa5-5ee9-4d95-8368-7a5effd6e79f",   
  [string]$stream = "FTSDEMO",
  [string]$application = "BAW1",
  [string]$ISPWServer = "ispw",
@@ -16,11 +16,11 @@ param(
  [string]$prefix = "PLAY",                                  #for create container
  [string]$refnumber = "CWE-1001",                           #for create container
  [string]$usertag = "API",                                  #for create container
- [string]$owner = "PFHSXK0",                                #for create container
- [string]$moduleName = "CWBWCOBX",                           #for task load
+ [string]$owner = "PXHDAE-",                                #for create container
+ [string]$moduleName = "CWBWCOBX",                          #for task load
  [string]$moduleType = "COB",                               #for task load
  [string]$type = "program",                                 #for task load
- [string]$dpenvlst = "CW01QA CW02QA"                                    #for deploy CWCCQA CW01QA CW02QA CW40QA
+ [string]$dpenvlst = "CW01QA CW02QA"                        #for deploy CWCCQA CW01QA CW02QA CW40QA
  )
 
 if ($ISPWFunction -eq "ContainerOperation"){
