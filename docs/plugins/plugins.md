@@ -1,6 +1,5 @@
 # Plugins
-
-The examples - especially the two [primary pipelines](./pipelines/pipelines.md) - use plugins that may not be part of a standard installation of Jenkins; this will likely be the case for the Compuware plugins. All plugins described here can be obtained from the Jenkins plugin marketplace using `Manage Jenkins` \/ `Manage Plugins`.
+The examples - especially the two [primary pipelines](./pipelines/pipelines.html) - use plugins that may not be part of a standard installation of Jenkins; this will likely be the case for the Compuware plugins. All plugins described here can be obtained from the Jenkins plugin marketplace using `Manage Jenkins` \/ `Manage Plugins`.
 
 ## Compuware plugins
 Compuware provides a continously growing set of plugins that allow connecting to the mainframe and using Compuware's (and other) tools within a Jenkins job/pipeline. 

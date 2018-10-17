@@ -15,16 +15,40 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1 class="header">{{ site.title | default: site.github.repository_name }}</h1>
-        <p class="header">{{ site.description | default: site.github.project_tagline }}</p>
+        <h1 class="header">{{ page.title | default: site.github.repository_name }}</h1>
+        <ul>
+          <li>Outside Jenkins</li>
+          <ul>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/webhhok_setup.html' }}">Defining a Webhook</a></li>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/CES_credentials_token.html' }}">Setting up a CES Token</a></li>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/SonarQube_server.html' }}">SonarQube Server</a></li>
+          </ul>
+          <li>Manage Jenkins - Configure System</li>
+          <ul>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/SonarQube_server.html' }}">SonarQube Server</a></li>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/Compuware_configurations.html' }}">Compuware Configurations</a></li>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/Pipeline_libraries_config.html' }}">Shared Libraries</a></li>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/XLR_config.html' }}">XL Release</a></li>
+          </ul>
+          <li>Manage Jenkins - Global Tool Configuration</li>
+          <ul>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/Jenkins_Git_config.html' }}">Git</a></li>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/SonarQube_scanner.html' }}">SonarQube Scanner</a></li>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/Pipeline_libraries_config.html' }}">Shared Libraries</a></li>
+            <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/XLR_config.html' }}">XL Release</a></li>
+          </ul>  
+          <li>Manage Jenkins - Managed Files</li>
+          <ul>
+              <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/Config_Files.html' }}">Mail address file</a></li>
+          </ul>
+        </ul>
 
         <ul>
           <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/plugins/plugins.html' }}">Required Plugins</a></li>
-          <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/tool_configuration/tool_configuration.html' }}">Tool Configurations</a></li>
           <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/pipelines/pipelines.html' }}">The Primary Pipelines</a></li>
           <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/helper_classes/helper_classes.html' }}">Helper Classes</a></li>
           <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/code_examples/code_examples.html' }}">Other Code Examples</a></li>
-        </ul>
+        </ul>  
 
         {% if site.github.is_project_page %}
           <p class="header">This project is maintained by <a class="header name" href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></p>

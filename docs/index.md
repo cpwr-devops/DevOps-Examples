@@ -63,7 +63,7 @@ Based on the descritpion above and due to the requirements for the use of [Pipel
 
 ## Next pages
 
-- [Plugins](./plugins/plugins.html) 
+- [Required Plugins](./plugins/plugins.html) 
 for a list and description of "non standard" plugins that are used within the examples
 
 - [Tool Configurations](./tool_configuration/tool_configuration.html) 
@@ -72,8 +72,8 @@ for descriptions of setting up the different tools (inside and outside of Jenkin
 - [Primary Pipelines](./pipelines/pipelines.html) 
 for detailed descriptions of the *primary* pipelines
 
-- [Code examples](./code_examples/code_examples.html) 
-for descriptions of Groovy and non-Groovy code examples outside the *primary* pipelines
-
 - [Helper classes](./helper_classes/helper_classes.html)
 for descriptions of the classes in `src/com/compuware/devops/util` that are being used by the [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./Mainframe_CI_Pipeline_from_Shared_Lib.html) and other code examples.
+
+- [Other Code examples](./code_examples/code_examples.html) 
+for descriptions of Groovy and non-Groovy code examples outside the *primary* pipelines
