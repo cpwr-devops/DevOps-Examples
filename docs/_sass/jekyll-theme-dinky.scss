@@ -209,7 +209,8 @@ td {
 
 /* Wrapper */
 .wrapper {
-  width:960px;
+  /* width:960px;*/
+  width:1200px;
 }
 
 
@@ -218,7 +219,8 @@ td {
 header {
 	background-color: #171717;
 	color: #FDFDFB;
-  width:170px;
+  /*width:170px;*/
+  width:200px;
   float:left;
   position:fixed;
 	border: 1px solid #000;
@@ -320,7 +322,8 @@ a.buttons:hover {
 /* Section - for main page content */
 
 section {
-  width:650px;
+  /*width:650px;*/
+  width:860px;
   float:right;
   padding-bottom:50px;
 }
