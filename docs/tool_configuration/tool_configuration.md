@@ -1,3 +1,7 @@
+---
+layout: ToolConfig
+title: Tool Configurations
+---
 # Tool Configurations
 The scenarios covered by the [primary pipelines](./pipelines/pipelines.md), the [other code examples](./code_examples/code_examples.md), and more generally the use of the Compuware and third party [plugins](./plugins/plugins.md), require certain configurations and setting, both within Jenkins and within other tools provided by Compuware.
 
