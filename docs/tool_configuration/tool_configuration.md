@@ -7,7 +7,7 @@ Next to serving as web application server for Compuware's web based tools like [
 ### <a id="ISPW Webhooks"></a> ISPW Webhooks
 ISPW allows registering webhooks to use events in the ISPW software life cycle to trigger events outside of ISPW like triggering a Jenkins pipeline. CES may be used as one source to define and register webhooks for ISPW. Both *primary* pipelines make use of such webhooks defined in CES. Refer to the CES online help, chapter **Compuware Enterprise Services**, section **Webhooks** for documentation on setting up ISPW webhooks, and the parameters that may be passed from ISPW to the webhook.
 
-[Definition of a webhook used in the examples](./webhhok_setup.html)
+[Definition of a webhook used in the examples](./webhook_setup.html)
 
 ### <a id="CES Credentials Token"></a> CES Credentials Token
 The Compuware plugins (and other operations) make use of credential tokens defined in CES. These tokens store mainfram TSO user id and password and allow authentication against the mainframe without using clear text credentials within script code. 

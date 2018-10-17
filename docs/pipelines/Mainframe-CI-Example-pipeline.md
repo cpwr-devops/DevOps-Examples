@@ -248,12 +248,12 @@ stage("Start release in XL Release")
 The job itself is defined via the usual way of creating a new pipeline job. It is important, though, to make sure that the resulting job uses parameters by checking the `This project is parameterized' box, 
 
 ![Parameterized Pipeline](./images/parametertized pipeline.png)
-
+webhook_setup
 and succesively adding the following string parameters (the default values are the ones used for the examples).
 
 ![Adding parameters](./images/Adding parameters.png)
 
-The parameters in this first set are specific to the individual execution of the pipeline and get passed by the [ISPW Webhook](../tool_configurations/webhhok_setup.html#Webhook Parameters)
+The parameters in this first set are specific to the individual execution of the pipeline and get passed by the [ISPW Webhook](../tool_configuration/webhook_setup.html#Webhook Parameters)
 <table>
     <tr>
         <th>Name</th>
