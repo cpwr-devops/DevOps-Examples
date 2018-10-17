@@ -253,7 +253,7 @@ and succesively adding the following string parameters (the default values are t
 
 ![Adding parameters](./images/Adding parameters.png)
 
-The parameters in this first set are specific to the individual execution of the pipeline and get passed by the [ISPW Webhook](../tool_configuration/webhook_setup.html#Webhook Parameters)
+The parameters in this first set are specific to the individual execution of the pipeline and get passed by the [ISPW Webhook](../tool_configuration/webhook_setup.html#In summary)
 <table>
     <tr>
         <th>Name</th>
