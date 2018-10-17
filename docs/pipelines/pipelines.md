@@ -1,7 +1,7 @@
 # Pipelines
 These examples of Jenkins pipelines make use of Compuware's and other plugins to implement the following process and scenario. They may be seen a kind of **standard approach** for implementing a CI process for maingframe development. The scenario(s) and code are based on request and requirements from customers who already have started implementing their own pipeline and asked Compuware for advice. The code itself shows our solution to these, while the respective solutions as implemented by our customers are - in parts considerably - different.
 
-The code reflects common patterns that we see emerging at different customers. In addition, the examples are supposed to help mainframe developers to familiarize with [Groovy](http://groovy-lang.org/documentation.html) and its concepts, as well as demonstrate some of the [ideosynchrasies of the Jenkins Groovy dialect](./Jenkins_Groovy_Ideosynchrasies.md) that we stumbled across.
+The code reflects common patterns that we see emerging at different customers. In addition, the examples are supposed to help mainframe developers to familiarize with [Groovy](http://groovy-lang.org/documentation.html) and its concepts, as well as demonstrate some of the [ideosynchrasies of the Jenkins Groovy dialect](./Jenkins_Groovy_Ideosynchrasies.html) that we stumbled across.
 
 ## Scenario Outside Jenkins
 - A developer checks out a set of sources, copybooks and other components required to fulfill a specific requirement. These are stored and administered in [ISPW](https://compuware.com/ispw-source-code-management/)
@@ -15,6 +15,6 @@ Naming conventions are used to correlate Topaz for Total Test unit test projects
 - Once a mainframe developer has finished working on a set of pieces of code that are stored in a mainframe SCM -  in our examples - they promote their changes to the next level in the application's life cycle. This activity creates an ISPW set container containing all components that are part of this specific promotion.
 
 ## Inside Jenkins - the two primary pipelines
-The [ISPW webhooks](../tool_configuration/webhhok_setup.md) will then trigger one of the following pipeline jobs
-- [Mainframe-CI-Example-pipeline_config.jenkinsfile](./Mainframe-CI-Example-pipeline.md)
-- [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.md)
+The [ISPW webhooks](../tool_configuration/webhhok_setup.html) will then trigger one of the following pipeline jobs
+- [Mainframe-CI-Example-pipeline_config](./Mainframe-CI-Example-pipeline.html)
+- [Mainframe_CI_Pipeline_from_Shared_Lib](./pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.html)

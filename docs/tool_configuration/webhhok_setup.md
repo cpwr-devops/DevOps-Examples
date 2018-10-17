@@ -8,7 +8,7 @@ and select **Webhooks**
 
 ![Webhooks page](./images/CES admin menu Webhooks.png)
 
-On the Webhooks page select either `add` to define a new webhook or `edit` to modify an existing webhook. The [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./Mainframe_CI_Pipeline_from_Shared_Lib.md) makes use of the following definitions:
+On the Webhooks page select either `add` to define a new webhook or `edit` to modify an existing webhook. The [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.html) makes use of the following definitions:
 
 ![Webhook example](./images/Webhook example.png)
 
