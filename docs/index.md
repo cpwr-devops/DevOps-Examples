@@ -17,8 +17,8 @@ Everyone perusing these pages is welcome to provide feedback, input and suggesti
 
 ### Primary examples
 Currently, we have published two examples of "complete" pipelines which show partly different process steps and different techniques in Jenkins. 
-- [Mainframe-CI-Example-pipeline.jenkinsfile](./pipelines/Mainframe-CI-Example-pipeline.md) - ([code](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/Jenkinsfile/Mainframe-CI-Example-pipeline.jenkinsfile)) - is a scripted pipeline using parameters
-- [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.md) - ([code](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/vars/Mainframe_CI_Pipeline_from_Shared_Lib.groovy)) - is a pipeline loaded from a Jenkins shared library.
+- [Mainframe-CI-Example-pipeline.jenkinsfile](./pipelines/Mainframe-CI-Example-pipeline.html) - ([code](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/Jenkinsfile/Mainframe-CI-Example-pipeline.jenkinsfile)) - is a scripted pipeline using parameters
+- [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.html) - ([code](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/vars/Mainframe_CI_Pipeline_from_Shared_Lib.groovy)) - is a pipeline loaded from a Jenkins shared library.
 
 Currently, both examples use a development scenario based on
 - [ISPW](https://compuware.com/ispw-source-code-management/) as SCM to store and govern mainframe sources
@@ -63,17 +63,17 @@ Based on the descritpion above and due to the requirements for the use of [Pipel
 
 ## Next pages
 
-- [Plugins](./plugins/plugins.md) 
+- [Plugins](./plugins/plugins.html) 
 for a list and description of "non standard" plugins that are used within the examples
 
-- [Tool Configurations](./tool_configuration/tool_configuration.md) 
+- [Tool Configurations](./tool_configuration/tool_configuration.html) 
 for descriptions of setting up the different tools (inside and outside of Jenkins) in play
 
-- [Primary Pipelines](./pipelines/pipelines.md) 
+- [Primary Pipelines](./pipelines/pipelines.html) 
 for detailed descriptions of the *primary* pipelines
 
-- [Code examples](./code_examples/code_examples.md) 
+- [Code examples](./code_examples/code_examples.html) 
 for descriptions of Groovy and non-Groovy code examples outside the *primary* pipelines
 
-- [Helper classes](./helper_classes/helper_classes.md)
-for descriptions of the classes in `src/com/compuware/devops/util` that are being used by the [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./Mainframe_CI_Pipeline_from_Shared_Lib.md) and other code examples.
+- [Helper classes](./helper_classes/helper_classes.html)
+for descriptions of the classes in `src/com/compuware/devops/util` that are being used by the [Mainframe_CI_Pipeline_from_Shared_Lib.groovy](./Mainframe_CI_Pipeline_from_Shared_Lib.html) and other code examples.
