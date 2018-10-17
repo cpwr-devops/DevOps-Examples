@@ -1,6 +1,23 @@
 # Mainframe-CI-Example-pipeline.jenkinsfile
 Once this pipeline has been triggered, the [job](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/Jenkinsfile/Mainframe-CI-Example-pipeline.jenkinsfile) will
-- download all COBOL sources and COBOL copybooks from ISPW (the mainframe) that are part of the set triggering this specific pipeline execution
+- download all COBOL sources and COBOL copybooks from ISPW (the mainframe) that are part of the set triggering this specific pipeline execution, using the ISPW Container downloader
+
+```groovy
+stage("Retrieve Code From ISPW")
+{
+        //Retrieve the code from ISPW that has been promoted 
+        checkout([$class: 'IspwContainerConfiguration', 
+        componentType: '',                  // optional filter for component types in ISPW
+        connectionId: "${HCI_Conn_ID}",     
+        credentialsId: "${HCI_Token}",      
+        containerName: "${SetId}",   
+        containerType: '2',                 // 0-Assignment 1-Release 2-Set
+        ispwDownloadAll: false,             // false will not download files that exist in the workspace and haven't previous changed
+        serverConfig: '',                   // ISPW runtime config.  if blank ISPW will use the default runtime config
+        serverLevel: ''])                   // level to download the components from
+}
+```
+
 - clone the Git repository for the ISPW application, using the fixed stream name `FTSDEMO` in our examples
 - build a list of all downloaded COBOL sources
 - build a list of all downloaded Topaz for Total Test `.testscenario` files
