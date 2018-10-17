@@ -9,13 +9,13 @@ def String getPathNum(String Level)
 return Level.charAt(Level.length() - 1)
 }
 ...
-    // Determine the current ISPW Path and Level that the code Promotion is from
-    def PathNum = getPathNum(ISPW_Level)
+// Determine the current ISPW Path and Level that the code Promotion is from
+def PathNum = getPathNum(ISPW_Level)
 
-    // Use the Path Number to determine the right Runner JCL to use (different STEPLIB concatenations)
-    def TTT_Jcl = "Runner_PATH" + PathNum + ".jcl"
-    // Also set the Level that the code currently resides in
-    def ISPW_Target_Level = "QA" + PathNum
+// Use the Path Number to determine the right Runner JCL to use (different STEPLIB concatenations)
+def TTT_Jcl = "Runner_PATH" + PathNum + ".jcl"
+// Also set the Level that the code currently resides in
+def ISPW_Target_Level = "QA" + PathNum
 ```
 
 - download all COBOL sources and COBOL copybooks from ISPW (the mainframe) that are part of the set triggering this specific pipeline execution, using the ISPW Container downloader
