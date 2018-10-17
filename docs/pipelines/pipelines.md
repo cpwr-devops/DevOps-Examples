@@ -15,11 +15,11 @@ Naming conventions are used to correlate Topaz for Total Test unit test projects
     - Due to the design of the underlying application, there are three paths through the development stages. Therefore, there will be three different `STEPLIB` concatenations to use in the Topaz for Total Test `runner.jcl`. The approach taken in the example is to have three different versions of the `runner.jcl` each using a different `STEPLIB` concatenation. The code of the pipeline will determine which `jcl` to use.
         - `Runner_PATH1.jcl` is used for the path from `DEV1` to `PRD`
         - `Runner_PATH2.jcl` is used for the path from `DEV2` to `PRD`
-        - `Runner_PATH3.jcl` is used for the path from `DEV3` to `PRD`)
+        - `Runner_PATH3.jcl` is used for the path from `DEV3` to `PRD`
 ![Life Cylce](../tool_configuration/images/Example life cycle.png)
 - Once a mainframe developer has finished working on a set of pieces of code that are stored in a mainframe SCM -  in our examples - they promote their changes to the next level in the application's life cycle. This activity creates an ISPW set container containing all components that are part of this specific promotion.
 
 ## Inside Jenkins - the two primary pipelines
 The [ISPW webhooks](../tool_configuration/webhhok_setup.html) will then trigger one of the following pipeline jobs
 - [Mainframe-CI-Example-pipeline_config](./Mainframe-CI-Example-pipeline.html)
-- [Mainframe_CI_Pipeline_from_Shared_Lib](./pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.html)
+- [Mainframe_CI_Pipeline_from_Shared_Lib](./Mainframe_CI_Pipeline_from_Shared_Lib.html)
