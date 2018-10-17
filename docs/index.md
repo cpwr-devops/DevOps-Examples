@@ -1,8 +1,3 @@
----
-title: DevOps-Examples
-layout: default
----
-
 # DevOps-Examples
 This repostitory is dedicated to providing information and working examples for anyone who is looking for information on how to integrate mainframe development into CI/CD pipelines, specifically Jenkins pipelines to start with. 
 
