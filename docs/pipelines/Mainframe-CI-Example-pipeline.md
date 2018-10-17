@@ -1,4 +1,4 @@
-# Mainframe-CI-Example-pipeline.jenkinsfile
+# <a id="Mainframe-CI-Example-pipeline.jenkinsfile"></a> Mainframe-CI-Example-pipeline.jenkinsfile
 Once this pipeline has been triggered, the [job](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/Jenkinsfile/Mainframe-CI-Example-pipeline.jenkinsfile) will
 
 - Initialize globaly variables determine and determine which `runner.jcl` to use
@@ -244,7 +244,7 @@ stage("Start release in XL Release")
 }
 ```
 
-## Setting up the pipeline job
+## <a id="Setting up the pipeline job"></a> Setting up the pipeline job
 The job itself is defined via the usual way of creating a new pipeline job. It is important, though, to make sure that the resulting job uses parameters by checking the `This project is parameterized' box, 
 
 ![Parameterized Pipeline](./images/parametertized pipeline.png)
@@ -253,7 +253,7 @@ and succesively adding the following string parameters (the default values are t
 
 ![Adding parameters](./images/Adding parameters.png)
 
-The parameters in this first set are specific to the individual execution of the pipeline
+The parameters in this first set are specific to the individual execution of the pipeline and get passed by the [ISPW Webhook](../tool_configurations/webhhok_setup.html#Webhook Parameters)
 <table>
     <tr>
         <th>Name</th>

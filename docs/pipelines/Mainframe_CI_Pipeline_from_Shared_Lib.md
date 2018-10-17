@@ -1,4 +1,4 @@
-# Mainframe_CI_Pipeline_from_Shared_Lib
+# <a id="Mainframe_CI_Pipeline_from_Shared_Lib"></a> Mainframe_CI_Pipeline_from_Shared_Lib
 Being a pipeline from a [shared library](https://jenkins.io/doc/book/pipeline/shared-libraries/) this pipeline must extend a `call` method. This pipeline expects a [`Map`](http://groovy-lang.org/syntax.html#_maps) object, containing the parameters to be passed to the pipeline from the job configuration and trigger.
 
 Once this pipeline has been triggered, the [job](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/vars/Mainframe_CI_Pipeline_from_Shared_Lib.groovy) will
@@ -163,7 +163,7 @@ def call(Map pipelineParams)
 }
 ```
 
-## Setting up the pipeline job
+## <a id="Setting up the pipeline job"></a> Setting up the pipeline job
 The job itself is defined via the usual way of creating a new pipeline job. It is important, though, to make sure that the resulting job uses parameters by checking the `This project is parameterized' box, 
 
 ![Parameterized Pipeline](./images/parametertized pipeline.png)
@@ -172,6 +172,7 @@ and succesively adding the following string parameters (the default values are t
 
 ![Adding parameters](./images/Adding parameters.png)
 
+The parameters in this first set are specific to the individual execution of the pipeline and get passed by the [ISPW Webhook](../tool_configurations/webhhok_setup.html#Webhook Parameters).
 <table>
     <tr>
         <th>Name</th>
@@ -257,7 +258,7 @@ refers to the name of a [Shared Library](./tool_configuration/Pipeline_libraries
 refers to the name of the `.groovy` file in the `vars` [folder of the GitHub repository](../index.html), containing the pipeline code
 - Within the brackets `(...)` parameters are passed to the pipeline script. `Mainframe_CI_Pipeline_from_Shared_Lib` expects a `groovy` [`Map`](http://groovy-lang.org/syntax.html#_maps), containing the following `key:value` pairs. 
 
-The parameters in this first set are specific to the individual execution of the pipeline. The values are the parameters defined in the pipeline configuration above. The syntax `"${parameter}"` ensures that the value passed to this parameter is taken as value in the `Map`.
+The parameters in this first set are specific to the individual execution of the pipeline. The values are the parameters defined in the [pipeline configuration above](#Setting up the pipeline job). The syntax `"${parameter}"` ensures that the value passed to this parameter is taken as value in the `Map`.
 <table>
     <tr>
         <th>Key</th>
