@@ -72,7 +72,7 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 > receives an Assignment ID in `assigment`, the [CES Token]() in `cesToken` and uses the ISPW REST API to regress the assignment
 
 ## <a id="JclSkeleton"></a> JclSkeleton
-The [`JclSkeleton`](./JclSkeleton.html) allows the pipelines to customize pieces of `JCL` in certain, predefined ways. This allows changing e.g. `job cards`, `STEPLIB` concatenations and others during runtime. The `JCL` skeletons are read from folder ['./config/skels'](../config_files/Jcl_skeletons.html).
+The [`JclSkeleton`](./JclSkeleton.html) allows the pipelines to customize pieces of `JCL` in certain, predefined ways. This allows changing e.g. `job cards`, `STEPLIB` concatenations and others during runtime. The `JCL` skeletons are read from folder ['./config/skels'](../config_files/Jcl_skeletons.html) in the pipeline workspace.
 
 [`JclSkeleton(steps, String workspace, String ispwApplication, String ispwPathNum)`](.JclSkeleton.html#JclSkeleton)
 
