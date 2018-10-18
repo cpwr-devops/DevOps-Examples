@@ -74,7 +74,47 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 ## <a id="JclSkeleton"></a> JclSkeleton
 The [`JclSkeleton`](./JclSkeleton.html) allows the pipelines to customize pieces of `JCL` in certain, predefined ways. This allows changing e.g. `job cards`, `STEPLIB` concatenations and others during runtime. The `JCL` skeletons are read from folder ['./config/skels'](../config_files/Jcl_skeletons.html).
 
+[`JclSkeleton(steps, String workspace, String ispwApplication, String ispwPathNum)`](.JclSkeleton.html#JclSkeleton)
 
+> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](), the path to the pipeline `workpace`, the name of the ISPW application in `ispwApplication` and the [number of the development path](../pipelines/scenario/TTT_scenario.html#The runner.jcl) in `pathNum`.
+
+[`initialize()`](.JclSkeleton.html#initialize)
+
+> is used for additional [initialization which cannot be executed in the custructor] and 
+> - reads the `JobCard.jcl` skeleton file
+> - reads the `deleteDs.skel` skeleton file  
+> - initializes the `IEBCOPY` `JCL` by using the `buildIebcopySkel` method
+
+[`buildIebcopySkel()`](.JclSkeleton.html#buildIebcopySkel)
+
+> initializes the `IEBCOPY` `JCL` by
+> - reading the `iebcopy.skel` skeleton file (main `JCL`) 
+> - reading the `iebcopyInDd.skel` skeleton file (input `DD` statements)
+> - building the required `INDD=INx` cards
+> - replacing the placeholders in the skeleton `JCL` by the conrete values
+> - returning the resulting `JCL` code
+
+[`createIebcopyCopyBooksJcl(String targetDsn, List copyMembers)`](.JclSkeleton.html#createIebcopyCopyBooksJcl)
+
+> recieves the target DSN for the `IEBCOPY` job in `targetDsn` and the list of required copybooks in `copyMembers` and
+> - places the `job card` from `initialize` in front of the `JCL` code
+> - builds a `SELECT MEMBER=` card for each entry in `copyMembers`
+> - replaces the placeholders in the skeleton `JCL` by the conrete values
+> - returns the resulting `JCL`code
+
+[`createDeleteTempDsn(String targetDsn)`](.JclSkeleton.html#createDeleteTempDsn)
+
+> recieves the target DSN for the `DELETE` job in `targetDsn` and
+> - places the `job card` from `initialize` in front of the `JCL` code
+> - adds the `DELETE` skeleton code
+> - replaces the placeholders in the skeleton `JCL` by the conrete values
+> - returns the resulting `JCL`code
+
+[`readSkelFile(String fileName)`](.JclSkeleton.html#readSkelFile)
+
+> receives a `fileName` and 
+> - reads the corresponding file from the skeletons folder in the pipeline workspace
+> - returns the content of the file as list of records
 
 ## <a id="PipelineConfig"></a> PipelineConfig
 
