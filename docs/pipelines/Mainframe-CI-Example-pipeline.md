@@ -245,11 +245,12 @@ stage("Start release in XL Release")
 ```
 
 ## <a id="Setting up the pipeline job"></a> Setting up the pipeline job
-The job itself is defined via the usual way of creating a new pipeline job. It is important, though, to make sure that the resulting job uses parameters by checking the `This project is parameterized' box, 
+The job itself is defined the usual way by creating a new pipeline job. It is important, though, to make sure that the resulting job uses parameters by checking the `This project is parameterized' box.
 
 ![Parameterized Pipeline](./images/parametertized pipeline.png)
-webhook_setup
-and succesively adding the following string parameters (the default values are the ones used for the examples).
+
+### <a id="The pipeline parameters"></a> The pipeline parameters
+Succesively add the following string parameters (the default values are the ones used for the examples).
 
 ![Adding parameters](./images/Adding parameters.png)
 
@@ -336,3 +337,8 @@ The second set of parameters is installation specific and reference tokens and o
         <td>Github (or other Git based repository) project used to store the Topaz for Total Test Projects</td>
     </tr>
 </table>
+
+### <a id="Loading the script from GitHub"></a> Loading the script from GitHub
+Instead of using a `Pipeline script` and placing the pipeline code into the `Script` text box, the pipeline uses a `Pipeline from SCM`, stored in GitHub.
+
+![Pipeline from SCM](.images/Pipeline from SCM.png)

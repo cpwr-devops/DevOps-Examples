@@ -11,5 +11,5 @@ The code reflects common patterns that we see emerging at different customers. I
 
 ## <a id=""></a> Inside Jenkins - the two primary pipelines
 The [ISPW webhooks](../tool_configuration/webhhok_setup.html) will then trigger one of the following pipeline jobs
-- [Mainframe-CI-Example-pipeline_config](./Mainframe-CI-Example-pipeline.html)
+- [Mainframe-CI-Example-pipeline](./Mainframe-CI-Example-pipeline.html)
 - [Mainframe_CI_Pipeline_from_Shared_Lib](./Mainframe_CI_Pipeline_from_Shared_Lib.html)

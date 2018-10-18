@@ -164,11 +164,12 @@ def call(Map pipelineParams)
 ```
 
 ## <a id="Setting up the pipeline job"></a> Setting up the pipeline job
-The job itself is defined via the usual way of creating a new pipeline job. It is important, though, to make sure that the resulting job uses parameters by checking the `This project is parameterized' box, 
+The job itself is defined via the usual way of creating a new pipeline job. It is important, though, to make sure that the resulting job uses parameters by checking the `This project is parameterized` box, 
 
 ![Parameterized Pipeline](./images/parametertized pipeline.png)
 
-and succesively adding the following string parameters (the default values are the ones used for the examples).
+## <a id="Setting up the pipeline job"></a> Setting up the pipeline job
+Succesively add the following string parameters (the default values are the ones used for the examples).
 
 ![Adding parameters](./images/Adding parameters.png)
 
@@ -222,6 +223,8 @@ The parameters in this first set are specific to the individual execution of the
     </tr>
 </table>
 
+
+### <a id="Loading the script from a shared library"></a> Loading the script from a shared library
 To tell Jenkins to execute a pipeline from a shared library, you need to add code like the follwoing to the Pipeline script definition.
 
 ![Pipeline from Shared Library](./images/pipeline_from_shared_lib.png)
