@@ -17,12 +17,16 @@ package com.compuware.devops.util
 class FileHelper implements Serializable {
 
     def steps
-
+```
+<a id="FileHelper"></a>
+```
     FileHelper(steps) 
     {
         this.steps = steps
     }
-
+```
+<a id="readLines"></a>
+```
     def readLines(String path)
     {        
         

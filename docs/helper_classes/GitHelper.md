@@ -17,12 +17,16 @@ package com.compuware.devops.util
 class GitHelper implements Serializable {
 
     def steps
-
+```
+<a id="GitHelper"></a>
+```
     GitHelper(steps) 
     {
         this.steps = steps
     }
-
+```
+<a id="checkout"></a>
+```
     def checkout(String gitUrl, String gitBranch, String gitCredentials, String tttFolder)
     {
         steps.checkout(
@@ -38,7 +42,9 @@ class GitHelper implements Serializable {
                         ]
         )
     }
-
+```
+<a id="checkoutPath"></a>
+```
     def checkoutPath(String gitUrl, String gitBranch, String path, String gitCredentials, String gitProject)
     {
         steps.checkout(
