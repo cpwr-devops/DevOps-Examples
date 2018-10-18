@@ -40,23 +40,36 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 
 [`downloadSources()`](./IspwHelper.html#downloadSources)
 
-> ...
+> downloads all sources (COBOL programs and copybooks) contained in [ISPW set](../pipelines/scenario/ISPW_scenario.html#The resulting set) triggering the pipeline
 
-`downloadCopyBooks(String workspace)`
+[`downloadCopyBooks(String workspace)`](./IspwHelper.html#downloadCopyBooks)
 
-> ...
+> - recieves the path to the `workspace` of the pipeline job
+> - uses the `referencedCopyBooks` method to determine all copybooks used by the download COBOL programs
+> - uses a [`JclSkeleton`](#JclSkeleton) object's `createIebcopyCopyBooksJcl` method to create an `IEBCOPY` job `JCL` that copies all required copybooks in the list from the ISPW libraries into a temporary PDS
+> - submits this `JCL` using the [Topaz Utilities]() plugin
+> - downloads the content of the temporary PDS, using the [ISPW PDS downloader]()
+> - uses the `JclSkeleton` method `jclSkeleton.createDeleteTempDsn` to create a `DELETE` job `JCL`
+> - and submits that `JCL`
 
-`referencedCopyBooks(String workspace)`
+[`referencedCopyBooks(String workspace)`](./IspwHelper.html#referencedCopyBooks)
 
-> ...
+> - recieves the path to the `workspace` of the pipeline job
+> - searches all `*.cbl` program sources in the folder containing all downloaded sources and builds a list of COBOL programs
+> - for each program in the list it
+>       - reads the source file
+>       - scans the content for valid `COPY` statements (e.g. not comments)
+>       - determines the referenced copybook 
+>       - add each copybook to the list of copybooks
+> - returns the resulting list of copybooks
 
-`regressAssignmentList(assignmentList, cesToken)`
+[`regressAssignmentList(assignmentList, cesToken)`](./IspwHelper.html#regressAssignmentList)
 
-> ...
+> recieves a list of assignment IDs in `assignmentList`, the [CES Token]() in `cesToken` and calls method `regressAssignment` for each element of `assignmentList`
 
-`def regressAssignment(assignment, cesToken)`
+[`def regressAssignment(assignment, cesToken)`](./IspwHelper.html#regressAssignment)
 
-> ...
+> receives an Assignment ID in `assigment`, the [CES Token]() in `cesToken` and uses the ISPW REST API to regress the assignment
 
 ## <a id="JclSkeleton"></a> JclSkeleton
 

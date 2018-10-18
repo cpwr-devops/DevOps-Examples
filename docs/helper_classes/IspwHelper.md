@@ -127,7 +127,9 @@ class IspwHelper implements Serializable
             steps.echo "No Copy Books to download"
         }
     }
-
+```    
+<a id="referencedCopyBooks"></a>
+```groovy
     /* Parse downloaded sources and get a list of copy books */
     def List referencedCopyBooks(String workspace) 
     {
@@ -194,7 +196,9 @@ class IspwHelper implements Serializable
         return listOfCopybooks
 
     }      
-
+```    
+<a id="regressAssignmentList"></a>
+```groovy
     /* Regress a list of assignments */
     def regressAssignmentList(assignmentList, cesToken)
     {
@@ -208,7 +212,9 @@ class IspwHelper implements Serializable
         }
             
     }
-
+```    
+<a id="regressAssignment"></a>
+```groovy
     /* Regress one assigment */
     def regressAssignment(assignment, cesToken)
     {
