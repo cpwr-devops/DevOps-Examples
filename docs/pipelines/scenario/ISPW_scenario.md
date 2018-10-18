@@ -1,7 +1,7 @@
 # <a id="ISPW Scenario"></a> ISPW Scenario
 Both scenarios hadnled by the two primary pipelines work on Compuware's demonstration stream `FTSDEMO`, in our example, using application `RXN3`. In this version of the application, some of the components (`CWXTSUBC`) use copybooks.
 
-![ISPW repository explorer]()
+![<ISPW repository explorer>](../images/ISPW repository explorer.png)
 
 ## <a id="Checking out code to an assignment"></a> Checking out code to an assignment
 In ISPW the developer checks out a few components to a new or existing assignment. Depending on the pipeline being used 
@@ -19,7 +19,7 @@ and add them to a new or existing assignment. In the example, they use the `DEV1
 
 In case of the first scenario, the developer also needs to check out the copybook `EMPFILE`.
 
-![ISPW checkout]()
+![<ISPW checkout>](./images/ISPW checkout.png)
 
 ## <a id="Changing code"></a> Changing code
 The developer applies changes to the code, stores them back to ISPW, and generates (`compile`, `link`, `bind`, etc.) the new code.
@@ -30,9 +30,9 @@ Parallel to changing the code, the developer also [adds new test cases to the se
 ## <a id="Promoting the code changes"></a> Promoting the code changes
 Once the new code has been `generated`, and the unit tests have been `pushed` to GitHub, the develop can promote the selected components, or the complete assignment to the next level.
 
-![ISPW promote]()
+![<ISPW promote>](-/images/ISPW promote.png)
 
 ## <a id="The resulting set"></a> The resulting set
 The promote will create a `set container` in ISPW, which will perform the steps required for the `promotion` of the code. This `set` has its own ID and contains all `tasks` that were `promoted`. The way the [ISPW webhook](../tool_configuration/webhook_setup.html) has been set up, once the `promotion` has finished, the webhook will trigger one of the two pipeline jobs. (Depending on the job being triggered by the webhook's `POST` request.)
 
-![ISPW set]()
+![<ISPW set>](./images/ISPW set.png)

@@ -35,16 +35,14 @@ The [Git repository](./TTT_in_Git.html) uses `<ISPW_Stream_Name>_<ISPW_Applicati
 ## <a id="The Topaz for Total Test project structure"></a> The Topaz for Total Test project structure
 A Topaz for Total Test project will use the following folder structure, which will be generated and populated automatically, when the first test case gets recorded by Xpediter/Topaz for Total Test:
 
-```
-<project_name>(root)                            # e.g. <Target_Program_Name>_Unit_Tests
-+- Unit Tests
-    +- Interfaces                               # interfaces to programs (LINKAGE SECTION) and I/O stubs
-    +- JCL                                      # jcl 'members' for the execution of tests
-    +- Scenarios                                # test scenarios
-    +- Structures                               # COBOL structures (01-levels and subfields) making up the different interfaces 
-    +- Stubs                                    # Simulation data for sub-programs and external I/O
-    +- Suites                                   # test suite(s) executing one or more test scenarios
-```
+    <project_name>(root)                            # e.g. <Target_Program_Name>_Unit_Tests
+    +- Unit Tests
+        +- Interfaces                               # interfaces to programs (LINKAGE SECTION) and I/O stubs
+        +- JCL                                      # jcl 'members' for the execution of tests
+        +- Scenarios                                # test scenarios
+        +- Structures                               # COBOL structures (01-levels and subfields) making up the different interfaces 
+        +- Stubs                                    # Simulation data for sub-programs and external I/O
+        +- Suites                                   # test suite(s) executing one or more test scenarios
 
 ## <a id="The runner.jcl"></a> The runner.jcl
 When using Xpediter/Topaz for Total Test to record test cases, the `JCL` folder will contain sample `JCL` code which is required to exeute the Topaz for Total Test driver program `TTTRUNNR`. As of now, Topaz for Total Test cannot create stub data for 100% of all  `SQL` statements or `DL/I` calls. Therefore, test execution of some programs will require a "mixed" mode - partly stubbed, partly using life data. For these situations the following sample `JCL`is generated:
