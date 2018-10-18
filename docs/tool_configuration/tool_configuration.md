@@ -26,14 +26,17 @@ The settings under `Manage Jenkins` -> `Configure System` will be required for t
 
 ### <a id="Global Tool Configuration"></a> Manage Jenkins / Global Tool Configuration
 The settings under `Manage Jenkins` -> `Global Tool Configuration` will be required for the definition of at least
-- [Git](./Jenkins_Git_config.html) to point to the installation of Git local to the Jenkins server
+- [Git](./Jenkins_Git_config.html) to point to the installation of Git local to the Jenkins server. The Jenkins server requires its own `git.exe`.
 - [SonarQube Scanner](./SonarQube_scanner.html) to define a reference to the path to the Sonar Scanner installation local to the Jenkins server
 
 ### <a id="Credentials"></a> Manage Jenkins / Credentials
 Use the credentials manager to store the following credentials for use in the examples
-- A secret text credential token to mask the [CES credentials ID created and retreieved from CES](CES_credentials_token.html) (used as parameter `CES_Token`)
+
 - A user ID / password token for a valid logon to the required mainframe LPAR used by plugins that do not use the CES credentials token (used as parameter `HCI_Token`)
-- A user ID / password token for a valid logon to the GitHub repository storing Topaz for Total Test unit test assets 
+- A secret text credential token to mask the [CES credentials ID created and retreieved from CES](CES_credentials_token.html) (used as parameter `CES_Token`)
+- A user ID / password token for a valid logon to the GitHub repository storing Topaz for Total Test unit test assets (used as parameter `Git_Credentials`)
+
+![Jenkins Credentials](./images/Jenkins credentials.png)
 
 ### <a id="Managed Files"></a> Manage Jenkins / Managed Files
 The option `Manage Jenkins` -> `Managed Files` will be available after installation of the [Config File Provider](https://wiki.jenkins.io/display/JENKINS/Config+File+Provider+Plugin) plugin. The examples make use of configuration files handled and stored by this plugin. Especially this will be a list of TSO user IDs and [corresponding mail addresses](./Config_Files.html). Over time other configuration files will use the same technology.

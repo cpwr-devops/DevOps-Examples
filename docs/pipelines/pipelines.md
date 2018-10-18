@@ -7,7 +7,7 @@ The code reflects common patterns that we see emerging at different customers. I
 - A developer checks out a set of sources, copybooks and other components required to fulfill a specific requirement. In our example, these are stored and administered in [ISPW](./scenario/ISPW_scenario.html)
 - The developer creates or modifies a set of unit tests using [Topaz for Total Test](./scenario/TTT_scenario.html). In order to share the unit tests between development teams and to use them in Jenkins, the Topaz for Total Test projects are stored and administered using [Git/GitHub](./scenario/TTT_in_Git.html) in the case of these examples, to be more precise.
 - Once the developer has finished working on the code, they `promote` their changes to the next level in the application's life cycle. 
-- In our example this activity creates an [ISPW set container](./scenario/ISPW_scenario.html#Promoting the code changes#The resulting set) containing all components that are part of this specific promotion.
+- In our example this activity creates an [ISPW set container](./scenario/ISPW_scenario.html#The resulting set) containing all components that are part of this specific promotion.
 
 ## <a id=""></a> Inside Jenkins - the two primary pipelines
 The [ISPW webhooks](../tool_configuration/webhhok_setup.html) will then trigger one of the following pipeline jobs

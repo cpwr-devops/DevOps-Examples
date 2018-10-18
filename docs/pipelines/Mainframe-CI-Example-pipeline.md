@@ -304,7 +304,7 @@ The parameters in this first set are specific to the individual execution of the
     </tr>
 </table>
 
-The second set of parameters is installation specific and reference tokens and other IDs that have been defined during the configuration phase
+The second set of parameters is installation specific and reference tokens and other IDs that have been defined during the configuration phase. To determine the approriate values to use refer to the description of class [`PipelineConfig`](../helper_classes/PipelineConfig.html).
 <table>
     <tr>
         <th>Name</th>
@@ -341,4 +341,4 @@ The second set of parameters is installation specific and reference tokens and o
 ### <a id="Loading the script from GitHub"></a> Loading the script from GitHub
 Instead of using a `Pipeline script` and placing the pipeline code into the `Script` text box, the pipeline uses a `Pipeline from SCM`, stored in GitHub.
 
-![Pipeline from SCM](.images/Pipeline from SCM.png)
+![Pipeline from SCM](./images/Pipeline from SCM.png)

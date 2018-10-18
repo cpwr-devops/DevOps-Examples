@@ -2,7 +2,7 @@
 This page only briefly describes the processes of using Topaz for Total Test to generate, modify and execute unit tests. For more details refer to the Topaz for Total Test online help.
 
 ## <a id="Initial recording of test cases"></a> Initial recording of test cases
-Since most mainframe development is no green field development, the first step in working with Topaz for Total Test will be executing a program in question under control of the Xpediter debugger. During the debugging session Xpediter and Topaz for Total Test allow recording individual test cases. One such test case, in the sense of Topaz for Total Test, is one execution of a program (compile unit) from beginning (`PROCEDURE DIVISION`or `ENTRY` point) to end (e.g. `GOBACK`). It consists of
+Since most mainframe development is no green field development, the first step in working with Topaz for Total Test will be executing a program in question under control of the Xpediter debugger. During the debugging session Xpediter and Topaz for Total Test allow recording individual test cases. One such test case, in the sense of Topaz for Total Test, is one execution of a program (compile unit) from beginning (`PROCEDURE DIVISION` or `ENTRY` point) to end (e.g. `GOBACK`). It consists of
 - Input values as recorded at program `ENTRY`
 - Output values as recorded at program exit (e.g. `GOBACK`)
 - Assertions for the recorded output values
@@ -19,7 +19,7 @@ Since most mainframe development is no green field development, the first step i
         - Segment data
 - Any write stub will also create assertions for the data written to the external data source
 
-## <a id="Structuring Tests">Structuring Tests
+## <a id="Structuring Tests"> Structuring Tests
 Topaz for Total Test allows storing one or more test case for one or more programs. It is a recommended practice, though, to create one Topaz for Total Test project per program. These projects allow grouping test cases into different scenarios (e.g. by major program branch being executed) and to define and use test suites to execute all test scenarios in one run.
 
 ## <a id="Naming conventions"></a> Naming conventions
@@ -59,7 +59,7 @@ Due to the design of the example application, there are three paths through the 
 - `Runner_PATH2.jcl` is used for the path from `DEV2` to `PRD`
 - `Runner_PATH3.jcl` is used for the path from `DEV3` to `PRD`
 
-![Life Cycle](.../tool_configuration/images/Example life cycle.png)
+![Life Cycle](../tool_configuration/images/Example life cycle.png)
 
 ## <a id="Adding new test cases"></a> Adding new test cases
 New test cases may be added to an existing test scenario by duplicating existing test cases and modifying the input and assertion data (based on any new requirements). Refer to the Topaz for Total Test online help for more details.
