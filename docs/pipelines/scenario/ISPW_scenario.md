@@ -5,7 +5,7 @@ layout: primary_pipelines
 # <a id="ISPW Scenario"></a> ISPW Scenario
 Both scenarios hadnled by the two primary pipelines work on Compuware's demonstration stream `FTSDEMO`, in our example, using application `RXN3`. In this version of the application, some of the components (`CWXTSUBC`) use copybooks.
 
-![ISPW repository explorer]({{site.url | append: '/DevOps-Examples/pipelines/images/ISPW repository explorer.png}})
+<a class="header name" href="{{ site.url | append: '/DevOps-Examples/pipelines/images/ISPW repository explorer.png' }}">ISPW repository explorer</a>
 
 ## <a id="Checking out code to an assignment"></a> Checking out code to an assignment
 In ISPW the developer checks out a few components to a new or existing assignment. Depending on the pipeline being used 
