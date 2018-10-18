@@ -47,20 +47,10 @@ A Topaz for Total Test project will use the following folder structure, which wi
 ## <a id="The runner.jcl"></a> The runner.jcl
 When using Xpediter/Topaz for Total Test to record test cases, the `JCL` folder will contain sample `JCL` code which is required to exeute the Topaz for Total Test driver program `TTTRUNNR`. As of now, Topaz for Total Test cannot create stub data for 100% of all  `SQL` statements or `DL/I` calls. Therefore, test execution of some programs will require a "mixed" mode - partly stubbed, partly using life data. For these situations the following sample `JCL`is generated:
 
-<table border="0">
-    <tr>
-        <td>`RunnerBmp.jcl`</td>
-        <td>for tests of `IMS` programs in "mixed" mode</td>
-    </tr>
-    <tr>
-        <td>`RunnerBmpDB2.jcl`</td>
-        <td>for tests of `DB2/IMS` programs in "mixed" mode</td>
-    </tr>
-    <tr>
-        <td>`RunnerDb2.jcl`</td>
-        <td>for tests of `DB2` programs in "mixed" mode</td>
-    </tr>
-</table>
+- `RunnerBmp.jcl` for tests of `IMS` programs in "mixed" mode
+- `RunnerBmpDB2.jcl` for tests of `DB2/IMS` programs in "mixed" mode
+- `RunnerDb2.jcl` for tests of `DB2` programs in "mixed" mode
+
 In case all I/O can be stubbed, the `Runner.jcl` can be used as a template for the test execution `JCL`.
 
 Due to the design of the example application, there are three paths through the development stages. Therefore, there will be three different `STEPLIB` concatenations to use in the Topaz for Total Test `runner.jcl`. The approach taken in the example is to have three different versions of the `runner.jcl` each using a different `STEPLIB` concatenation. The code of the pipeline will determine which `jcl` to use.
