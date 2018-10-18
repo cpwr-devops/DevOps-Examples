@@ -1,3 +1,7 @@
+---
+title: Pipelines
+layout: primary_pipelines
+---
 # <a id="Mainframe_CI_Pipeline_from_Shared_Lib"></a> Mainframe_CI_Pipeline_from_Shared_Lib
 Being a pipeline from a [shared library](https://jenkins.io/doc/book/pipeline/shared-libraries/) this pipeline must extend a `call` method. This pipeline expects a [`Map`](http://groovy-lang.org/syntax.html#_maps) object, containing the parameters to be passed to the pipeline from the job configuration and trigger.
 

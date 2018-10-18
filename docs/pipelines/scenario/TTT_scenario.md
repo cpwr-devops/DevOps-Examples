@@ -1,3 +1,7 @@
+---
+title: Pipelines
+layout: primary_pipelines
+---
 # <a id="Topaz for Total Test Scenario"></a> Topaz for Total Test Scenario
 This page only briefly describes the processes of using Topaz for Total Test to generate, modify and execute unit tests. For more details refer to the Topaz for Total Test online help.
 

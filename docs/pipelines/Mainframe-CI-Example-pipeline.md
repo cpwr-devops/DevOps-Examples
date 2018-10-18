@@ -1,3 +1,7 @@
+---
+title: Pipelines
+layout: primary_pipelines
+---
 # <a id="Mainframe-CI-Example-pipeline.jenkinsfile"></a> Mainframe-CI-Example-pipeline.jenkinsfile
 Once this pipeline has been triggered, the [job](https://github.com/cpwr-devops/DevOps-Examples/blob/suggest/Jenkinsfile/Mainframe-CI-Example-pipeline.jenkinsfile) will
 

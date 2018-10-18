@@ -1,3 +1,7 @@
+---
+title: Pipelines
+layout: primary_pipelines
+---
 # <a id=""></a> Pipelines
 These examples of Jenkins pipelines make use of Compuware's and other plugins to implement the following process and scenario. They may be seen a kind of **standard approach** for implementing a CI process for maingframe development. The scenario(s) and code are based on request and requirements from customers who already have started implementing their own pipeline and asked Compuware for advice. The code itself shows our solution to these, while the respective solutions as implemented by our customers are - in parts considerably - different.
 

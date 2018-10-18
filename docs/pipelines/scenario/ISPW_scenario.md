@@ -1,3 +1,7 @@
+---
+title: Pipelines
+layout: primary_pipelines
+---
 # <a id="ISPW Scenario"></a> ISPW Scenario
 Both scenarios hadnled by the two primary pipelines work on Compuware's demonstration stream `FTSDEMO`, in our example, using application `RXN3`. In this version of the application, some of the components (`CWXTSUBC`) use copybooks.
 
