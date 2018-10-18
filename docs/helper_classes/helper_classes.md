@@ -7,7 +7,9 @@ The helper classes primarily serve as wrapper classes for the use of the differe
 
 ## <a id="">FileHelper</a> FileHelper
 The `FileHelper` class is used to read external files and provides the methods
-- ```groovy readLines(String path)```
+
+`readLines(String path)`
+reads the records of a file at location `path` and returns an `ArrayList` of the individual records.
 
 ## <a id="GitHelper"></a> GitHelper
 
