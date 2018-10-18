@@ -30,9 +30,9 @@ Other plugins that are used by the examples are:
 
 ### <a id="Pipeline Utility Steps"></a> Pipeline Utility Steps
 The [Pipeline Utility Steps](https://wiki.jenkins.io/display/JENKINS/Pipeline+Utility+Steps+Plugin) plugin provides a set of script methhods that are being used in the examples like
-- `findFiles` to search for files by name pattern
-- `zip` to create zip archives
-- `unzip` to unzip archives
+- `findFiles`   to search for files by name pattern
+- `zip`         to create zip archives
+- `unzip`       to unzip archives
 
 ### <a id="Config File Provider"></a> Config File Provider
 The [Config File Provider](https://wiki.jenkins.io/display/JENKINS/Config+File+Provider+Plugin) allows defining files and storing their content within Jenkins thus allowing to define configuration files that do not have to be stored on disk within e.g. the Git repository storing the `jenkinsfile`.
