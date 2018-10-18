@@ -3,7 +3,7 @@ title: Pipelines
 layout: primary_pipelines
 ---
 # <a id="ISPW Scenario"></a> ISPW Scenario
-Both scenarios hadnled by the two primary pipelines work on Compuware's demonstration stream `FTSDEMO`, in our example, using application `RXN3`. In this version of the application, some of the components (`CWXTSUBC`) use copybooks.
+Both scenarios handled by the two primary pipelines work on Compuware's demonstration stream `FTSDEMO`, in our example, using application `RXN3`. In this version of the application, some of the components (`CWXTSUBC`) use copybooks.
 
 <a class="header name" href="{{ site.url | append: '/DevOps-Examples/pipelines/images/ISPW repository explorer.png' }}">ISPW repository explorer</a>
 
