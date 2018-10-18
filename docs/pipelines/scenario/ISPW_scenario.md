@@ -11,6 +11,7 @@ The developer has to check out all related copybooks for the final anaylsis in S
 The developer may check out any component. Missing copybooks will be determined and gathered in one of the pipeline steps.
 
 They check out the following components
+
 - COBOL program `CWXTCOB`
 - COBOL program `CWXTSUBC`
 - COBOL program `CWXTDATE`
