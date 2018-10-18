@@ -47,8 +47,8 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 > - recieves the path to the `workspace` of the pipeline job
 > - uses the `referencedCopyBooks` method to determine all copybooks used by the download COBOL programs
 > - uses a [`JclSkeleton`](#JclSkeleton) object's `createIebcopyCopyBooksJcl` method to create an `IEBCOPY` job `JCL` that copies all required copybooks in the list from the ISPW libraries into a temporary PDS
-> - submits this `JCL` using the [Topaz Utilities]() plugin
-> - downloads the content of the temporary PDS, using the [ISPW PDS downloader]()
+> - submits this `JCL` using the [Topaz Utilities](https://wiki.jenkins.io/display/JENKINS/Compuware+Topaz+Utilities+Plugin) plugin
+> - downloads the content of the temporary PDS, using the [ISPW PDS downloader](https://wiki.jenkins.io/display/JENKINS/Compuware+Source+Code+Download+for+Endevor,+PDS,+and+ISPW+Plugin)
 > - uses the `JclSkeleton` method `jclSkeleton.createDeleteTempDsn` to create a `DELETE` job `JCL`
 > - and submits that `JCL`
 
@@ -57,10 +57,10 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 > - recieves the path to the `workspace` of the pipeline job
 > - searches all `*.cbl` program sources in the folder containing all downloaded sources and builds a list of COBOL programs
 > - for each program in the list it
->       - reads the source file
->       - scans the content for valid `COPY` statements (e.g. not comments)
->       - determines the referenced copybook 
->       - add each copybook to the list of copybooks
+    > - reads the source file
+    > - scans the content for valid `COPY` statements (e.g. not comments)
+    > - determines the referenced copybook 
+    > - add each copybook to the list of copybooks
 > - returns the resulting list of copybooks
 
 [`regressAssignmentList(assignmentList, cesToken)`](./IspwHelper.html#regressAssignmentList)
@@ -72,6 +72,9 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 > receives an Assignment ID in `assigment`, the [CES Token]() in `cesToken` and uses the ISPW REST API to regress the assignment
 
 ## <a id="JclSkeleton"></a> JclSkeleton
+The [`JclSkeleton`](./JclSkeleton.html) allows the pipelines to customize pieces of `JCL` in certain, predefined ways. This allows changing e.g. `job cards`, `STEPLIB` concatenations and others during runtime. The `JCL` skeletons are read from folder ['./config/skels'](../config_files/Jcl_skeletons.html).
+
+
 
 ## <a id="PipelineConfig"></a> PipelineConfig
 
