@@ -14,6 +14,7 @@ They check out the following components
 - COBOL program `CWXTCOB`
 - COBOL program `CWXTSUBC`
 - COBOL program `CWXTDATE`
+
 and add them to a new or existing assignment. In the example, they use the `DEV1` path.
 
 In case of the first scenario, the developer also needs to check out the copybook `EMPFILE`.
@@ -24,7 +25,7 @@ In case of the first scenario, the developer also needs to check out the copyboo
 The developer applies changes to the code, stores them back to ISPW, and generates (`compile`, `link`, `bind`, etc.) the new code.
 
 ## <a id="Modifying the unit tests"></a> Modifying the unit tests
-Parallel to changing the code, the developer also [adds new test cases to the set of unit tests for the components in question](./TTT_scenario.html#Adding new test cases). Since the unit tests are stored in GitHub, the changes need to be [`committed`and `pushed` to the GitHub repository, before continuing](./TTT_in_Git.html#Pushing changes to GitHub).
+Parallel to changing the code, the developer also [adds new test cases to the set of unit tests for the components in question](./TTT_scenario.html#Adding new test cases). Since the unit tests are stored in GitHub, the changes need to be [`committed` and `pushed` to the GitHub repository, before continuing](./TTT_in_Git.html#Pushing changes to GitHub).
 
 ## <a id="Promoting the code changes"></a> Promoting the code changes
 Once the new code has been `generated`, and the unit tests have been `pushed` to GitHub, the develop can promote the selected components, or the complete assignment to the next level.
