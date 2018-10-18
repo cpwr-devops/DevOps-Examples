@@ -3,6 +3,7 @@ title: Helper classes
 layout: helper_classes
 ---
 # <a id="FileHelper"></a> FileHelper.groovy
+
 ```groovy
 package com.compuware.devops.util
 
