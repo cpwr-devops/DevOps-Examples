@@ -67,7 +67,7 @@ Due to the design of the example application, there are three paths through the 
 - `Runner_PATH2.jcl` is used for the path from `DEV2` to `PRD`
 - `Runner_PATH3.jcl` is used for the path from `DEV3` to `PRD`
 
-![Life Cycle](../tool_configuration/images/Example life cycle.png)
+![Life Cycle](../../tool_configuration/images/Example life cycle.png)
 
 ```jcl
 //RUNNER EXEC PGM=TTTRUNNR
