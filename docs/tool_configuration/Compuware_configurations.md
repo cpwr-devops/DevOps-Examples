@@ -1,3 +1,7 @@
+---
+title: Compuware Configurations
+layout: tool_configuration
+---
 # <a id="Compuware Configurations"></a> Compuware Configurations
 In `Manage Jenkins` -> `Configure System`, under the heading **Compuware Configurations** use either the Windows or Linux path fields to point to the location of the Topaz Workbench CLI (Command Line Interface).
 

@@ -1,3 +1,7 @@
+---
+title: Definition of CES credentials token
+layout: tool_configuration
+---
 # <a id="Definition of CES credentials token"></a> Definition of CES credentials token
 To define a CES credentials token go to the CES **Security** menu. On the **Personal Access Tokens** tab use `add` to create a new token, or select an existing token and use `edit` to modify (update) the stored password or other credentials details.
 

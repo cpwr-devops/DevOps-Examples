@@ -1,3 +1,7 @@
+---
+title: Configuration handled by the Config File Provide
+layout: tool_configuration
+---
 # <a id="Configuration handled by the Config File Provider"></a> Configuration handled by the Config File Provider
 In `Manage Jenkins` -> `Managed Files` select `Add a new Config` to add a new configuration file to be handled by this plugin. Once files are created you can select the existing files to review and modify their content.
 

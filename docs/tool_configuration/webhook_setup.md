@@ -1,3 +1,7 @@
+---
+title: Definition of a webhook used in the examples
+layout: tool_configuration
+---
 # <a id="Definition of a webhook used in the examples"></a> Definition of a webhook used in the examples
 
 To define and register an ISPW webhook in CES go to the CES **Administration** menu 
