@@ -72,7 +72,7 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 > receives an Assignment ID in `assigment`, the [CES Token]() in `cesToken` and uses the ISPW REST API to regress the assignment
 
 ## <a id="JclSkeleton"></a> JclSkeleton
-The [`JclSkeleton`](./JclSkeleton.html) allows the pipelines to customize pieces of `JCL` in certain, predefined ways. This allows changing e.g. `job cards`, `STEPLIB` concatenations and others during runtime. The `JCL` skeletons are read from folder ['./config/skels'](../config_files/Jcl_skeletons.html) in the pipeline workspace.
+The [`JclSkeleton`](./JclSkeleton.html) class allows the pipelines to customize pieces of `JCL` in certain, predefined ways. This allows changing e.g. `job cards`, `STEPLIB` concatenations and others during runtime. The `JCL` skeletons are read from folder ['./config/skels'](../config_files/Jcl_skeletons.html) in the pipeline workspace.
 
 [`JclSkeleton(steps, String workspace, String ispwApplication, String ispwPathNum)`](.JclSkeleton.html#JclSkeleton)
 
@@ -80,7 +80,7 @@ The [`JclSkeleton`](./JclSkeleton.html) allows the pipelines to customize pieces
 
 [`initialize()`](.JclSkeleton.html#initialize)
 
-> is used for additional [initialization which cannot be executed in the custructor] and 
+> is used for additional [initialization which cannot be executed in the custructor]() and 
 > - reads the `JobCard.jcl` skeleton file
 > - reads the `deleteDs.skel` skeleton file  
 > - initializes the `IEBCOPY` `JCL` by using the `buildIebcopySkel` method
@@ -117,6 +117,40 @@ The [`JclSkeleton`](./JclSkeleton.html) allows the pipelines to customize pieces
 > - returns the content of the file as list of records
 
 ## <a id="PipelineConfig"></a> PipelineConfig
+The [`PipelineConfig`](./PipelineConfig.html) class stores and allows retrieval of any pipeline [configuration and runtime specific parameters](./pipeline_parameters.html). 
+
+[`PipelineConfig(steps, workspace, params, mailListLines)`](.PipelineConfig.html#PipelineConfig)
+
+> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](), the path of the pipeline `workspace` the `Map` `params` containing the `key:value` parameter pairs from the [pipeline call](../pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library), and a the list of records from the [`mailList.config` file](../tool_configuration/Config_Files.html#The email list) and initializes all parameters that can be initialized immediately.
+
+[`initialize()`](.PipelineConfig#initialize)
+
+> is used for additional [initialization which cannot be executed in the custructor]() and 
+> - deletes any old content from the pipeline workspace
+> - Uses the `checkoutPath`method of the [`GitHelper` class](#GitHelper) to download the path containing the configuration files from the GitHub repository containing the configuration. (In future configuration files will be move to [Managed Files](../tool_configuration/tool_configuration.html#Managed Files), thus avoiding to have to download configuration from GitHub and exposure of configuration on GitHub.)
+> - execute the following internal methods to set the remaining configuration values
+
+[`setServerConfig()`](.PipelineConfig#setServerConfig)
+
+> - reads the pipeline configuration file `pipeline.config`, containing server URLs (e.g. Sonar, XL Release) etc.
+> - extracts the values for the corresponding parameters
+> - sets the parameters
+
+[`setTttGitConfig()`](.PipelineConfig#setTttGitConfig)
+
+> - reads the pipeline configuration file `tttgit.config`, containing information about the GitHub repository storing the Topaz for Total Test projects
+> - extracts the values for the corresponding parameters
+> - sets the parameters
+
+[`setMailConfig()`](.PipelineConfig#setMailConfig)
+
+> - loops though the list of `mailListLines` containing the `TSO user:email` pairs
+> - turns the records into a `Map`
+> - determines the email address for the owner of the ISPW set and sets the parameter `mailRecipient` accordingly
+
+[`readConfigFile(String fileName)`](.PipelineConfig#readConfigFile)
+
+> uses an instance of the [`FileHelper`](#FileHelper) class to read the configuration files
 
 ## <a id="SonarHelper"></a> SonarHelper
 

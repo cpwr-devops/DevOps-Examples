@@ -7,6 +7,7 @@ Configuration files used in the examples are plain text files. Therefore, chose 
 
 After `submitting` specify a file name to use and start filling the file with content. 
 
+## <a id="The email list"></a> The email list
 The example mail list file uses a file name of `mailList.config` and pairs of `<TSO User ID>:<mailaddress>`, each on a seprate line. The TSO user IDs used in this file correspond to the ISPW owner values passed by the [ISPW webhooks](./webhhok_setup.html).
 
 ![Mail List File](./images/MailList Config File.png)
