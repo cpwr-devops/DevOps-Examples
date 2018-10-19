@@ -13,21 +13,6 @@
     <![endif]-->
   </head>
   <body>
-    <div id="banner">
-        <a href="{{ site.github.repository_url }}" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span><strong>DevOps-Examples</strong></span>
-          <ul>
-            <li class="button"><a href="{{ site.url | append: '/DevOps-Examples/index.html' }}">Home</a></li>            
-            <li class="button"><a href="{{ site.url | append: '/DevOps-Examples/plugins/plugins.html' }}">Required Plugins</a></li>
-            <li class="button"><a href="{{ site.url | append: '/DevOps-Examples/tool_configuration/tool_configuration.html' }}">Tool Configurations</a></li>
-            <li class="button"><a href="{{ site.url | append: '/DevOps-Examples/pipelines/pipelines.html' }}">The Primary Pipelines</a></li>
-            <li class="button"><a href="{{ site.url | append: '/DevOps-Examples/helper_classes/helper_classes.html' }}">Helper Classes</a></li>
-            <li class="button"><a href="{{ site.url | append: '/DevOps-Examples/code_examples/code_examples.html' }}">Other Code Examples</a></li>
-          </ul>
-      </div>
-    </div>
-  
     <div class="wrapper">
       <header>
         <h1 class="header">{{ page.title | default: site.github.repository_name }}</h1>
@@ -46,6 +31,7 @@
           <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/helper_classes/JclSkeleton.html' }}">JclSkeleton</a></li>                              
           <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/helper_classes/PipelineConfig.html' }}">PipelineConfig</a></li>                                        
         </ul>
+        <p class="header name">&nbsp</p>
         <ul>
           <li class="header name"><a class="header name" href="{{ site.url | append: '/DevOps-Examples/code_examples/code_examples.html' }}">Other Code Examples</a></li>
         </ul>
