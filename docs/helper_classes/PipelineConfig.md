@@ -2,7 +2,7 @@
 title: Helper classes
 layout: helper_classes
 ---
-#<a id="PipelineConfig"> PipelineConfig
+# <a id="PipelineConfig"></a> PipelineConfig.groovy
 
 ```groovy
 package com.compuware.devops.util

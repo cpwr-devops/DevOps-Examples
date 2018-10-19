@@ -117,7 +117,7 @@ The [`JclSkeleton`](./JclSkeleton.html) class allows the pipelines to customize 
 > - returns the content of the file as list of records
 
 ## <a id="PipelineConfig"></a> PipelineConfig
-The [`PipelineConfig`](./PipelineConfig.html) class stores and allows retrieval of any pipeline [configuration and runtime specific parameters](./pipeline_parameters.html). 
+The [`PipelineConfig`](./PipelineConfig.html) class stores and allows retrieval of any pipeline [configuration and runtime specific parameters](../pipelines/pipeline_parameters.html). 
 
 [`PipelineConfig(steps, workspace, params, mailListLines)`](.PipelineConfig.html#PipelineConfig)
 
