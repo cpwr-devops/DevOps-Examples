@@ -23,6 +23,8 @@ Since most mainframe development is no green field development, the first step i
         - Segment data
 - Any write stub will also create assertions for the data written to the external data source
 
+![Record test case](../images/TTT record test case.png)
+
 ## <a id="Structuring Tests"> Structuring Tests
 Topaz for Total Test allows storing one or more test case for one or more programs. It is a recommended practice, though, to create one Topaz for Total Test project per program. These projects allow grouping test cases into different scenarios (e.g. by major program branch being executed) and to define and use test suites to execute all test scenarios in one run.
 
@@ -48,6 +50,8 @@ A Topaz for Total Test project will use the following folder structure, which wi
         +- Stubs                                    # Simulation data for sub-programs and external I/O
         +- Suites                                   # test suite(s) executing one or more test scenarios
 
+![TTT project](../images/TTT project structure.png)
+
 ## <a id="The runner.jcl"></a> The runner.jcl
 When using Xpediter/Topaz for Total Test to record test cases, the `JCL` folder will contain sample `JCL` code which is required to exeute the Topaz for Total Test driver program `TTTRUNNR`. As of now, Topaz for Total Test cannot create stub data for 100% of all  `SQL` statements or `DL/I` calls. Therefore, test execution of some programs will require a "mixed" mode - partly stubbed, partly using life data. For these situations the following sample `JCL`is generated:
 
@@ -65,8 +69,22 @@ Due to the design of the example application, there are three paths through the 
 
 ![Life Cycle](../tool_configuration/images/Example life cycle.png)
 
+```jcl
+//RUNNER EXEC PGM=TTTRUNNR
+...
+//STEPLIB  DD DISP=SHR,DSN=SYS2.CW.&CWGACX..SLCXLOAD
+//         DD   DSN=CEE.SCEERUN,DISP=SHR
+//         DD   DISP=SHR,DSN=SALESSUP.RXN3.DEV2.LOAD
+//         DD   DISP=SHR,DSN=SALESSUP.RXN3.QA2.LOAD
+//         DD   DISP=SHR,DSN=SALESSUP.RXN3.STG.LOAD
+//         DD   DISP=SHR,DSN=SALESSUP.RXN3.PRD.LOAD
+
+```
+
 ## <a id="Adding new test cases"></a> Adding new test cases
 New test cases may be added to an existing test scenario by duplicating existing test cases and modifying the input and assertion data (based on any new requirements). Refer to the Topaz for Total Test online help for more details.
 
 ## <a id="Storing the Topaz for Total Test project in Git/GitHub"></a> Storing the Topaz for Total Test project in Git/GitHub
 The recommended procedure to share Topaz for Total Test projects across teams and to use them in automation pipelines is [storing these projects in Git/GitHub repositories.](./TTT_in_Git.html)
+
+![TTT in Git](../images/TTT in Git and GitHub.png)
