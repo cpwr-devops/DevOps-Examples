@@ -1,6 +1,6 @@
 ---
 title: Tool Configurations
-layout: default
+layout: tool_configuration
 ---
 # <a id="Tool Configurations"></a> Tool Configurations
 The scenarios covered by the [primary pipelines](../pipelines/pipelines.html), the [other code examples](../code_examples/code_examples.html), and more generally the use of the Compuware and third party [plugins](../plugins/plugins.html), require certain configurations and setting, both within Jenkins and within other tools provided by Compuware.
