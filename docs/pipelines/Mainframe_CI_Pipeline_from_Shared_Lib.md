@@ -314,7 +314,7 @@ The parameters in this first set are specific to the individual execution of the
     </tr>
 </table>
 
-The second set of parameters is installation specific and reference tokens and other IDs that have been defined during the configuration phase. To determine the approriate values to use refer to the description of class [`PipelineConfig`](../helper_classes/PipelineConfig.html).
+The second set of parameters is installation specific and reference tokens and other IDs that have been defined during the configuration phase. To determine the approriate values to use refer to the [description of the pipeline parameters](../pipeline_parameters.html).
 
 Usually, these parameters will be installation specific rather than pipeline job or execution specific. Future versions of the example will take care of this, and move these parameters to configuration files.
 <table>
