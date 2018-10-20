@@ -36,7 +36,7 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 
 `IspwHelper(steps, pConfig)`
 
-> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code]() and a [`PipelineConfig`](./PipelineConfig.html) to make use of pipeline execution specific parameters.
+> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code]() and a [`PipelineConfig`](./#PipelineConfig) to make use of pipeline execution specific parameters.
 
 [`downloadSources()`](./IspwHelper.html#downloadSources)
 
@@ -153,9 +153,39 @@ The [`PipelineConfig`](./PipelineConfig.html) class stores and allows retrieval 
 > uses an instance of the [`FileHelper`](#FileHelper) class to read the configuration files
 
 ## <a id="SonarHelper"></a> SonarHelper
+The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the SonarQube scanner.(../pipelines/pipeline_parameters.html). 
 
-## <a id="TaskInfo"></a> TaskInfo
+[`SonarHelper(script, steps, pConfig)`](.SonarHelper.html#SonarHelper)
 
-## <a id="TttAsset"></a> TttAsset
+> The constructor recieves the `script`object and the `steps` from the pipeline  and a [`PipelineConfig`](./#PipelineConfig) to make use of pipeline execution specific parameters.
+
+[`initialize()`](.SonarHelper#initialize)
+
+> is used for additional [initialization which cannot be executed in the custructor]() and determines the scanner home path
+
+[`scan()`](.SonarHelper#scan)
+
+> Executes the Sonar scanner. First it prepares all required parameters required for this scenario:
+> - [`sonar.testExecutionReportPaths=`](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data) allows using a comma-seprated list of paths the results of unit tests (Topaz for Total Test in our case) in the format required by the Sonar scanner. 
+> - [`sonar.tests`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) comma-seperated list of colders containing unit tests (Topaz for Total Test projects in our case)
+> - [`coverageReportPaths`](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data) path to code coverage results. With Xpediter Code Coverage the results will reside in `Coverage/Coverage.xml`-
+> - [`sonar.projectKey`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project key that is unique for each project. Our example pipelines use the [Jenkins environment variable](https://wiki.jenkins.io/display/JENKINS/Building+a+software+project) `JOB_NAME`.
+> - [`sonar.projectName`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project name that is unique for each project. Our example pipelines use the [Jenkins environment variable](https://wiki.jenkins.io/display/JENKINS/Building+a+software+project) `JOB_NAME`.
+> - [`sonar.projectVersion`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project version. The current examples to not modify the project version between executions.
+> - [`sonar.sources`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) comma-separated paths to directories containing source files. With the ISPW downloader the sources reside in folder `<ispw_application>/MF_Source`. 
+> - [`sonar.cobol.copy.directories`](https://docs.sonarqube.org/display/PLUG/COBOL+Plugin+Advanced+Configuration) comma-separated paths to COBOL copybooks.  With the ISPW downloader the sources reside in folder `<ispw_application>/MF_Source` and the `downloadCopyBooks` method of the [`IspwHelper`](#IspwHelper) class cobybooks will reside in the same folder as the COBOL sources `<ispw_application>/MF_Source`. 
+> - [`sonar.cobol.file.suffixes`](https://docs.sonarqube.org/display/PLUG/COBOL+Plugin+Advanced+Configuration) file suffixes for the Sonar scanner to identify files that need to be scanned.
+> - [`sonar.cobol.copy.suffixes`](https://docs.sonarqube.org/display/PLUG/COBOL+Plugin+Advanced+Configuration) file suffixes for the Sonar scanner to identify COBOL copybooks.
 
 ## <a id="TttHelper"></a> 
+[`TttHelper`](./TttHelper.html)
+
+[`TttHelper(script, steps, pConfig)`](./TttHelper.html#TttHelper)
+
+[`initialize()`](./TttHelper.html#initialize)
+
+[`loopThruScenarios()`](./TttHelper.html#loopThruScenarios)
+
+[`passResultsToJunit()`]/.TttHelper.html#passResultsToJunit)
+
+[`collectCodeCoverageResults()`]/.TttHelper.html#collectCodeCoverageResults)

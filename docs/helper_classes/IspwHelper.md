@@ -1,5 +1,5 @@
 --- 
-title: Helper classes
+title: IspwHelper.groovy
 layout: helper_classes
 ---
 # <a id="IspwHelper"></a> IspwHelper.groovy

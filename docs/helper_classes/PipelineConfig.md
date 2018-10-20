@@ -1,5 +1,5 @@
 --- 
-title: Helper classes
+title: PipelineConfig.groovy
 layout: helper_classes
 ---
 # <a id="PipelineConfig"></a> PipelineConfig.groovy

@@ -1,5 +1,5 @@
 --- 
-title: Helper classes
+title: FileHelper.groovy
 layout: helper_classes
 ---
 # <a id="FileHelper"></a> FileHelper.groovy

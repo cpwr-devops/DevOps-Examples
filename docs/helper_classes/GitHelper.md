@@ -1,5 +1,5 @@
 --- 
-title: Helper classes
+title: GitHelper.groovy
 layout: helper_classes
 ---
 # <a id="GitHelper"></a> GitHelper.groovy

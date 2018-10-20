@@ -1,5 +1,5 @@
 --- 
-title: Helper classes
+title: JclSkeleton.groovy
 layout: helper_classes
 ---
 # <a id="JclSkeleton"></a> JclSkeleton.groovy
