@@ -177,7 +177,7 @@ The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the
 > - [`sonar.cobol.file.suffixes`](https://docs.sonarqube.org/display/PLUG/COBOL+Plugin+Advanced+Configuration) file suffixes for the Sonar scanner to identify files that need to be scanned.
 > - [`sonar.cobol.copy.suffixes`](https://docs.sonarqube.org/display/PLUG/COBOL+Plugin+Advanced+Configuration) file suffixes for the Sonar scanner to identify COBOL copybooks.
 
-## <a id="TttHelper"></a> 
+## <a id="TttHelper"></a> TttHelper
 [`TttHelper`](./TttHelper.html)
 
 [`TttHelper(script, steps, pConfig)`](./TttHelper.html#TttHelper)
@@ -186,6 +186,6 @@ The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the
 
 [`loopThruScenarios()`](./TttHelper.html#loopThruScenarios)
 
-[`passResultsToJunit()`]/.TttHelper.html#passResultsToJunit)
+[`passResultsToJunit()`](./TttHelper.html#passResultsToJunit)
 
-[`collectCodeCoverageResults()`]/.TttHelper.html#collectCodeCoverageResults)
+[`collectCodeCoverageResults()`](./TttHelper.html#collectCodeCoverageResults)
