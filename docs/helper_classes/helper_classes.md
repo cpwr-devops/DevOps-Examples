@@ -168,7 +168,7 @@ The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the
 > Executes the Sonar scanner. First it prepares all required parameters required for this scenario:
 > - [`sonar.testExecutionReportPaths=`](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data) allows using a comma-seprated list of paths the results of unit tests (Topaz for Total Test in our case) in the format required by the Sonar scanner. 
 > - [`sonar.tests`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) comma-seperated list of colders containing unit tests (Topaz for Total Test projects in our case)
-> - [`coverageReportPaths`](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data) path to code coverage results. With Xpediter Code Coverage the results will reside in `Coverage/Coverage.xml`-
+> - [`coverageReportPaths`](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data) path to code coverage results. With Xpediter Code Coverage the results will reside in `Coverage/Coverage.xml`.
 > - [`sonar.projectKey`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project key that is unique for each project. Our example pipelines use the [Jenkins environment variable](https://wiki.jenkins.io/display/JENKINS/Building+a+software+project) `JOB_NAME`.
 > - [`sonar.projectName`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project name that is unique for each project. Our example pipelines use the [Jenkins environment variable](https://wiki.jenkins.io/display/JENKINS/Building+a+software+project) `JOB_NAME`.
 > - [`sonar.projectVersion`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project version. The current examples to not modify the project version between executions.
@@ -180,13 +180,13 @@ The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the
 ## <a id="TttHelper"></a> TttHelper
 The [`TttHelper`](./TttHelper.html) class serves as a wrapper around Topaz for Total Test related activities like, executing the unit tests for the downloaded programs in a loop, and gathering the results from Code Coverage. 
 
-> - [`TttHelper(script, steps, pConfig)`](./TttHelper.html#TttHelper) 
+[`TttHelper(script, steps, pConfig)`](./TttHelper.html#TttHelper) 
 > The constructor recieves the `script`object and the `steps` from the pipeline  and a [`PipelineConfig`](./#PipelineConfig) to make use of pipeline execution specific parameters.
 
-> - [`initialize()`](./TttHelper.html#initialize)
+[`initialize()`](./TttHelper.html#initialize)
 > is used for additional [initialization which cannot be executed in the custructor]() and 
-    > - Instanciates a `JclSkeleton` for later use by `loopThruScenarios()`.
-    > - Builds a list of downloaded COBOL sources and a list of downloaded `.testscenarios`.    
+> - Instanciates a `JclSkeleton` for later use by `loopThruScenarios()`.
+> - Builds a list of downloaded COBOL sources and a list of downloaded `.testscenarios`.    
 
 [`loopThruScenarios()`](./TttHelper.html#loopThruScenarios)
 > loops through the `.testscenarios` and for each scenario

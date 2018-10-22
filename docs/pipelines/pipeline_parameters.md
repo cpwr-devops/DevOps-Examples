@@ -16,8 +16,48 @@ This table documents, the different names the parameters appear under, how and w
         <th>How to determine</th>
     </tr>    
     <tr>
+        <td>The path through the development life cycle which is in use by the set triggering the pipeline</td>
+        <td><code class="highlighter-rouge">public String applicationPathNum</code></td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>Determined from the name of the level <code class="highlighter-rouge">ispwSrcLevel</code> the sources have been promoted from; the number of the levels <code class="highlighter-rouge">DEV1</code>, <code class="highlighter-rouge">DEV2</code>, or <code class="highlighter-rouge">DEV3</code></td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>Name of the GitHub project, used to store Topaz for Total Test projects</td>
+        <td><code class="highlighter-rouge">public String gitProject</code></td>
+        <td><code class="highlighter-rouge">Git_Project</code></td>
+        <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
+        <td>When setting up the GitHub repository</td>
+        <td>In the full URL to e.g. https://github.com/ralphnuessecpwr/FTSDEMO_RXN3_Unit_Tests.git, "ralphnuessecpwr" would be the project name</td>
+    </tr>
+    <tr>
+        <td>Jenkins credentials token to use to authenticate with GitHub</td>
+        <td><code class="highlighter-rouge">public String gitCredentials</code></td>
+        <td><code class="highlighter-rouge">Git_Credentials</code></td>
+        <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
+        <td><a href="../../tool_configuration/tool_configuration.html#Credentials">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Credentials</code></a></td>
+        <td>In the list at <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Credentials</code></a> in column <code class="highlighter-rouge">ID</code></td>
+    </tr>
+    <tr>
+        <td>The name of the GitHub project, storing the repository containing the Topaz for Total Test projects</td>
+        <td><code class="highlighter-rouge">public String gitUrl</code></td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>Built as "https://github.com/${gitProject}" from <code class="highlighter-rouge">gitProject</code></td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>The name of the GitHub repository containing the Topaz for Total Test projects</td>
+        <td><code class="highlighter-rouge">public String gitTttRepo</code></td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>Built as "${ispwStream}_${ispw_application}_Unit_Tests.git" from <code class="highlighter-rouge">ispwStream</code> and <code class="highlighter-rouge">ispwApplication</code></td>
+        <td>N/A</td>
+    </tr>
+    <tr>
         <td>The Jenkins credential token for the CES token as used by most Compuware plugins</td>
-        <td><code class="highlighter-rouge">cesTokenId</code></td>
+        <td><code class="highlighter-rouge">public String cesTokenId</code></td>
         <td><code class="highlighter-rouge">CES_Token</code></td>
         <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
         <td><a href="../../tool_configuration/tool_configuration.html#Credentials">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Credentials</code></a></td>
@@ -25,7 +65,7 @@ This table documents, the different names the parameters appear under, how and w
     </tr>
     <tr>
         <td>The connection configuration storing host name and port for the connection to the mainframe LPAR to cnnect to</td>
-        <td><code class="highlighter-rouge">hciConnId</code></td>
+        <td><code class="highlighter-rouge">public String hciConnId</code></td>
         <td><code class="highlighter-rouge">HCI_Conn_ID</code></td>
         <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
         <td><a href="../../tool_configuration/Compuware_confugurations.html#Compuware Configurations">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Configure System</code> --&gt; <code class="highlighter-rouge">Compuware Configurations</code></a></td>
@@ -36,7 +76,7 @@ This table documents, the different names the parameters appear under, how and w
     </tr>
     <tr>
         <td>The user ID / password token for a valid logon to the required mainframe LPAR used by plugins that do not use the CES credentials token</td>
-        <td><code class="highlighter-rouge">hciTokenId</code></td>
+        <td><code class="highlighter-rouge">public String hciTokenId</code></td>
         <td><code class="highlighter-rouge">HCI_Token</code></td>
         <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
         <td><a href="../../tool_configuration/tool_configuration.html#Credentials">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Credentials</code></a></td>
@@ -44,7 +84,7 @@ This table documents, the different names the parameters appear under, how and w
     </tr>
     <tr>
         <td>The Xpediter Code Coverage repository to use</td>
-        <td><code class="highlighter-rouge">ccRepository</code></td>
+        <td><code class="highlighter-rouge">public String ccRepository</code></td>
         <td><code class="highlighter-rouge">CC_repository</code></td>
         <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
         <td>The Xpediter Code Coverage repository is defined using Xpediter Code Coverage or Topaz Workbench.</td>
@@ -52,10 +92,10 @@ This table documents, the different names the parameters appear under, how and w
     </tr>
     <tr>
         <td>Runner jcl to use for unit test execution</td>
-        <td><code class="highlighter-rouge">tttJcl</code></td>
+        <td><code class="highlighter-rouge">public String tttJcl</code></td>
         <td>N/A</td>
         <td>N/A</td>
-        <td>Built as "Runner_PATH&lt;n&gt;.jcl", where &lt;n&gt; is determined by <code class="highlighter-rouge">applicationPathNum</code></td>
+        <td>Built as "Runner_PATH${applicationPathNum}.jcl" using <code class="highlighter-rouge">applicationPathNum</code></td>
         <td>N/A</td>
     </tr>
     <tr>
