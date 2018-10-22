@@ -16,15 +16,12 @@ This table documents, the different names the parameters appear under, how and w
         <th>How to determine</th>
     </tr>    
     <tr>
-        <td>The connection configuration storing host name and port for the connection to the mainframe LPAR to cnnect to</td>
-        <td><code class="highlighter-rouge">hciConnId</code></td>
-        <td><code class="highlighter-rouge">HCI_Conn_ID</code></td>
+        <td>The Jenkins credential token for the CES token as used by most Compuware plugins</td>
+        <td><code class="highlighter-rouge">cesTokenId</code></td>
+        <td><code class="highlighter-rouge">CES_Token</code></td>
         <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
-        <td><a href="../../tool_configuration/Compuware_confugurations.html#Compuware Configurations">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Configure System</code> --&gt; <code class="highlighter-rouge">Compuware Configurations</code></a></td>
-        <td>
-            Use <code class="highlighter-rouge">Pipeline Syntax</code>, e.g. to define an ISPW container checkout and select the HCO connection from the <code class="highlighter-rouge">Host connection</code> dropdown
-            <img src="./pipelines/images/Determine HCI Conn.png" alt="Determine HCI connection" />
-        </td>
+        <td><a href="../../tool_configuration/tool_configuration.html#Credentials">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Credentials</code></a></td>
+        <td>In the list at <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Credentials</code></a> in column <code class="highlighter-rouge">ID</code></td>
     </tr>
     <tr>
         <td>The connection configuration storing host name and port for the connection to the mainframe LPAR to cnnect to</td>
