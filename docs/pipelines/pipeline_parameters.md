@@ -16,7 +16,35 @@ This table documents, the different names the parameters appear under, how and w
         <th>How to determine</th>
     </tr>    
     <tr>
-        <td>The path through the development life cycle which is in use by the set triggering the pipeline</td>
+        <td>The TSO user id of the user promoting the sources and thus triggering the pipeline</td>
+        <td><code class="highlighter-rouge">public String ispwOwner</code></td>
+        <td><code class="highlighter-rouge">ISPW_Owner</code></td>
+        <td>
+            <ul>
+                <li><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></li>
+                <li><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Setting up the pipeline job">As parameter <code class="highlighter-rouge">ISPW_Owner</code> for the pipeline</a></li>
+                <li><a href="../tool_configuration/webhook_setup.html#URL">Via the ISPW Webhook as parameter <code class="highlighter-rouge">$$owner$$</code></a></li>
+            </ul>
+        </td>
+        <td>N/A</td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>The TSO user id of the user promoting the sources and thus triggering the pipeline</td>
+        <td><code class="highlighter-rouge">public String ispwOwner</code></td>
+        <td><code class="highlighter-rouge">ISPW_Owner</code></td>
+        <td>
+            <ul>
+                <li><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></li>
+                <li><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Setting up the pipeline job">As parameter <code class="highlighter-rouge">ISPW_Owner</code> for the pipeline</a></li>
+                <li><a href="../tool_configuration/webhook_setup.html#URL">Via the ISPW Webhook as parameter <code class="highlighter-rouge">$$owner$$</code></a></li>
+            </ul>
+        </td>
+        <td>N/A</td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>The number of the path through the development life cycle which is in use by the set triggering the pipeline</td>
         <td><code class="highlighter-rouge">public String applicationPathNum</code></td>
         <td>N/A</td>
         <td>N/A</td>
