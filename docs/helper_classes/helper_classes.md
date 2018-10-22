@@ -1,6 +1,6 @@
 --- 
 title: Helper classes
-layout: helper_classes
+layout: default
 ---
 # <a id="Helper classes"></a> Helper classes
 The helper classes primarily serve as wrapper classes for the use of the different methods used by the plugins. Other serve purposes like provided configuration data (`PipelineConfig`) or preparing `JCL` for one specific execution of a pipeline (`JclSkeleton`).
