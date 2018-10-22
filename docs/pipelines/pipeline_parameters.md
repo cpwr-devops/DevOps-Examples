@@ -16,24 +16,62 @@ This table documents, the different names the parameters appear under, how and w
         <th>How to determine</th>
     </tr>    
     <tr>
+        <td>The connection configuration storing host name and port for the connection to the mainframe LPAR to cnnect to</td>
+        <td><code class="highlighter-rouge">hciConnId</code></td>
+        <td><code class="highlighter-rouge">HCI_Conn_ID</code></td>
+        <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
+        <td><a href="../../tool_configuration/Compuware_confugurations.html#Compuware Configurations">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Configure System</code> --&gt; <code class="highlighter-rouge">Compuware Configurations</code></a></td>
+        <td>
+            Use <code class="highlighter-rouge">Pipeline Syntax</code>, e.g. to define an ISPW container checkout and select the HCO connection from the <code class="highlighter-rouge">Host connection</code> dropdown
+            <img src="./pipelines/images/Determine HCI Conn.png" alt="Determine HCI connection" />
+        </td>
+    </tr>
+    <tr>
+        <td>The connection configuration storing host name and port for the connection to the mainframe LPAR to cnnect to</td>
+        <td><code class="highlighter-rouge">hciConnId</code></td>
+        <td><code class="highlighter-rouge">HCI_Conn_ID</code></td>
+        <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
+        <td><a href="../../tool_configuration/Compuware_confugurations.html#Compuware Configurations">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Configure System</code> --&gt; <code class="highlighter-rouge">Compuware Configurations</code></a></td>
+        <td>
+            Use <code class="highlighter-rouge">Pipeline Syntax</code>, e.g. to define an ISPW container checkout and select the HCO connection from the <code class="highlighter-rouge">Host connection</code> dropdown
+            <img src="./pipelines/images/Determine HCI Conn.png" alt="Determine HCI connection" />
+        </td>
+    </tr>
+    <tr>
+        <td>The user ID / password token for a valid logon to the required mainframe LPAR used by plugins that do not use the CES credentials token</td>
+        <td><code class="highlighter-rouge">hciTokenId</code></td>
+        <td><code class="highlighter-rouge">HCI_Token</code></td>
+        <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
+        <td><a href="../../tool_configuration/tool_configuration.html#Credentials">In <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Credentials</code></a></td>
+        <td>In the list at <code class="highlighter-rouge">Manage Jenkins</code> --&gt; <code class="highlighter-rouge">Credentials</code></a> in column <code class="highlighter-rouge">ID</code></td>
+    </tr>
+    <tr>
+        <td>The Xpediter Code Coverage repository to use</td>
+        <td><code class="highlighter-rouge">ccRepository</code></td>
+        <td><code class="highlighter-rouge">CC_repository</code></td>
+        <td><a href="./Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">As parameter in the call of the pipeline</a></td>
+        <td>The Xpediter Code Coverage repository is defined using Xpediter Code Coverage or Topaz Workbench.</td>
+        <td>The administrator of Xpediter Code Coverage</td>
+    </tr>
+    <tr>
         <td>Runner jcl to use for unit test execution</td>
         <td><code class="highlighter-rouge">tttJcl</code></td>
         <td>N/A</td>
-        <td><a href="../tool_configuration/Config_Files.html#The email list">Email List configuration file <code class="highlighter-rouge">mailRecipient</code></a></td>
-        <td><a href="../tool_configuration/tool_configuration.html#Managed Files"><code class="highlighter-rouge">Manage Jenkins</code> -> <code class="highlighter-rouge">Managed Files</code></a></td>
-        <td>The email file contains TSO user : email address pairs. The owner of the ISPW set will be taken as lookup for the email address</code></td>
+        <td>N/A</td>
+        <td>Built as "Runner_PATH&lt;n&gt;.jcl", where &lt;n&gt; is determined by <code class="highlighter-rouge">applicationPathNum</code></td>
+        <td>N/A</td>
     </tr>
     <tr>
         <td>Recipient of emails sent by the pipeline informing the owner of the ISPW set about the results</td>
-        <td><code class="highlighter-rouge">mailRecipient</code></td>
+        <td><code class="highlighter-rouge">public String mailRecipient</code></td>
         <td>N/A</td>
         <td><a href="../tool_configuration/Config_Files.html#The email list">Email List configuration file <code class="highlighter-rouge">mailList.config</code></a></td>
         <td><a href="../tool_configuration/tool_configuration.html#Managed Files"><code class="highlighter-rouge">Manage Jenkins</code> -> <code class="highlighter-rouge">Managed Files</code></a></td>
-        <td>The email file contains TSO user : email address pairs. The owner of the ISPW set will be taken as lookup for the email address</code></td>
+        <td>The email file contains TSO user : email address pairs. The owner of the ISPW set will be taken as lookup for the email address</td>
     </tr>
     <tr>
         <td>Git project name of repository storing configuration files</td>
-        <td><code class="highlighter-rouge">configGitProject</code></td>
+        <td><code class="highlighter-rouge">private String configGitProject</code></td>
         <td>N/A</td>
         <td>N/A</td>
         <td>Hardcoded in the class</td>
@@ -41,7 +79,7 @@ This table documents, the different names the parameters appear under, how and w
     </tr>
     <tr>
         <td>Git branch name of repository storing configuration files</td>
-        <td><code class="highlighter-rouge">configGitBranch</code></td>
+        <td><code class="highlighter-rouge">private String configGitBranch</code></td>
         <td><a href="../pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library">Pipeline call</a></td>
         <td>Config_Git_Branch</td>
         <td>N/A</td>
@@ -49,7 +87,7 @@ This table documents, the different names the parameters appear under, how and w
     </tr>
     <tr>
         <td>Folder in the Git repository containing all configuration files</td>
-        <td><code class="highlighter-rouge">configGitPath</code></td>
+        <td><code class="highlighter-rouge">private String configGitPath</code></td>
         <td>N/A</td>
         <td>N/A</td>
         <td>Hardcoded in the class</td>

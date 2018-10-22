@@ -178,14 +178,25 @@ The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the
 > - [`sonar.cobol.copy.suffixes`](https://docs.sonarqube.org/display/PLUG/COBOL+Plugin+Advanced+Configuration) file suffixes for the Sonar scanner to identify COBOL copybooks.
 
 ## <a id="TttHelper"></a> TttHelper
-[`TttHelper`](./TttHelper.html)
+The [`TttHelper`](./TttHelper.html) class serves as a wrapper around Topaz for Total Test related activities like, executing the unit tests for the downloaded programs in a loop, and gathering the results from Code Coverage. 
 
-[`TttHelper(script, steps, pConfig)`](./TttHelper.html#TttHelper)
+> - [`TttHelper(script, steps, pConfig)`](./TttHelper.html#TttHelper) 
+> The constructor recieves the `script`object and the `steps` from the pipeline  and a [`PipelineConfig`](./#PipelineConfig) to make use of pipeline execution specific parameters.
 
-[`initialize()`](./TttHelper.html#initialize)
+> - [`initialize()`](./TttHelper.html#initialize)
+> is used for additional [initialization which cannot be executed in the custructor]() and 
+    > - Instanciates a `JclSkeleton` for later use by `loopThruScenarios()`.
+    > - Builds a list of downloaded COBOL sources and a list of downloaded `.testscenarios`.    
 
 [`loopThruScenarios()`](./TttHelper.html#loopThruScenarios)
+> loops through the `.testscenarios` and for each scenario
+> - determines if the scenario matches one of the COBOL programs
+> - in that case 
+    > - the job card of the corresponding runner jcl gets replaced by the configuration job card
+    > - the scenario gets executed
 
 [`passResultsToJunit()`](./TttHelper.html#passResultsToJunit)
+> uses the JUnit plugin to display the unit test results on the pipeline dashboard.
 
 [`collectCodeCoverageResults()`](./TttHelper.html#collectCodeCoverageResults)
+> uses the Xpediter Code Coverage plugin to retrieve code coverage results from the Xpediter Code Coverage repository.
