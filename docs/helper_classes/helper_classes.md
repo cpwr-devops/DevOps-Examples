@@ -1,6 +1,6 @@
 --- 
 title: Helper classes
-layout: default
+layout: helper_classes
 ---
 # <a id="Helper classes"></a> Helper classes
 The helper classes primarily serve as wrapper classes for the use of the different methods used by the plugins. Other serve purposes like provided configuration data (`PipelineConfig`) or preparing `JCL` for one specific execution of a pipeline (`JclSkeleton`).
@@ -168,7 +168,7 @@ The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the
 > Executes the Sonar scanner. First it prepares all required parameters required for this scenario:
 > - [`sonar.testExecutionReportPaths=`](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data) allows using a comma-seprated list of paths the results of unit tests (Topaz for Total Test in our case) in the format required by the Sonar scanner. 
 > - [`sonar.tests`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) comma-seperated list of colders containing unit tests (Topaz for Total Test projects in our case)
-> - [`coverageReportPaths`](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data) path to code coverage results. With Xpediter Code Coverage the results will reside in `Coverage/Coverage.xml`-
+> - [`coverageReportPaths`](https://docs.sonarqube.org/display/SONAR/Generic+Test+Data) path to code coverage results. With Xpediter Code Coverage the results will reside in `Coverage/Coverage.xml`.
 > - [`sonar.projectKey`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project key that is unique for each project. Our example pipelines use the [Jenkins environment variable](https://wiki.jenkins.io/display/JENKINS/Building+a+software+project) `JOB_NAME`.
 > - [`sonar.projectName`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project name that is unique for each project. Our example pipelines use the [Jenkins environment variable](https://wiki.jenkins.io/display/JENKINS/Building+a+software+project) `JOB_NAME`.
 > - [`sonar.projectVersion`](https://docs.sonarqube.org/display/SONAR/Analysis+Parameters) the SonarQube project version. The current examples to not modify the project version between executions.
@@ -178,14 +178,25 @@ The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the
 > - [`sonar.cobol.copy.suffixes`](https://docs.sonarqube.org/display/PLUG/COBOL+Plugin+Advanced+Configuration) file suffixes for the Sonar scanner to identify COBOL copybooks.
 
 ## <a id="TttHelper"></a> TttHelper
-[`TttHelper`](./TttHelper.html) test text
+The [`TttHelper`](./TttHelper.html) class serves as a wrapper around Topaz for Total Test related activities like, executing the unit tests for the downloaded programs in a loop, and gathering the results from Code Coverage. 
 
-[`TttHelper(script, steps, pConfig)`](./TttHelper.html#TttHelper)
+[`TttHelper(script, steps, pConfig)`](./TttHelper.html#TttHelper) 
+> The constructor recieves the `script`object and the `steps` from the pipeline  and a [`PipelineConfig`](./#PipelineConfig) to make use of pipeline execution specific parameters.
 
 [`initialize()`](./TttHelper.html#initialize)
+> is used for additional [initialization which cannot be executed in the custructor]() and 
+> - Instanciates a `JclSkeleton` for later use by `loopThruScenarios()`.
+> - Builds a list of downloaded COBOL sources and a list of downloaded `.testscenarios`.    
 
 [`loopThruScenarios()`](./TttHelper.html#loopThruScenarios)
+> loops through the `.testscenarios` and for each scenario
+> - determines if the scenario matches one of the COBOL programs
+> - in that case 
+    > - the job card of the corresponding runner jcl gets replaced by the configuration job card
+    > - the scenario gets executed
 
 [`passResultsToJunit()`](./TttHelper.html#passResultsToJunit)
+> uses the JUnit plugin to display the unit test results on the pipeline dashboard.
 
 [`collectCodeCoverageResults()`](./TttHelper.html#collectCodeCoverageResults)
+> uses the Xpediter Code Coverage plugin to retrieve code coverage results from the Xpediter Code Coverage repository.
