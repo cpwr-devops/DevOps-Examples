@@ -10,7 +10,7 @@ The [`FileHelper`](./FileHelper.html) class is used to read external files and p
 
 [`FileHelper(steps)`](./FileHelper.html#FileHelper)
 
-> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code]().
+> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](../pipelines/Jenkins_Groovy.html#Using steps in classes).
 
 [`readLines(String path)`](./FileHelper.html#readLines)
 
@@ -21,7 +21,7 @@ The [`GitHelper`](./GitHelper.html) class serves as a wrapper around the Git SCM
 
 [`GitHelper(steps)`](./GitHelper.html#GitHelper)
 
-> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code]().
+> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](../pipelines/Jenkins_Groovy.html#Using steps in classes).
 
 [`checkout(String gitUrl, String gitBranch, String gitCredentials, String tttFolder)`](./GitHelper.html#checkout)
 
@@ -36,7 +36,7 @@ The [`IspwHelper`](./IspwHelper.html) class serves as a wrapper around the Compu
 
 `IspwHelper(steps, pConfig)`
 
-> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code]() and a [`PipelineConfig`](./#PipelineConfig) to make use of pipeline execution specific parameters.
+> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](../pipelines/Jenkins_Groovy.html#Using steps in classes) and a [`PipelineConfig`](./#PipelineConfig) to make use of pipeline execution specific parameters.
 
 [`downloadSources()`](./IspwHelper.html#downloadSources)
 
@@ -76,11 +76,11 @@ The [`JclSkeleton`](./JclSkeleton.html) class allows the pipelines to customize 
 
 [`JclSkeleton(steps, String workspace, String ispwApplication, String ispwPathNum)`](.JclSkeleton.html#JclSkeleton)
 
-> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](), the path to the pipeline `workpace`, the name of the ISPW application in `ispwApplication` and the [number of the development path](../pipelines/scenario/TTT_scenario.html#The runner.jcl) in `pathNum`.
+> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](../pipelines/Jenkins_Groovy.html#Using steps in classes), the path to the pipeline `workpace`, the name of the ISPW application in `ispwApplication` and the [number of the development path](../pipelines/scenario/TTT_scenario.html#The runner.jcl) in `pathNum`.
 
 [`initialize()`](.JclSkeleton.html#initialize)
 
-> is used for additional [initialization which cannot be executed in the custructor]() and 
+> is used for additional [initialization which cannot be executed in the custructor](../pipelines/Jenkins_Groovy.html#Using methods in class constructors) and 
 > - reads the `JobCard.jcl` skeleton file
 > - reads the `deleteDs.skel` skeleton file  
 > - initializes the `IEBCOPY` `JCL` by using the `buildIebcopySkel` method
@@ -121,11 +121,11 @@ The [`PipelineConfig`](./PipelineConfig.html) class stores and allows retrieval 
 
 [`PipelineConfig(steps, workspace, params, mailListLines)`](.PipelineConfig.html#PipelineConfig)
 
-> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](), the path of the pipeline `workspace` the `Map` `params` containing the `key:value` parameter pairs from the [pipeline call](../pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library), and a the list of records from the [`mailList.config` file](../tool_configuration/Config_Files.html#The email list) and initializes all parameters that can be initialized immediately.
+> The constructor recieves the `steps` from the pipeline to [allow use of pipeline step within the class code](../pipelines/Jenkins_Groovy.html#Using steps in classes), the path of the pipeline `workspace` the `Map` `params` containing the `key:value` parameter pairs from the [pipeline call](../pipelines/Mainframe_CI_Pipeline_from_Shared_Lib.html#Loading the script from a shared library), and a the list of records from the [`mailList.config` file](../tool_configuration/Config_Files.html#The email list) and initializes all parameters that can be initialized immediately.
 
 [`initialize()`](.PipelineConfig#initialize)
 
-> is used for additional [initialization which cannot be executed in the custructor]() and 
+> is used for additional [initialization which cannot be executed in the custructor](../pipelines/Jenkins_Groovy.html#Using methods in class constructors) and 
 > - deletes any old content from the pipeline workspace
 > - Uses the `checkoutPath`method of the [`GitHelper` class](#GitHelper) to download the path containing the configuration files from the GitHub repository containing the configuration. (In future configuration files will be move to [Managed Files](../tool_configuration/tool_configuration.html#Managed Files), thus avoiding to have to download configuration from GitHub and exposure of configuration on GitHub.)
 > - execute the following internal methods to set the remaining configuration values
@@ -161,7 +161,7 @@ The [`SonarHelper`](./SonarHelper.html) class serves as a wrapper to execute the
 
 [`initialize()`](.SonarHelper#initialize)
 
-> is used for additional [initialization which cannot be executed in the custructor]() and determines the scanner home path
+> is used for additional [initialization which cannot be executed in the custructor](../pipelines/Jenkins_Groovy.html#Using methods in class constructors) and determines the scanner home path
 
 [`scan()`](.SonarHelper#scan)
 
@@ -184,7 +184,7 @@ The [`TttHelper`](./TttHelper.html) class serves as a wrapper around Topaz for T
 > The constructor recieves the `script`object and the `steps` from the pipeline  and a [`PipelineConfig`](./#PipelineConfig) to make use of pipeline execution specific parameters.
 
 [`initialize()`](./TttHelper.html#initialize)
-> is used for additional [initialization which cannot be executed in the custructor]() and 
+> is used for additional [initialization which cannot be executed in the custructor](../pipelines/Jenkins_Groovy.html#Using methods in class constructors) and 
 > - Instanciates a `JclSkeleton` for later use by `loopThruScenarios()`.
 > - Builds a list of downloaded COBOL sources and a list of downloaded `.testscenarios`.    
 
