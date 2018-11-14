@@ -118,6 +118,7 @@ SET "JAVA_HOME=C:\Program Files\Java\jdk1.8.0_101"
 ```
 
 ### SCMDownloaderCLI.bat
+
 Parameter | Description
 --------- | -----------
 `-ext <arg>` | the file extension for the downloaded source files
@@ -273,6 +274,7 @@ SET "JAVA_HOME=C:\Program Files\Java\jdk1.8.0_101"
 ```
 
 ### SubmitJclCLI.bat
+
 Parameter | Description
 --------- | -----------
 `-jcl <arg>` | a comma separated list of jcl lines to submit as a JCL job.
