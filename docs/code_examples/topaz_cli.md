@@ -369,6 +369,7 @@ Command | Description
 A challenge with using the individual commands in sequence - instead of using the `runtest` command - is that using the `upload`, the CLI will 'randomly' generate names for the target binary files on the mainframe (To be more precise, the 'ID' qualifier is generated randomly - other than using Topaz for Total Test from the GUI, where these qualifiers will be increased in numerical sequence, if the files are not replaced anyway). Currently, there is no known, simple way to control these names or determine which names have been generated. Therefore, we will concentrate on the `runtest` command, and refer to the Topaz for Total Test online help for further information on using any of the other commands for now.
 
 #### Prameters/options for `runtest`
+
 Parameter/Option | Description
 --------- | -----------
 `-project` | The Total Test project folder.
