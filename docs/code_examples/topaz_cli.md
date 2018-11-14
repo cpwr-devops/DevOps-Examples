@@ -70,6 +70,7 @@ Parameter | Description
 In addition to the above parameters, the `.bat` files use parameters specfic to each individual file.
 
 ### CodeCoverageCLI.bat
+
 Parameter | Description
 --------- | -----------
 `-cc.ddio.overrides <arg>` | comma separated list of DDIO overrides
