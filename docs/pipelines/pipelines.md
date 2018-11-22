@@ -5,7 +5,7 @@ layout: primary_pipelines
 # <a id=""></a> Pipelines
 These examples of Jenkins pipelines make use of Compuware's and other plugins to implement the following process and scenario. They may be seen a kind of **standard approach** for implementing a CI process for maingframe development. The scenario(s) and code are based on request and requirements from customers who already have started implementing their own pipeline and asked Compuware for advice. The code itself shows our solution to these, while the respective solutions as implemented by our customers are - in parts considerably - different.
 
-The code reflects common patterns that we see emerging at different customers. In addition, the examples are supposed to help mainframe developers to familiarize with [Groovy](http://groovy-lang.org/documentation.html) and its concepts, as well as demonstrate some of the [ideosynchrasies of the Jenkins Groovy dialect](./Jenkins_Groovy_Ideosynchrasies.html) that we stumbled across.
+The code reflects common patterns that we see emerging at different customers. In addition, the examples are supposed to help mainframe developers to familiarize with [Groovy](http://groovy-lang.org/documentation.html) and its concepts, as well as demonstrate some of the [ideosynchrasies of the Jenkins Groovy dialect](./Jenkins_Groovy.html) that we stumbled across.
 
 ## <a id=""></a> Scenario Outside Jenkins
 - A developer checks out a set of sources, copybooks and other components required to fulfill a specific requirement. In our example, these are stored and administered in [ISPW](./scenario/ISPW_scenario.html)
