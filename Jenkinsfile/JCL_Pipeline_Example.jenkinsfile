@@ -1,0 +1,47 @@
+#!/usr/bin/env groovy
+import hudson.EnvVars
+
+String HCI_Conn_ID = "XXXXXXXX"
+String HCI_Token = "XXXXXXX"
+
+def String BuildJCL(String substitutionvalue) {
+
+    def JCLStatements = []
+
+    JCLStatements << "//XXXXXXX JOB (MMC),'COBOL TEST',CLASS=L,"
+    JCLStatements << "//  MSGCLASS=X,MSGLEVEL=(1,1),NOTIFY=&SYSUID"
+    JCLStatements << "/*JOBPARM S=XXXX"
+    JCLStatements << "//CWXTCOB  EXEC PGM=CWBWCOBX,PARM=\'00003,180110\'"
+    JCLStatements << "//STEPLIB  DD   DSN=CEE.SCEERUN,DISP=SHR"
+    JCLStatements << "//         DD   DISP=SHR,DSN=${substitutionvalue}"
+    JCLStatements << "//EMPFILE  DD   DSN=XXXX.XX.&CWGAXT..SLXTSAMP(CWXTDATA),"
+    JCLStatements << "//         DISP=SHR"
+    JCLStatements << "//RPTFILE  DD   SYSOUT=X"
+    JCLStatements << "//SYSOUT   DD   SYSOUT=X"
+    JCLStatements << "//"
+
+    return JCLStatements.join("\n")
+}
+
+
+node{
+    stage("SubmitJclMembers")
+    {
+        //Submit the JCL via the Topaz Utilities Plugin
+        topazSubmitJclMembers connectionId: "${HCI_Conn_ID}", 
+        credentialsId: "${HCI_Token}", 
+        jclMember: 'XXXXXX.XXX.PRD.JOB(CWBWJCLC)',
+        maxConditionCode: '4'
+    }
+
+    stage("SubmitFreeFormJCL with substitution ")
+    {
+        ProcessJCL = BuildJCL("XXXXXXX.XXXX.PRD.LOAD")
+
+        //Submit the JCL via the Topaz Utilities Plugin
+        topazSubmitFreeFormJcl connectionId:  "${HCI_Conn_ID}", 
+        credentialsId: "${HCI_Token}", 
+        jcl: ProcessJCL,  // JCL in text specified in Jenkins Pipeline that included a variable that could be substituted for a different value in the pipeline
+        maxConditionCode: '4'
+    }
+}
