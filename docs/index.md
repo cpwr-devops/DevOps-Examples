@@ -55,6 +55,7 @@ Based on the descritpion above and due to the requirements for the use of [Pipel
     |
     +- Jenkinsfile                                          # scripted pipeline code and groovy example code
     |   +- Mainframe-CI-Example-pipeline.jenkinsfile        # primary example pipeline (Scripted Pipeline)
+    |   +- JCL_Pipeline_Example.jenkinsfile                 # Example of execution JCL from Jenkins using the Topaz Utilities Plugin
     |
     +- ISPW-REST-API-Examples                               # Code examples using the ISPW REST API
     |   +- ISPW_Operations.ps1                              # Windows powershell script as wrapper for all available ISPW API calls
