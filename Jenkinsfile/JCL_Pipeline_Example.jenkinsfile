@@ -44,4 +44,13 @@ node{
         jcl: ProcessJCL,  // JCL in text specified in Jenkins Pipeline that included a variable that could be substituted for a different value in the pipeline
         maxConditionCode: '4'
     }
+    
+    stage("SubmitJclMembers")
+    {
+        //Submit the JCL via the Topaz Utilities Plugin
+        topazSubmitJclMembers connectionId: "${HCI_Conn_ID}", 
+        credentialsId: "${HCI_Token}", 
+        jclMember: 'XXXXXX.XXX.PRD.JOB(CWBWJCLC)',
+        maxConditionCode: '4'
+    }
 }
