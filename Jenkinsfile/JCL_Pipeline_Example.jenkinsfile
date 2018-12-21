@@ -25,14 +25,6 @@ def String BuildJCL(String substitutionvalue) {
 
 
 node{
-    stage("SubmitJclMembers")
-    {
-        //Submit the JCL via the Topaz Utilities Plugin
-        topazSubmitJclMembers connectionId: "${HCI_Conn_ID}", 
-        credentialsId: "${HCI_Token}", 
-        jclMember: 'XXXXXX.XXX.PRD.JOB(CWBWJCLC)',
-        maxConditionCode: '4'
-    }
 
     stage("SubmitFreeFormJCL with substitution ")
     {
