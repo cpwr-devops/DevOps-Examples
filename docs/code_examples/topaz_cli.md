@@ -397,7 +397,7 @@ The followwing example will execute the suite `CWXTSUBC.testsuite` residing in T
 @echo off
 
 REM
-REM Script to download sources from PDS using the Topaz CLI
+REM Script to submit JCL using the Topaz CLI
 REM 
 REM **********************************************************
 REM Configuration Variables for the Script
