@@ -288,7 +288,7 @@ This example will submit two jobs on host `my.mainframe.host`, communicating on 
 @echo off
 
 REM
-REM Script to download sources from PDS using the Topaz CLI
+REM Script to submit JCL from PDS using the Topaz CLI
 REM 
 REM **********************************************************
 REM Configuration Variables for the Script
@@ -324,7 +324,7 @@ This example will submit a JCL that resides locally in file `C:\temp\JCL.txt` on
 @echo off
 
 REM
-REM Script to download sources from PDS using the Topaz CLI
+REM Script to submit JCL from local file using the Topaz CLI
 REM 
 REM **********************************************************
 REM Configuration Variables for the Script
