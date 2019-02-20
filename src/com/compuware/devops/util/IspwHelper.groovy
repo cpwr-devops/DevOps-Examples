@@ -11,6 +11,7 @@ class IspwHelper implements Serializable
 
     def String ispwUrl
     def String ispwRuntime
+    def String ispwStream
     def String ispwApplication
     def String ispwRelease
     def String ispwContainer
@@ -31,6 +32,7 @@ class IspwHelper implements Serializable
         this.steps              = steps
         this.ispwUrl            = pConfig.ispwUrl
         this.ispwRuntime        = pConfig.ispwRuntime
+        this.ispwStream         = pConfig.ispwStream
         this.ispwApplication    = pConfig.ispwApplication
         this.ispwRelease        = pConfig.ispwRelease        
         this.ispwContainer      = pConfig.ispwContainer
@@ -45,8 +47,34 @@ class IspwHelper implements Serializable
         this.hciTokenId         = pConfig.hciTokenId
     }
 
-    /* Download sources for the ISPW Set which triggered the current pipeline */
-    def downloadSources()
+    /* Download all sources from ISPW for a given level */
+    def downloadAllSources(String ispwLevel)
+    {
+
+        steps.checkout( 
+            changelog: false, 
+            poll: false, 
+            scm: [
+                $class: 'IspwConfiguration', 
+                    componentType: 'COB, COPY', 
+                    connectionId: "${hciConnId}", 
+                    credentialsId: "${hciTokenId}",      
+                    folderName: '', 
+                    ispwDownloadAll: true, 
+                    levelOption: '0', 
+                    serverApplication: "${ispwApplication}",
+                    serverConfig: "${ispwRuntime}", 
+                    serverLevel: "${ispwLevel}", 
+                    serverStream: "${ispwStream}"
+                ]
+        )
+
+    }
+
+
+
+    /* Download sources for the ISPW Set which triggered the current pipeline from a given level */
+    def downloadSources(String ispwLevel)
     {
         steps.checkout([
             $class:             'IspwContainerConfiguration', 
@@ -57,7 +85,7 @@ class IspwHelper implements Serializable
             containerType:      "${ispwContainerType}",     // 0-Assignment 1-Release 2-Set
             ispwDownloadAll:    true,                              // false will not download files that exist in the workspace and haven't previous changed
             serverConfig:       '',                                 // ISPW runtime config.  if blank ISPW will use the default runtime config
-            serverLevel:        ''                                  // level to download the components from
+            serverLevel:        "${ispwLevel}"                                  // level to download the components from
         ])
     }
 
@@ -118,7 +146,6 @@ class IspwHelper implements Serializable
             steps.echo "No Copy Books to download"
         }
     }
-
 
 /* 
     Determine all assignments in the current container 

@@ -17,8 +17,7 @@ IspwHelper      ispwHelper
 TttHelper       tttHelper
 SonarHelper     sonarHelper 
 
-def ResponseContentSupplier response3
-//def assignmentList = []
+String          mailMessageExtension
 
 def initialize(pipelineParams)
 {
@@ -71,14 +70,6 @@ def initialize(pipelineParams)
     sonarHelper = new SonarHelper(this, steps, pConfig)
 
     sonarHelper.initialize()
-
-    echo "Found Assignment " + pConfig.ispwAssignment
-    /*
-    withCredentials([string(credentialsId: pConfig.cesTokenId, variable: 'cesTokenClear')]) 
-    {
-        assignmentList = ispwHelper.getAssigmentList(cesTokenClear, pConfig.ispwTargetLevel)
-    }
-    */
 }
 
 /**
@@ -89,54 +80,62 @@ def call(Map pipelineParams)
 {
     node
     {
-        initialize(pipelineParams) 
-        
+        stage("Initialization")
+        {
+            
+            dir(".\\") 
+            {
+                deleteDir()
+            }
+
+            initialize(pipelineParams) 
+        }
+                
         /* Download all sources that are part of the container  */
         stage("Retrieve Mainframe Code")
         {
-            ispwHelper.downloadSources()
-        //}
-        
-        /* Download all copybooks in case, not all copybook are part of the container  */
-        //stage("Retrieve Copy Books From ISPW")
-        //{
-            ispwHelper.downloadCopyBooks("${workspace}")
+            ispwHelper.downloadAllSources(pConfig.ispwTargetLevel)
+            ispwHelper.downloadCopyBooks(workspace)
         }
         
-        /* Retrieve the Tests from Github that match that ISPWW Stream and Application */
-        stage("Execute Unit Tests")
+        /* Retrieve the Tests from Github that match that ISPW Stream and Application */
+        stage("Execute Integration Tests")
         {            
-            def gitUrlFullPath = "${pConfig.gitUrl}/${pConfig.gitTttRepo}"
+            def gitUrlFullPath = "${pConfig.gitUrl}/${pConfig.gitTttFtRepo}"
             
             gitHelper.checkout(gitUrlFullPath, pConfig.gitBranch, pConfig.gitCredentials, pConfig.tttFolder)
-        //}
 
-        /* 
-        This stage executes any Total Test Projects related to the mainframe source that was downloaded
-        */ 
-        //stage("Execute related Unit Tests")
-        //{
-            tttHelper.initialize()                                            
-            tttHelper.loopThruScenarios()
-            //tttHelper.passResultsToJunit()
+
+            withCredentials(
+                [usernamePassword(credentialsId: "${pConfig.hciTokenId}", usernameVariable: 'userId', passwordVariable: 'password')]
+            ) 
+            {
+                tttHelper.initialize()
+                tttHelper.executeFunctionalTests(userId, password)
+            }
         }
 
-        /* 
-        This stage retrieve Code Coverage metrics from Xpediter Code Coverage for the test executed in the Pipeline
-        */ 
-        stage("Collect Metrics")
-        {
-            tttHelper.collectCodeCoverageResults()
-        }
-
-        /* 
-        This stage pushes the Source Code, Test Metrics and Coverage metrics into SonarQube and then checks the status of the SonarQube Quality Gate.  
-        If the SonarQube quality date fails, the Pipeline fails and stops
-        */ 
         stage("Check SonarQube Quality Gate") 
         {
-            sonarHelper.scan()
+            /*sonarHelper.scan()*/
+            def scannerHome     = tool "scanner"
+            
+            def SQ_TestResult   = '-Dsonar.testExecutionReportPaths=TestResults\\SonarTestReport.xml'
 
+            //def TestFolder      = '"C:\\Users\\pfhsxk0\\.jenkins\\workspace\\RNU_Functional_Test\\TTT_Demo\\Functional Test"'
+            def TestFolder      = '"tests\\FTSDEMO_RXN3_Functional_Tests\\Functional Test"'
+
+            withSonarQubeEnv("localhost") 
+            {
+                //" -Dsonar.tests=${TestFolder} ${SQ_TestResult}"
+                def SQ_Tests                = " -Dsonar.tests=${TestFolder} ${SQ_TestResult}"
+                def SQ_ProjectKey           = " -Dsonar.projectKey=RNU_Functional_Tests -Dsonar.projectName=RNU_Functional_Tests -Dsonar.projectVersion=1.0"
+                def SQ_Source               = " -Dsonar.sources=${pConfig.ispwApplication}\\MF_Source"
+                def SQ_Copybook             = " -Dsonar.cobol.copy.directories=${pConfig.ispwApplication}\\MF_Source"
+                def SQ_Cobol_conf           = " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub -Dsonar.cobol.copy.suffixes=cpy -Dsonar.sourceEncoding=UTF-8"
+                bat "${scannerHome}/bin/sonar-scanner" + SQ_Tests + SQ_ProjectKey + SQ_Source + SQ_Copybook + SQ_Cobol_conf
+            }
+            /*
             // Wait for the results of the SonarQube Quality Gate
             timeout(time: 2, unit: 'MINUTES') 
             {                
@@ -149,49 +148,32 @@ def call(Map pipelineParams)
                     echo "Sonar quality gate failure: ${sonarGate.status}"
                     echo "Pipeline will be aborted and ISPW Assignment will be regressed"
 
+                    mailMessageExtension = "Generated code failed the Quality gate. Review Logs and apply corrections as indicated."
                     currentBuild.result = "FAILURE"
-
-                    // Send Standard Email
-                    emailext subject:       '$DEFAULT_SUBJECT',
-                                body:       '$DEFAULT_CONTENT',
-                                replyTo:    '$DEFAULT_REPLYTO',
-                                to:         "${pConfig.mailRecipient}"
-                    
-                    withCredentials([string(credentialsId: pConfig.cesTokenId, variable: 'cesTokenClear')]) 
-                    {
-                        //ispwHelper.regressAssignmentList(assignmentList, cesTokenClear)
-                        ispwHelper.regressAssignment(pConfig.ispwAssignment, cesTokenClear)
-                    }
 
                     error "Exiting Pipeline" // Exit the pipeline with an error if the SonarQube Quality Gate is failing
                 }
-            }   
+                else
+                {
+                    mailMessageExtension = "Generated code passed the Quality gate and may be promoted."
+                }
+            } 
+            */  
         }
 
         /* 
         This stage triggers a XL Release Pipeline that will move code into the high levels in the ISPW Lifecycle  
-        */ 
-        stage("Start release in XL Release")
+        */
+        /* 
+        stage("Send Mail")
         {
-            // Trigger XL Release Jenkins Plugin to kickoff a Release
-            xlrCreateRelease(
-                releaseTitle:       'A Release for $BUILD_TAG',
-                serverCredentials:  "${pConfig.xlrUser}",
-                startRelease:       true,
-                template:           "${pConfig.xlrTemplate}",
-                variables:          [
-                                        [propertyName:  'ISPW_Dev_level',   propertyValue: "${pConfig.ispwTargetLevel}"], // Level in ISPW that the Code resides currently
-                                        [propertyName:  'ISPW_RELEASE_ID',  propertyValue: "${pConfig.ispwRelease}"],     // ISPW Release value from the ISPW Webhook
-                                        [propertyName:  'CES_Token',        propertyValue: "${pConfig.cesTokenId}"]
-                                    ]
-            )
-
             // Send Standard Email
             emailext subject:       '$DEFAULT_SUBJECT',
-                        body:       '$DEFAULT_CONTENT \n' + 'Promote passed the Quality gate and a new XL Release was started.',
+                        body:       '$DEFAULT_CONTENT \n' + mailMessageExtension,
                         replyTo:    '$DEFAULT_REPLYTO',
                         to:         "${pConfig.mailRecipient}"
 
-        }        
+        } 
+        */       
     }
 }

@@ -7,7 +7,7 @@ class JclSkeleton implements Serializable {
 
     def steps
 
-    private String skeletonPath     = 'config\\skels'       // Path containing JCL "skeletons" after downloading them from Git Hub Repository
+    private String skeletonPath     = 'skels'               // Path containing JCL "skeletons" after downloading them from Git Hub Repository 'config\\skels'
     private String jobCardSkel      = 'JobCard.jcl'         // Skeleton for job cards
     private String iebcopySkel      = 'iebcopy.skel'        // Skeleton for IEBCOPY job
     private String iebcopyInDdSkel  = 'iebcopyInDd.skel'    // Skeleton for input DDs for IEBCOPY job
@@ -45,6 +45,7 @@ class JclSkeleton implements Serializable {
         def jclSkel                 = readSkelFile(iebcopySkel).join("\n")
         
         def tempInputDdStatements   = readSkelFile(iebcopyInDdSkel)
+
         def copyDdStatements        = []
 
         for(int i=0; i < tempInputDdStatements.size(); i++)
@@ -53,6 +54,7 @@ class JclSkeleton implements Serializable {
         }
 
         def inputDdJcl      = tempInputDdStatements.join("\n")
+
         def inputCopyJcl    = copyDdStatements.join("\n")
 
         jclSkel             = jclSkel.replace("<source_copy_pds_list>", inputDdJcl)
@@ -96,12 +98,10 @@ class JclSkeleton implements Serializable {
 
     def readSkelFile(String fileName)
     {
-        def jclStatements       = []
-        FileHelper fileHelper   = new FileHelper()
-
-        def skelFilePath    = "${workspace}\\${skeletonPath}\\${fileName}"
-
-        def lines           = fileHelper.readLines(skelFilePath)
+        def jclStatements   = []
+        def skelFilePath    = "${skeletonPath}\\${fileName}"
+        def fileText        = steps.libraryResource skelFilePath
+        def lines           = fileText.tokenize("\n")
         
         lines.each
         {

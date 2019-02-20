@@ -9,11 +9,7 @@ class PipelineConfig implements Serializable
     def mailListLines
     def mailListMap = [:]
 
-    private String configGitProject    = "Jenkinsfiles"         // Git Hub Repository containing the configuration files for the pipeline
-    private String configGitBranch                              // Branch in Git Hub Repository containing the configuration files for the pipeline    
-    private String configGitPath       = "config"               // Folder in Git Hub Repository containing the configuration files for the pipeline    
-
-    private String configPath           = 'config\\pipeline'    // Path containing config files after downloading them from Git Hub Repository
+    private String configPath           = 'pipeline'            // Path containing config files after downloading them from Git Hub Repository 'config\\pipeline'
     private String pipelineConfigFile   = 'pipeline.config'     // Config file containing pipeline configuration
     private String tttGitConfigFile     = 'tttgit.config'       // Config gile containing for TTT projects stroed in Git Hub
 
@@ -26,6 +22,8 @@ class PipelineConfig implements Serializable
     public String sqScannerName                                 // Sonar Qube Scanner Tool name as defined in "Manage Jenkins" -> "Global Tool Configuration" -> "SonarQube scanner"
     public String sqServerName                                  // Sonar Qube Scanner Server name as defined in "Manage Jenkins" -> "Configure System" -> "SonarQube servers"
     public String sqServerUrl                                   // URL to the SonarQube server
+    public String xaTesterUrl                                   // URL to the XATester repository
+    public String xaTesterEnvId                                 // XATester Environment ID
     public String mfSourceFolder                                // Folder containing sources after downloading from ISPW
     public String xlrTemplate                                   // XL Release template to start
     public String xlrUser                                       // XL Release user to use
@@ -49,6 +47,8 @@ class PipelineConfig implements Serializable
     public String gitCredentials    
     public String gitUrl            
     public String gitTttRepo        
+    public String gitTttUtRepo        
+    public String gitTttFtRepo        
 
     public String cesTokenId        
     public String hciConnId         
@@ -61,10 +61,12 @@ class PipelineConfig implements Serializable
 
     def PipelineConfig(steps, workspace, params, mailListLines)
     {
-        this.configGitBranch    = params.Config_Git_Branch
+        //this.configGitBranch    = params.Config_Git_Branch
         this.steps              = steps
         this.workspace          = workspace
         this.mailListLines      = mailListLines
+
+        this.xaTesterEnvId      = "5b5f2a71787be73b59238d7b"
 
         this.ispwStream         = params.ISPW_Stream
         this.ispwApplication    = params.ISPW_Application
@@ -84,11 +86,14 @@ class PipelineConfig implements Serializable
         
         this.gitUrl             = "https://github.com/${gitProject}"
         this.gitTttRepo         = "${ispwStream}_${ispwApplication}_Unit_Tests.git"
+        this.gitTttUtRepo       = "${ispwStream}_${ispwApplication}_Unit_Tests.git"
+        this.gitTttFtRepo       = "${ispwStream}_${ispwApplication}_Functional_Tests.git"
 
         this.cesTokenId         = params.CES_Token       
         this.hciConnId          = params.HCI_Conn_ID
         this.hciTokenId         = params.HCI_Token
         this.ccRepository       = params.CC_repository
+
     }
 
     /* A Groovy idiosynchrasy prevents constructors to use methods, therefore class might require an additional "initialize" method to initialize the class */
@@ -99,9 +104,9 @@ class PipelineConfig implements Serializable
             steps.deleteDir()
         }
 
-        GitHelper gitHelper     = new GitHelper(steps)
+        //GitHelper gitHelper     = new GitHelper(steps)
 
-        gitHelper.checkoutPath(gitUrl, configGitBranch, configGitPath, gitCredentials, configGitProject)
+        //gitHelper.checkoutPath(gitUrl, configGitBranch, configGitPath, gitCredentials, configGitProject)
 
         setServerConfig()
 
@@ -136,6 +141,9 @@ class PipelineConfig implements Serializable
                 case "SQ_SERVER_URL":
                     sqServerUrl     = parmValue
                     break;
+                case "XA_TESTER_SERVER_URL":
+                    xaTesterUrl     = parmValue
+                    break;
                 case "MF_SOURCE_FOLDER":
                     mfSourceFolder  = parmValue
                     break;
@@ -155,7 +163,7 @@ class PipelineConfig implements Serializable
                     ispwRuntime     = parmValue
                     break;
                 default:
-                    steps.echo "Found unknown Parameter " + parmName + " " + parmValue + "\nWill ignore and continue."
+                    steps.echo "Found unknown Pipeline Parameter " + parmName + " " + parmValue + "\nWill ignore and continue."
                     break;
             }
         }
@@ -167,6 +175,7 @@ class PipelineConfig implements Serializable
         def lineToken
         def parmName
         def parmValue
+
         def lines = readConfigFile("${tttGitConfigFile}")
 
         lines.each
@@ -184,7 +193,7 @@ class PipelineConfig implements Serializable
                     gitBranch    = parmValue
                     break;
                 default:
-                    steps.echo "Found unknown Parameter " + parmName + " " + parmValue + "\nWill ignore and continue."
+                    steps.echo "Found unknown TTT Parameter " + parmName + " " + parmValue + "\nWill ignore and continue."
                     break;
             }
         }
@@ -210,11 +219,10 @@ class PipelineConfig implements Serializable
     }
     
     def readConfigFile(String fileName)
-    {
-        def filePath = "${workspace}\\${configPath}\\${fileName}"
+    {        
+        def filePath    = "${configPath}/${fileName}"
+        def fileText    = steps.libraryResource filePath
 
-        FileHelper fileHelper = new FileHelper()
-
-        return fileHelper.readLines(filePath)
+        return fileText.tokenize("\n")
     }
 }

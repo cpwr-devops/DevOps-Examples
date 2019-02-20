@@ -17,8 +17,7 @@ IspwHelper      ispwHelper
 TttHelper       tttHelper
 SonarHelper     sonarHelper 
 
-def ResponseContentSupplier response3
-//def assignmentList = []
+String          mailMessageExtension
 
 def initialize(pipelineParams)
 {
@@ -71,14 +70,6 @@ def initialize(pipelineParams)
     sonarHelper = new SonarHelper(this, steps, pConfig)
 
     sonarHelper.initialize()
-
-    echo "Found Assignment " + pConfig.ispwAssignment
-    /*
-    withCredentials([string(credentialsId: pConfig.cesTokenId, variable: 'cesTokenClear')]) 
-    {
-        assignmentList = ispwHelper.getAssigmentList(cesTokenClear, pConfig.ispwTargetLevel)
-    }
-    */
 }
 
 /**
@@ -89,24 +80,22 @@ def call(Map pipelineParams)
 {
     node
     {
-        initialize(pipelineParams) 
-        
+        stage("Initialization")
+        {
+            initialize(pipelineParams) 
+        }
+                
         /* Download all sources that are part of the container  */
         stage("Retrieve Mainframe Code")
         {
-            ispwHelper.downloadSources()
-        //}
-        
-        /* Download all copybooks in case, not all copybook are part of the container  */
-        //stage("Retrieve Copy Books From ISPW")
-        //{
-            ispwHelper.downloadCopyBooks("${workspace}")
+            ispwHelper.downloadSources(pConfig.ispwSrcLevel)
+            ispwHelper.downloadCopyBooks(workspace)
         }
         
         /* Retrieve the Tests from Github that match that ISPWW Stream and Application */
         stage("Execute Unit Tests")
         {            
-            def gitUrlFullPath = "${pConfig.gitUrl}/${pConfig.gitTttRepo}"
+            def gitUrlFullPath = "${pConfig.gitUrl}/${pConfig.gitTttUtRepo}"
             
             gitHelper.checkout(gitUrlFullPath, pConfig.gitBranch, pConfig.gitCredentials, pConfig.tttFolder)
         //}
@@ -135,7 +124,7 @@ def call(Map pipelineParams)
         */ 
         stage("Check SonarQube Quality Gate") 
         {
-            sonarHelper.scan()
+            sonarHelper.scan("UT")
 
             // Wait for the results of the SonarQube Quality Gate
             timeout(time: 2, unit: 'MINUTES') 
@@ -149,21 +138,14 @@ def call(Map pipelineParams)
                     echo "Sonar quality gate failure: ${sonarGate.status}"
                     echo "Pipeline will be aborted and ISPW Assignment will be regressed"
 
+                    mailMessageExtension = "Generated code failed the Quality gate. Review Logs and apply corrections as indicated."
                     currentBuild.result = "FAILURE"
 
-                    // Send Standard Email
-                    emailext subject:       '$DEFAULT_SUBJECT',
-                                body:       '$DEFAULT_CONTENT',
-                                replyTo:    '$DEFAULT_REPLYTO',
-                                to:         "${pConfig.mailRecipient}"
-                    
-                    withCredentials([string(credentialsId: pConfig.cesTokenId, variable: 'cesTokenClear')]) 
-                    {
-                        //ispwHelper.regressAssignmentList(assignmentList, cesTokenClear)
-                        ispwHelper.regressAssignment(pConfig.ispwAssignment, cesTokenClear)
-                    }
-
                     error "Exiting Pipeline" // Exit the pipeline with an error if the SonarQube Quality Gate is failing
+                }
+                else
+                {
+                    mailMessageExtension = "Generated code passed the Quality gate and may be promoted."
                 }
             }   
         }
@@ -171,24 +153,11 @@ def call(Map pipelineParams)
         /* 
         This stage triggers a XL Release Pipeline that will move code into the high levels in the ISPW Lifecycle  
         */ 
-        stage("Start release in XL Release")
+        stage("Send Mail")
         {
-            // Trigger XL Release Jenkins Plugin to kickoff a Release
-            xlrCreateRelease(
-                releaseTitle:       'A Release for $BUILD_TAG',
-                serverCredentials:  "${pConfig.xlrUser}",
-                startRelease:       true,
-                template:           "${pConfig.xlrTemplate}",
-                variables:          [
-                                        [propertyName:  'ISPW_Dev_level',   propertyValue: "${pConfig.ispwTargetLevel}"], // Level in ISPW that the Code resides currently
-                                        [propertyName:  'ISPW_RELEASE_ID',  propertyValue: "${pConfig.ispwRelease}"],     // ISPW Release value from the ISPW Webhook
-                                        [propertyName:  'CES_Token',        propertyValue: "${pConfig.cesTokenId}"]
-                                    ]
-            )
-
             // Send Standard Email
             emailext subject:       '$DEFAULT_SUBJECT',
-                        body:       '$DEFAULT_CONTENT \n' + 'Promote passed the Quality gate and a new XL Release was started.',
+                        body:       '$DEFAULT_CONTENT \n' + mailMessageExtension,
                         replyTo:    '$DEFAULT_REPLYTO',
                         to:         "${pConfig.mailRecipient}"
 
