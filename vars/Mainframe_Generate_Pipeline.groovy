@@ -97,17 +97,15 @@ def call(Map pipelineParams)
         {            
             def gitUrlFullPath = "${pConfig.gitUrl}/${pConfig.gitTttUtRepo}"
             
+            /* Check out unit tests from GitHub */
             gitHelper.checkout(gitUrlFullPath, pConfig.gitBranch, pConfig.gitCredentials, pConfig.tttFolder)
-        //}
 
-        /* 
-        This stage executes any Total Test Projects related to the mainframe source that was downloaded
-        */ 
-        //stage("Execute related Unit Tests")
-        //{
-            tttHelper.initialize()                                            
+            /* initialize requires the TTT projects to be present in the Jenkins workspace, therefore it can only execute after downloading from GitHub */
+            tttHelper.initialize()  
+
+            /* Execute unit tests */
             tttHelper.loopThruScenarios()
-            //tttHelper.passResultsToJunit()
+
         }
 
         /* 
@@ -126,27 +124,22 @@ def call(Map pipelineParams)
         {
             sonarHelper.scan("UT")
 
-            // Wait for the results of the SonarQube Quality Gate
-            timeout(time: 2, unit: 'MINUTES') 
-            {                
-                // Wait for webhook call back from SonarQube.  SonarQube webhook for callback to Jenkins must be configured on the SonarQube server.
-                def sonarGate = waitForQualityGate()
-                
-                // Evaluate the status of the Quality Gate
-                if (sonarGate.status != 'OK')
-                {
-                    echo "Sonar quality gate failure: ${sonarGate.status}"
-                    echo "Pipeline will be aborted and ISPW Assignment will be regressed"
+            String sonarGateResult = sonarHelper.checkQualityGate()
 
-                    mailMessageExtension = "Generated code failed the Quality gate. Review Logs and apply corrections as indicated."
-                    currentBuild.result = "FAILURE"
+            // Evaluate the status of the Quality Gate
+            if (sonarGateResult != 'OK')
+            {
+                echo "Sonar quality gate failure: ${sonarGateResult}"
 
-                    error "Exiting Pipeline" // Exit the pipeline with an error if the SonarQube Quality Gate is failing
-                }
-                else
-                {
-                    mailMessageExtension = "Generated code passed the Quality gate and may be promoted."
-                }
+                mailMessageExtension = "Generated code failed the Quality gate. Review Logs and apply corrections as indicated."
+                currentBuild.result = "FAILURE"
+
+                // Exit the pipeline with an error if the SonarQube Quality Gate is failing
+                error "Exiting Pipeline" 
+            }
+            else
+            {
+                mailMessageExtension = "Generated code passed the Quality gate and may be promoted."
             }   
         }
 
