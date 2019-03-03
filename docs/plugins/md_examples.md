@@ -23,7 +23,8 @@ __This test will also be bold__
    * Item 3a
    * Item 3b
 
-![CES menu](../tool_configuration/images/CES main menu.png)
+
+![CES Menu](../tool_configuration/images/CES main menu.png)
 
 Format: ![Alt Text](url)
 
