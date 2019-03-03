@@ -3,9 +3,11 @@
 ###### This is an \<h6\> tag
 
 *This text will be italic*
+
 _This text will also be italic_
 
 **This text will be bold**
+
 __This test will also be bold__
 
 *You **can** combine them*
