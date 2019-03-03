@@ -23,7 +23,7 @@ __This test will also be bold__
    * Item 3a
    * Item 3b
 
-![CES menu](../tool_configuration/images/CES menu.png)
+![CES menu](../tool_configuration/images/CES main menu.png)
 
 Format: ![Alt Text](url)
 
@@ -40,7 +40,7 @@ As Kanye West said
 - [x] @mentions, #refs, [links](), **formatting**, and <del>tags</del> supported
 - [x] list syntax required (any unordered or ordered list supported)
 - [x] this is a completed item
-- [ ] this is an incomplete intem
+- [ ] this is an incomplete item
 
 ```javascript
 function test(){
