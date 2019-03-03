@@ -23,7 +23,7 @@ __This test will also be bold__
    * Item 3a
    * Item 3b
 
-![GitHub Logo](/images/logo.png)
+![CES menu](../tool_configuration/images/CES menu.png)
 
 Format: ![Alt Text](url)
 
