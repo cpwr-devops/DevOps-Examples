@@ -1,0 +1,3 @@
+//IN1      DD DISP=SHR,DSN=SALESSUP.<ispw_application>.QA<ispw_path>.CPY
+//IN2      DD DISP=SHR,DSN=SALESSUP.<ispw_application>.STG.CPY
+//IN3      DD DISP=SHR,DSN=SALESSUP.<ispw_application>.PRD.CPY
