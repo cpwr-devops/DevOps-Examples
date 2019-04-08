@@ -1,0 +1,39 @@
+#!/usr/bin/env groovy
+import hudson.model.*
+import hudson.EnvVars
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import java.net.URL
+
+// Jenkins credential ID and CES Personal Access token to be used for mainframe access
+String ISPW_Owner        = "${Parm_ISPW_Owner}"       					// TSO USer initiating ISPW operation
+
+/*
+    Map containing ISPW Owners (TSO Users) to eMail addresses
+    For sending mail
+*/
+
+Map mailRecipientMap     = ["MFHRFC0":"rachel.clevenger@compuware.com",
+                            "PFHMKS0":"manoj.singh@compuware.com"
+                           ]
+                           
+def mailRecipient = mailRecipientMap[(ISPW_Owner.toUpperCase())]
+                           
+//configFileProvider([configFile(fileId: 'MailList', variable: 'mailList.config')]) {
+//    def mailRecipient = $mailList.config
+//}
+
+ 
+stage("Send Email")
+{  
+    //def mailRecipients = "manoj.singh@compuware.com"
+            
+            // Email
+            emailext subject: '$DEFAULT_SUBJECT',
+                        body: '$DEFAULT_CONTENT',
+                        //body: '$DEFAULT_CONTENT',
+                        replyTo: '$DEFAULT_REPLYTO',
+                        //attachmentsPattern: 'reports/*.zip',
+                        to: "${mailRecipient}"
+}
