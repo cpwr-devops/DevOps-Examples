@@ -1,5 +1,5 @@
 # DevOps-Examples
 Examples of DevOps pipelines for mainframe applications.  
 
-Please see the wiki for more details. 
-https://cpwr-devops.github.io/DevOps-Examples/
+For documentation on how to use the example code provided in this repository, please visit the below site.
+https://devops.api.compuware.com
