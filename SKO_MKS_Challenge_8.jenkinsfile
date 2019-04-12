@@ -1,0 +1,41 @@
+node {
+    
+    def build_ok = true
+    
+    try {
+        stage("Submit Hiperstation JCL") {
+            //echo "Hi there"
+            topazSubmitJclMembers connectionId: '4b4cf589-b835-4579-96ee-2aba6b818125', credentialsId: 'PFHMKS0', jclMember: 'SALESSUP.HIPER.DEMO.GENAPP.JCL(SSC1IXG)', maxConditionCode: '7'        
+        }
+    }
+    catch(e) {
+        build_ok = false
+        echo e.toString()
+    }
+    
+    stage("Publish Test Results") {
+        junit allowEmptyResults: true, testResults: 'FTP/RESULTS/HIPER_SSC1IX_RESULTS.XML'
+    }
+    
+    stage("Email Results")
+    {
+        def mailRecipients = "manoj.singh@compuware.com"
+        def bodyTxt = '$DEFAULT_CONTENT'
+        bodyTxt += "\n\nClick on the link  below to get more details on the test run:"
+        bodyTxt += "\nhttp://cwcc.compuware.com//usr/local/compuware/QF1702/archive/SSP1IX/index.html"
+            
+        // Email
+        emailext subject: '$DEFAULT_SUBJECT',
+                    body: "${bodyTxt}",
+                    //body: '$DEFAULT_CONTENT',
+                    replyTo: '$DEFAULT_REPLYTO',
+                    attachmentsPattern: 'FTP\\RESULTS\\HIPER_SSC1IX_RESULTS.TXT',
+                    to: "${mailRecipients}" 
+    }
+    
+    if(build_ok) {
+        currentBuild.result = "SUCCESS"
+    } else {
+        currentBuild.result = "FAILURE"
+    }
+}
