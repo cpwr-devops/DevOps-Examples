@@ -1,0 +1,42 @@
+#!/usr/bin/env groovy
+import hudson.model.*
+import hudson.EnvVars
+import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import jenkins.plugins.http_request.*
+import java.io.File 
+
+//node {
+    
+
+
+/* Not working because of security issye */
+//configFileProvider(
+//        [
+//            configFile(
+//                fileId: 'MailList', 
+//                variable: 'MyFile'
+//            )
+//        ]
+//    ) 
+//    {
+//        File mailFile = new File(MyFile)
+
+//        mailListlines = mailFile.readLines()
+//    }
+
+// Define a map betwen TSOID and Email ID
+def tsoToEmail = ["PFHMKS0":"manoj.singh@conmpuware.com",
+                 "ICASGG0":"steve.garth@compuware.com"]
+
+// Extract email of the passed TSO ID
+def mailRecipient = tsoToEmail[TSOID]
+
+
+// Send email
+emailext body: 'This is a test.', 
+    subject: 'SKO Test - Challenge 4', 
+    to: "${mailRecipient}"
+
+//}
