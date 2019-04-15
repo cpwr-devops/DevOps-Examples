@@ -1,0 +1,64 @@
+Started by user unknown or anonymous
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] stage
+[Pipeline] { (Get Task List)
+[Pipeline] ispwOperation
+Starting ISPW Operations Plugin
+Listing tasks in Assignment RXN3000015
+TaskId, Module, Type, UserId, Version, Status, Application/Stream/Level, Release
+ 7E34425645AC, CWXTCOB, COB, HDDRXM0, 0, Generate successful, RXN3/FTSDEMO/DEV2, RXN3REL01
+ 7E344256464C, CWXTDATE, COB, HDDRXM0, 0, Generate successful, RXN3/FTSDEMO/DEV2, RXN3REL01
+ 7E34425646E2, CWXTSUBC, COB, HDDRXM0, 0, Generate successful, RXN3/FTSDEMO/DEV2, RXN3REL01
+ 7E3442564781, CWXTJCLC, JOB, FBRCCV0, 0, Edit successful, RXN3/FTSDEMO/DEV2, RXN3REL01
+ 7E344256483A, CWXTJCLP, JOB, FBRCCV0, 0, Edit successful, RXN3/FTSDEMO/DEV2, RXN3REL01
+ISPW Operation Complete
+[Pipeline] echo
+Status: 200
+[Pipeline] echo
+[{action= , alternateName= , application=RXN3, baseVersion=75, cics=false, clazz= , container=RXN3000015, dateTime=2019-04-10 07:00:32, environment=TEST, extension=0, flags=Y, ims=false, internalVersion=0, level=DEV2, message= , moduleName=CWXTCOB, moduleType=COB, operation=G, program=true, release=RXN3REL01, replaceVersion=75, set= , sql=false, startingLevel=DEV2, status=Generate successful, stream=FTSDEMO, taskId=7E34425645AC, userId=HDDRXM0, version=0}, {action= , alternateName= , application=RXN3, baseVersion=72, cics=false, clazz= , container=RXN3000015, dateTime=2019-04-10 07:00:25, environment=TEST, extension=0, flags=Y, ims=false, internalVersion=0, level=DEV2, message= , moduleName=CWXTDATE, moduleType=COB, operation=G, program=false, release=RXN3REL01, replaceVersion=72, set= , sql=false, startingLevel=DEV2, status=Generate successful, stream=FTSDEMO, taskId=7E344256464C, userId=HDDRXM0, version=0}, {action= , alternateName= , application=RXN3, baseVersion=78, cics=false, clazz= , container=RXN3000015, dateTime=2019-04-10 07:00:25, environment=TEST, extension=0, flags=Y, ims=false, internalVersion=0, level=DEV2, message= , moduleName=CWXTSUBC, moduleType=COB, operation=G, program=false, release=RXN3REL01, replaceVersion=78, set= , sql=false, startingLevel=DEV2, status=Generate successful, stream=FTSDEMO, taskId=7E34425646E2, userId=HDDRXM0, version=0}, {action= , alternateName= , application=RXN3, baseVersion=4, cics=false, clazz= , container=RXN3000015, dateTime=2019-04-15 08:48:33, environment=TEST, extension= , flags= , ims=false, internalVersion=0, level=DEV2, message= , moduleName=CWXTJCLC, moduleType=JOB, operation=S, program=false, release=RXN3REL01, replaceVersion=4, set= , sql=false, startingLevel=DEV2, status=Edit successful, stream=FTSDEMO, taskId=7E3442564781, userId=FBRCCV0, version=0}, {action= , alternateName= , application=RXN3, baseVersion=3, cics=false, clazz= , container=RXN3000015, dateTime=2019-04-15 08:39:32, environment=TEST, extension= , flags= , ims=false, internalVersion=0, level=DEV2, message= , moduleName=CWXTJCLP, moduleType=JOB, operation=S, program=false, release=RXN3REL01, replaceVersion=3, set= , sql=false, startingLevel=DEV2, status=Edit successful, stream=FTSDEMO, taskId=7E344256483A, userId=FBRCCV0, version=0}]
+[Pipeline] echo
+Adding:    CWXTJCLC
+[Pipeline] echo
+Adding:    CWXTJCLP
+[Pipeline] echo
+SALESSUP.RXN3.DEV2.JOB(CWXTJCLC)
+SALESSUP.RXN3.DEV2.JOB(CWXTJCLP)
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Submit Jobs)
+[Pipeline] node
+Running on Jenkins in C:\Users\pfhsxk0\.jenkins\workspace\SKO_Challenge_CARLOS_VICARI_7
+[Pipeline] {
+[Pipeline] echo
+SALESSUP.RXN3.DEV2.JOB(CWXTJCLC)
+SALESSUP.RXN3.DEV2.JOB(CWXTJCLP)
+
+[Pipeline] topazSubmitJclMembers
+cliScriptFile: C:\TopazCLI190401\SubmitJclCLI.bat
+cliScriptFileRemote: C:\TopazCLI190401\SubmitJclCLI.bat
+topazCliWorkspace: C:\Users\pfhsxk0\.jenkins\workspace\SKO_Challenge_CARLOS_VICARI_7\TopazCliWkspc
+jclMember: "SALESSUP.RXN3.DEV2.JOB(CWXTJCLC),SALESSUP.RXN3.DEV2.JOB(CWXTJCLP)"
+
+[SKO_Challenge_CARLOS_VICARI_7] $ C:\TopazCLI190401\SubmitJclCLI.bat -host "cwcc" -port "16196" -id "FBRCCV0" -pass ******** -code 1047 -timeout "0" -data C:\Users\pfhsxk0\.jenkins\workspace\SKO_Challenge_CARLOS_VICARI_7\TopazCliWkspc -maxcc "4" -jcldsns "SALESSUP.RXN3.DEV2.JOB(CWXTJCLC),SALESSUP.RXN3.DEV2.JOB(CWXTJCLP)"
+Using JRE_HOME: C:\Program Files\Java\jre1.8.0_201
+Using customized WORKSPACE: C:\Users\pfhsxk0\.jenkins\workspace\SKO_Challenge_CARLOS_VICARI_7\TopazCliWkspc
+        1 file(s) copied.
+z/OS Utilities CLI started, version = 19.04.01. 
+Program arguments were passed in the ALL_ARGS environment variable, will use the OptionProcessor to parse.  
+Parsed arguments:  host=cwcc; port=16196; code=1047; timeout=0; id=FBRCCV0; maxcc=4; jcl=; jcldsns=SALESSUP.RXN3.DEV2.JOB(CWXTJCLC),SALESSUP.RXN3.DEV2.JOB(CWXTJCLP);  
+Submitting JCL from dataset SALESSUP.RXN3.DEV2.JOB(CWXTJCLC). 
+Submitted job HDDRXM0X(J0725632). 
+Job HDDRXM0X(J0725632) has completed. RC=0000, End Time=2019 APR 15 08:48:53. 
+Submitting JCL from dataset SALESSUP.RXN3.DEV2.JOB(CWXTJCLP). 
+Submitted job HDDRXM0X(J0725633). 
+Job HDDRXM0X(J0725633) has completed. RC=0004, End Time=2019 APR 15 08:48:54. 
+Call SubmitJclCLI.bat exited with value = 0
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] End of Pipeline
+Finished: SUCCESS

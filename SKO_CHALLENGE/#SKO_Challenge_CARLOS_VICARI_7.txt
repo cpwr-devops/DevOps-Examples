@@ -1,0 +1,416 @@
+// https://github.com/ralphnuessecpwr/Jenkinsfiles/blob/JenkinsLocal/Demo_Jenkinsfiles/Groovy/AmEx.jenkinsfile
+// http://groovy-lang.org/json.html
+
+import groovy.json.JsonSlurper
+
+String HCI_ID            	= "91bae501-8b4d-4155-909d-2ad5aa9f3131"
+String HCI_User_Access   	= "81655732-c61c-4c4d-9af8-694652809d11" 
+String Jenkins_CES          = "FBRCCV0_CES" // A secret text credential containing your CES token
+String jobList 				= ''
+String ISPW_Container		= "RXN3000015"
+String ISPW_Dev_Level		= "DEV2"   	
+
+stage("Get Task List")
+{
+
+    // Define Variables to be used to call ISPW
+		String ispwRequestBdy = 
+			/assignmentId=${ISPW_Container}
+			level=${ISPW_Dev_Level}/ 
+
+    //    print ispwRequestBdy
+
+	// Call ISPW Operation
+		def response = ispwOperation connectionId: "${HCI_ID}", 
+			credentialsId: "${Jenkins_CES}", 
+//			consoleLogResponseBody: true,
+			ispwAction: 'GetAssignmentTaskList', 
+			ispwRequestBody: "${ispwRequestBdy}"
+
+        print response
+
+        def jsonSlurper = new JsonSlurper()
+        def resp        = jsonSlurper.parseText(response.getContent())
+        def taskList    = resp.tasks
+		
+		print taskList
+		
+        taskList.each	
+        {
+            if(it.moduleName.startsWith('CW') && it.moduleType == 'JOB')
+            {
+                echo "Adding:    " + it.moduleName
+                jobList = jobList + 'SALESSUP.RXN3.DEV2.JOB(' + it.moduleName + ')\n'
+			}
+		}
+		print jobList
+}		
+		
+stage('Submit Jobs')
+{
+	node{
+		print jobList
+        topazSubmitJclMembers connectionId: "${HCI_ID}", 
+            credentialsId: "${HCI_User_Access}", 
+            jclMember: jobList, 
+            maxConditionCode: '4'        
+    	}
+}
+
+
+
+
+
+
+
+
+The ISPW downloader and the download from Git are “Checkout from version control” tasks.
+The Topaz for Total Test and the Code Coverage downloader are “steps”.
+
+stage("Initialization")
+{
+    node
+		{
+				bat """
+                REM del *.* /S /Q
+				REM dir /S 
+				exit 0
+				"""
+		}
+}
+
+stage("Download the Source From ISPW")
+{
+    node
+		{
+checkout([$class: 'IspwContainerConfiguration', componentType: 'cob', connectionId: '91bae501-8b4d-4155-909d-2ad5aa9f3131', containerName: 'RXN3000015', containerType: '0', credentialsId: '81655732-c61c-4c4d-9af8-694652809d11', ispwDownloadAll: true, serverConfig: 'ISPW', serverLevel: 'DEV2'])
+		}
+}		
+
+stage("Download Unit Tests")
+{
+    node
+		{
+checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'tests']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/ralphnuessecpwr/FTSDEMO_RXN3_Unit_Tests']]])
+		}
+    node
+		{
+			// "*** DEBUG ***"
+				bat """
+				dir /S 
+				exit 0
+				"""
+		}
+}
+
+stage("Execute Unit Test #1")
+{
+	node
+		{
+step([$class: 'TotalTestBuilder', ccRepo: 'FBRCCV0.DEMO.CC.REPOSIT', ccSystem: 'CWCC', ccTestId: 'SKO_VICARI', connectionId: '91bae501-8b4d-4155-909d-2ad5aa9f3131', credentialsId: '81655732-c61c-4c4d-9af8-694652809d11', hlq: '', jcl: 'Runner_PATH2.jcl', projectFolder: 'tests\\CWXTCOB_Unit_Tests', testSuite: 'CWXTCOB_Scenario.testscenario'])
+		}
+}
+
+stage("Execute Unit Test #2")
+{
+	node
+		{
+step([$class: 'TotalTestBuilder', ccRepo: 'FBRCCV0.DEMO.CC.REPOSIT', ccSystem: 'CWCC', ccTestId: 'SKO_VICARI', connectionId: '91bae501-8b4d-4155-909d-2ad5aa9f3131', credentialsId: '81655732-c61c-4c4d-9af8-694652809d11', hlq: '', jcl: 'Runner_PATH2.jcl', projectFolder: 'tests\\CWXTSUBC_Unit_Tests', testSuite: 'CWXTSUBC_Mgmt_Scenario.testscenario'])
+		}
+}
+
+stage("Execute Unit Test #3")
+{
+	node
+		{
+step([$class: 'TotalTestBuilder', ccRepo: 'FBRCCV0.DEMO.CC.REPOSIT', ccSystem: 'CWCC', ccTestId: 'SKO_VICARI', connectionId: '91bae501-8b4d-4155-909d-2ad5aa9f3131', credentialsId: '81655732-c61c-4c4d-9af8-694652809d11', hlq: '', jcl: 'Runner_PATH2.jcl', projectFolder: 'tests\\CWXTSUBC_Unit_Tests', testSuite: 'CWXTSUBC_Sales_Scenario.testscenario'])
+		}
+}
+
+stage("Retrieve Code Coverage Data")
+{
+    node
+		{
+step([$class: 'CodeCoverageBuilder', analysisProperties: '''cc.sources=RXN3/MF_Source
+cc.repos=FBRCCV0.DEMO.CC.REPOSIT
+cc.system=CWCC
+cc.test=SKO_VICARI
+cc.ddio.overrides=''', analysisPropertiesPath: '', connectionId: 'de2ad7c3-e924-4dc2-84d5-d0c3afd3e756', credentialsId: '81655732-c61c-4c4d-9af8-694652809d11'])
+		}
+}
+
+stage("SonarQube Analysis #1 with Code Coverage") 
+{
+    node
+		{
+				def scannerHome = tool 'scanner';
+					withSonarQubeEnv('localhost') 
+			{
+				// Run SonarQube Scanner 
+					def SQ_Tests                = " -Dsonar.tests=CWXTCOB_Unit_Tests -Dsonar.testExecutionReportPaths=TTTSonar/CWXTCOB_Scenario.xml"
+					def SQ_ProjectKey           = " -Dsonar.projectKey=SKO_Challenge_CARLOS_VICARI -Dsonar.projectName=SKO_Challenge_CARLOS_VICARI -Dsonar.projectVersion=1.0"
+					def SQ_Source               = " -Dsonar.sources=RXN3/MF_Source"
+					def SQ_Copybook             = " -Dsonar.cobol.copy.directories=RXN3/MF_Source"
+					def SQ_Cobol_conf           = " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub -Dsonar.cobol.copy.suffixes=cpy -Dsonar.sourceEncoding=UTF-8"
+					bat "${scannerHome}/bin/sonar-scanner" + SQ_Tests + SQ_ProjectKey + SQ_Source + SQ_Copybook + SQ_Cobol_conf
+			}
+		}
+}
+
+stage("SonarQube Analysis #2 with Code Coverage") 
+{
+    node
+		{
+				def scannerHome = tool 'scanner';
+					withSonarQubeEnv('localhost') 
+			{
+				// Run SonarQube Scanner 
+					def SQ_Tests                = " -Dsonar.tests=CWXTCOB_Unit_Tests -Dsonar.testExecutionReportPaths=TTTSonar/CWXTSUBC_Mgmt_Scenario.xml"
+					def SQ_ProjectKey           = " -Dsonar.projectKey=SKO_Challenge_CARLOS_VICARI -Dsonar.projectName=SKO_Challenge_CARLOS_VICARI -Dsonar.projectVersion=1.0"
+					def SQ_Source               = " -Dsonar.sources=RXN3/MF_Source"
+					def SQ_Copybook             = " -Dsonar.cobol.copy.directories=RXN3/MF_Source"
+					def SQ_Cobol_conf           = " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub -Dsonar.cobol.copy.suffixes=cpy -Dsonar.sourceEncoding=UTF-8"
+					bat "${scannerHome}/bin/sonar-scanner" + SQ_Tests + SQ_ProjectKey + SQ_Source + SQ_Copybook + SQ_Cobol_conf
+			}
+		}
+}
+
+stage("SonarQube Analysis #3 with Code Coverage") 
+{
+    node
+		{
+				def scannerHome = tool 'scanner';
+					withSonarQubeEnv('localhost') 
+			{
+				// Run SonarQube Scanner 
+					def SQ_Tests                = " -Dsonar.tests=CWXTCOB_Unit_Tests -Dsonar.testExecutionReportPaths=TTTSonar/CWXTSUBC_Sales_Scenario.xml"
+					def SQ_ProjectKey           = " -Dsonar.projectKey=SKO_Challenge_CARLOS_VICARI -Dsonar.projectName=SKO_Challenge_CARLOS_VICARI -Dsonar.projectVersion=1.0"
+					def SQ_Source               = " -Dsonar.sources=RXN3/MF_Source"
+					def SQ_Copybook             = " -Dsonar.cobol.copy.directories=RXN3/MF_Source"
+					def SQ_Cobol_conf           = " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub -Dsonar.cobol.copy.suffixes=cpy -Dsonar.sourceEncoding=UTF-8"
+					bat "${scannerHome}/bin/sonar-scanner" + SQ_Tests + SQ_ProjectKey + SQ_Source + SQ_Copybook + SQ_Cobol_conf
+			}
+		}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#!/usr/bin/env groovy
+import hudson.model.*
+import hudson.EnvVars
+import hudson.Launcher
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import java.net.URL
+
+//Compuware Environment to connect
+String HCI_Connection     = "cwcc:16196"
+String CES_Connection     = "cwcc:2020"
+String HCI_ID             = "196de681-04d7-4170-824f-09a5457c5cda"
+String COBOL              = "cbl"
+String JCL                = "jcl"
+
+// Jenkins credential ID and CES Personal Access token to be used for mainframe access
+String HCI_User_Access   = "81655732-c61c-4c4d-9af8-694652809d11"  	// Username with Password Credential containing your CWCC ID/PW
+String Jenkins_Id        = "81655732-c61c-4c4d-9af8-694652809d11"  	// Username with Password Credential containing your CWCC ID/PW
+String Jenkins_CES       = "FBRCCV0_CES" // A secret text credential containing your CES token
+String CES_Token         = "157e9b73-0120-495f-aa85-848a41519c87" 	// Your CES token
+
+// Github specifications
+String github_credentials = "1768efaa-35d9-4217-8b01-861a2b940d45"  // Username with Password Credential containing your github ID/PW
+String github_url         = "https://github.com/ralphnuessecpwr/FTSDEMO_RXN3_Unit_Tests" // The github URL where your TTT test is stored
+String git_commit		  = "https://ralphnuessecpwr@github.com/ralphnuessecpwr/FTSDEMO_RXN3_Unit_Tests.git"		   		
+String JENKINS_Path       = "C:/Users/pfhsxk0/.jenkins/workspace/SKO_Challenge_CARLOS_VICARI/TopazCliWkspc"
+
+// ISPW Levels and container to be used by the promote/deploy/generate/regress operations
+String ISPW_Container     = "RXN3000007"    						//ContainerID
+String ISPW_ContainerType = "assignments"   						//Valid values are assignments or releases
+String ISPW_Stream        = "FTSDEMO"
+String ISPW_Application   = "RXN3"
+String ISPW_RuntimeConfig = "ISPW"
+String ISPW_Dev_Level     = "DEV1"
+String ISPW_QA1_Level     = "QA1"
+String ISPW_Stg_Level     = "STG"
+String ISPW_Prd_Level     = "PRD"
+
+// Directory for tests that are downloaded to the jenkins workspace
+String TTT_Project1        	= "CWXTCOB_Unit_Tests" 				// The name of your TTT project
+// Total Test JCL and Scenario/Testsuite used in CI process
+String TTT_TestPackage1   	= "CWXTCOB_Scenario"            	// The filename name of your TTT Scenario
+String TTT_TestPackage2   	= "CWXTSUBC_Mgmt_Scenario"         	// The filename name of your TTT Scenario
+String TTT_TestPackage3   	= "CWXTSUBC_Sales_Scenario"        	// The filename name of your TTT Scenario
+String TTT_PackageType    	= ".testscenario"       			// The suffix of your TTT Scenario
+String TTT_Jcl            	= "Runner_PATH1.jcl"  				// The name of the JCL file
+String TTT_Dir				= "TTTUnit"
+String TTT_Sonar			= "TTTSonar"
+
+// CODE COVERAGE Parms used in CI process
+String CC_sources			= "${ISPW_Application}\\MF_Source"
+String CC_repo	      		= "FBRCCV0.DEMO.CC.REPOSIT"
+String CC_system			= "CWCC"
+String CC_test1				= "CWXTCOB"
+String CC_test2				= "SUBCMGMT"
+String CC_test3				= "SUBCSALE"
+String CC_ddio          	= "SALESSUP.RXN3.PRD.LOAD.SSD"
+String CC_properties1 = 'cc.sources='  + CC_sources + 
+                      '\rcc.repos='  + CC_repo +
+                      '\rcc.system=' + CC_system +
+                      '\rcc.test='   + CC_test1 + 
+                      '\rcc.ddio.overrides=' + CC_ddio
+String CC_properties2 = 'cc.sources='  + CC_sources + 
+                      '\rcc.repos='  + CC_repo +
+                      '\rcc.system=' + CC_system +
+                      '\rcc.test='   + CC_test2 + 
+                      '\rcc.ddio.overrides=' + CC_ddio
+String CC_properties3 = 'cc.sources='  + CC_sources + 
+                      '\rcc.repos='  + CC_repo +
+                      '\rcc.system=' + CC_system +
+                      '\rcc.test='   + CC_test3 + 
+                      '\rcc.ddio.overrides=' + CC_ddio
+					  
+// SonarQube ID used for both Project Key and Project Name
+String SQ_Project           = "SKO_Challenge_CARLOS_VICARI"
+
+
+stage("Download the Source From ISPW")
+{
+    node
+		{
+		//Download the Source From ISPW
+		checkout([$class: 'IspwConfiguration', 
+			componentType: 		'COB, COPY',			//Retrieve only cobol code and copybooks
+			connectionId: 		"${HCI_ID}",
+			credentialsId: 		"${Jenkins_Id}",  
+			levelOption: 		'0',             		//0-selected level only 1-first found and above
+			serverApplication: 	"${ISPW_Application}", 
+			serverConfig: 		"${ISPW_RuntimeConfig}", 
+			serverLevel: 		"${ISPW_Dev_Level}", 
+			serverStream: 		"${ISPW_Stream}"])
+		}
+}
+
+stage("Download Unit Tests")
+{
+    node
+		{
+		//Download the test from github
+		checkout changelog: false, 
+			poll: false, 
+			scm: [$class: 'GitSCM', 
+			branches: [[name: '*/master']], 
+			doGenerateSubmoduleConfigurations: false, 
+			extensions: [], 
+			submoduleCfg: [], 
+			userRemoteConfigs: 
+				[[credentialsId: github_credentials, 
+				name: 'origin', 
+				url: github_url]]]
+		}
+    node
+		{
+			// "Set Up Environment"
+			// MUST RUN AFTER GIT!
+				bat """
+				REM rmdir /S /Q "${JENKINS_Path}"
+				REM dir   "${JENKINS_Path}"
+				exit 0
+				"""
+		}
+}
+		
+stage("Execute Unit Test #1")
+{
+	node
+		{
+			// Run Total Test Jenkins Plugin
+				step([$class: 'TotalTestBuilder', 
+				ccRepo: 		"${CC_repo}",
+				ccSystem: 		"${CC_system}", 
+				ccTestId: 		"${CC_test1}", 
+				credentialsId: 	"${Jenkins_Id}", 
+				deleteTemp: 	true, 
+				hlq: 			'', 
+				hostPort: 		"${HCI_Connection}", 
+				jcl: 			"${TTT_Jcl}", 
+				projectFolder: 	"${TTT_Project1}", 
+				testSuite: 		"${TTT_TestPackage1}${TTT_PackageType}", 
+				useStubs: 		true])
+        
+			// Process the Total Test result files into Jenkins
+				junit keepLongStdio: true, testResults: "${TTT_Dir}/*.xml"
+		}
+
+    node
+		{
+			// "*** DEBUG ***"
+				bat """
+				REM stage("Download Unit Tests")
+{
+    node
+		{
+checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'tests']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/ralphnuessecpwr/FTSDEMO_RXN3_Unit_Tests']]])
+		}
+    node
+		{
+			// "*** DEBUG ***"
+				bat """
+				dir /S 
+				exit 0
+				"""
+		}
+}
+
+
+				REM dir /S 
+				exit 0
+				"""
+		}
+		
+}
+
+stage("Retrieve Code Coverage Data #1")
+{
+    node
+		{
+			// Retrieve Code Coverage Data
+				step([
+					$class: 'CodeCoverageBuilder',
+					analysisProperties: 	CC_properties1,
+					analysisPropertiesPath: '',
+					connectionId: 			"${HCI_ID}",
+					credentialsId: 			Jenkins_Id
+					])
+		}
+}
+
+stage("SonarQube Analysis with Code Coverage") 
+{
+    node
+		{
+			// Requires SonarQube Scanner 2.8+
+				def scannerHome = tool 'scanner';
+					withSonarQubeEnv('localhost') 
+			{
+				// Run SonarQube Scanner 
+					def SQ_Tests                = " -Dsonar.tests=${TTT_Project1} -Dsonar.testExecutionReportPaths=${TTT_Sonar}/${TTT_TestPackage1}.xml "
+					def SQ_ProjectKey           = " -Dsonar.projectKey=${SQ_Project} -Dsonar.projectName=${SQ_Project} -Dsonar.projectVersion=1.0"
+					def SQ_Source               = " -Dsonar.sources=${CC_sources}"
+					def SQ_Copybook             = " -Dsonar.cobol.copy.directories=${CC_sources}"
+					def SQ_Cobol_conf           = " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub -Dsonar.cobol.copy.suffixes=cpy -Dsonar.sourceEncoding=UTF-8"
+					bat "${scannerHome}/bin/sonar-scanner" + SQ_Tests + SQ_ProjectKey + SQ_Source + SQ_Copybook + SQ_Cobol_conf
+			}
+		}
+}
