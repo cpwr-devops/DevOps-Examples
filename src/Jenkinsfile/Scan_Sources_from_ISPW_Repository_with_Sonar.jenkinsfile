@@ -1,0 +1,90 @@
+/**
+ This is an example Jenkins Pipeline Script that runs sources through the SonarQube Scanner
+ The sources get downloaded from an ISPW assignment
+*/
+
+String ispwStream           = 'FTSDEMO'     // ISPW stream name (can be passed as parameter from an ISPW webhook call)
+String ispwApplication      = 'RXN3'        // ISPW application name (can be passed as parameter from an ISPW webhook call)
+String ispwAssignmentId     = 'RXN3000020'  // Use ID of an open ISPW assignment (can be passed as a parameter from an ISPW webhook call)
+String ispwLevel            = 'DEV1'        // ISPW Life Cycle Level to download from 
+String ispwSourceFolder     = "MF_Source"   // Name of folder, the downloaded sources will end up in (is fixed by ISPW plugin)
+
+String hciConnectionId      = 'de2ad7c3-e924-4dc2-84d5-d0c3afd3e756'    // Defined via Manage Jenkins / Configure System / Compuware COnfigurations / Host connections
+                                                                        // Use Syntax Generater for Checkout / ISPW / HCI Connection to determine the internal ID
+String hostCredentialsToken = 'ea48408b-b2be-4810-8f4e-5b5f35977eb1'    // Host userid and password credentials ID as defined in Manage Credentials
+
+// Set parameters required by Sonar scanner
+String sqScannerName        = "scanner"     // Use the name of the Sonar Scanner installation as defined in Manage Jenkins / Global Tool Configuration / SonarQube Scanner     
+String sqServerName         = "localhost"   // Use the name of the SonarQube server defined in Manage Jenkins / Configure Systems / SonarQube server section  
+String sonarProjectName     = "RNU_Test"    // Use name of SonarQube project (if not existing, a new one will be created by SonarQube)
+
+String sonarSourcesPath     = ispwApplication + '/' + ispwSourceFolder  // Path in workpspace to sources downloaded from ISPW
+String sonarSourceSuffixes  = 'cbl'         // Suffix for COBOL program files
+String sonarCopySuffixes    = 'cpy'         // Suffix for COBOL copybook files
+
+node
+{    
+
+    // Download sources from ISPW, using repository filter criteria
+    stage('Download Sources from ISPW Repository')
+    {
+        checkout changelog: false, 
+            poll: false, 
+            scm: [$class: 'IspwConfiguration', 
+                componentType: 'COB, COPY', 
+                connectionId: hciConnectionId, 
+                credentialsId: hostCredentialsToken, 
+                folderName: '', 
+                ispwDownloadAll: true, 
+                levelOption: '0',                       // 0 - Selected level only, 1 - First found in level and above
+                serverApplication: ispwApplication, 
+                serverConfig: '', 
+                serverLevel: ispwLevel, 
+                serverStream: ispwStream, 
+                targetFolder: '']
+    }
+
+    /* 
+    This stage pushes the Source Code into SonarQube scanner and then checks the status of the SonarQube Quality Gate.
+    */ 
+    stage("Check SonarQube Quality Gate") 
+    {
+        // Retrieve the root folder location of the SonarQube Scanner  
+        def scannerHome = tool sqScannerName
+
+        // Setup SonarQube environment
+        withSonarQubeEnv(sqServerName)       
+        {
+
+            // Build string with parameters to be passed to the Sonar scanner
+            String sqScannerProperties  =   "-Dsonar.projectKey=${sonarProjectName} " +
+                                            "-Dsonar.projectName=${sonarProjectName} " + 
+                                            "-Dsonar.projectVersion=1.0 " + 
+                                            "-Dsonar.sources=${sonarSourcesPath} " +
+                                            "-Dsonar.cobol.copy.directories=${sonarSourcesPath} " +
+                                            "-Dsonar.cobol.file.suffixes=${sonarSourceSuffixes} " +
+                                            "-Dsonar.cobol.copy.suffixes=${sonarCopySuffixes} " +
+                                            "-Dsonar.sourceEncoding=UTF-8"
+
+            bat "${scannerHome}/bin/sonar-scanner " + sqScannerProperties
+        }
+    
+        // Wait up to 2 minutes, for the results of the SonarQube Quality Gate
+        timeout(time: 2, unit: 'MINUTES') 
+        {
+            
+            // Wait for webhook call back from SonarQube.  SonarQube webhook for callback to Jenkins must be configured on the SonarQube server.
+            def qualityGate = waitForQualityGate()
+            
+            // Evaluate the status of the Quality Gate and set reslut state of Jenkins job accordingly
+            if (qualityGate.status == 'OK')
+            {
+                currentBuild.result = 'SUCCESS'
+            }
+            else
+            {
+                currentBuild.result = 'FAILURE'
+            }
+        }   
+    }
+}
