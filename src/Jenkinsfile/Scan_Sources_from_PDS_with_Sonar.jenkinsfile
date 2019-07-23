@@ -6,9 +6,9 @@
 String ispwSourceFolder     = "MF_Source"   // Name of folder, the downloaded sources will end up in
                                             // Each PDS will create a sub folder within this folder
 
-String hciConnectionId      = 'de2ad7c3-e924-4dc2-84d5-d0c3afd3e756'    // Defined via Manage Jenkins / Configure System / Compuware COnfigurations / Host connections
+String hciConnectionId      = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'    // Defined via Manage Jenkins / Configure System / Compuware COnfigurations / Host connections
                                                                         // Use Syntax Generater for Checkout / ISPW / HCI Connection to determine the internal ID
-String hostCredentialsToken = 'ea48408b-b2be-4810-8f4e-5b5f35977eb1'    // Host userid and password credentials ID as defined in Manage Credentials
+String hostCredentialsToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'    // Host userid and password credentials ID as defined in Manage Credentials
 
 // Set parameters required by Sonar scanner
 String sqScannerName        = "scanner"     // Use the name of the Sonar Scanner installation as defined in Manage Jenkins / Global Tool Configuration / SonarQube Scanner     
