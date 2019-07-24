@@ -20,7 +20,6 @@ class IspwHelper implements Serializable
     def String ispwOwner
     def String ispwTargetLevel
 
-
     def String mfSourceFolder
 
     def String hciConnId

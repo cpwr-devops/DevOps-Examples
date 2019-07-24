@@ -98,12 +98,14 @@ class TttHelper implements Serializable {
         }
     }
 
-    def executeFunctionalTests(String userId, String password)
+    def executeFunctionalTests()
     {
-        steps.bat '''
-            cd C:\\TopazCLI190301
-            C:\\TopazCLI190301\\TotalTestFTCLI.bat -e ''' + pConfig.xaTesterEnvId + ''' -f . -s ''' + pConfig.xaTesterUrl +''' -u ''' + userId + '''  -p ''' + password + ''' -r ''' + script.workspace + ''' -R -x -S ''' + pConfig.mfSourceFolder + ''' -g TestResults -G -v 6
-            '''
+        totaltest credentialsId: "${pConfig.hciTokenId}", 
+            environmentId: "${pConfig.xaTesterEnvId}", 
+            folderPath: '', 
+            serverUrl: "${ispwUrl}", 
+            stopIfTestFailsOrThresholdReached: false,
+            sonarVersion: '6'
     }
 
     def passResultsToJunit()
