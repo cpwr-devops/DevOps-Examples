@@ -17,9 +17,6 @@ IspwHelper      ispwHelper
 TttHelper       tttHelper
 SonarHelper     sonarHelper 
 
-def ResponseContentSupplier response3
-//def assignmentList = []
-
 def initialize(pipelineParams)
 {
     def mailListlines
@@ -71,14 +68,6 @@ def initialize(pipelineParams)
     sonarHelper = new SonarHelper(this, steps, pConfig)
 
     sonarHelper.initialize()
-
-    echo "Found Assignment " + pConfig.ispwAssignment
-    /*
-    withCredentials([string(credentialsId: pConfig.cesTokenId, variable: 'cesTokenClear')]) 
-    {
-        assignmentList = ispwHelper.getAssigmentList(cesTokenClear, pConfig.ispwTargetLevel)
-    }
-    */
 }
 
 /**
