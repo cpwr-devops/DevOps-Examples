@@ -21,6 +21,12 @@ String          mailMessageExtension
 
 def initialize(pipelineParams)
 {
+    // Clean out any previously downloaded source
+    dir(".\\") 
+    {
+        deleteDir()
+    }
+
     def mailListlines
     /* Read list of mailaddresses from "private" Config File */
     /* The configFileProvider creates a temporary file on disk and returns its path as variable */
@@ -56,6 +62,11 @@ def initialize(pipelineParams)
                             steps
                         )
 
+    withCredentials([usernamePassword(credentialsId: "${pConfig.gitCredentials}", passwordVariable: 'gitPassword', usernameVariable: 'gitUsername')]) 
+    {
+        gitHelper.initialize(gitPassword, gitUsername, pConfig.ispwOwner, pConfig.mailRecipient)
+    }
+
     ispwHelper  = new   IspwHelper(
                             steps, 
                             pConfig
@@ -89,7 +100,6 @@ def call(Map pipelineParams)
         stage("Retrieve Mainframe Code")
         {
             ispwHelper.downloadSources(pConfig.ispwSrcLevel)
-            ispwHelper.downloadCopyBooks(workspace)
         }
         
         /* Retrieve the Tests from Github that match that ISPWW Stream and Application */
@@ -103,9 +113,13 @@ def call(Map pipelineParams)
             /* initialize requires the TTT projects to be present in the Jenkins workspace, therefore it can only execute after downloading from GitHub */
             tttHelper.initialize()  
 
+            /* Clean up Code Coverage results from previous run */
+            tttHelper.cleanUpCodeCoverageResults()
+
             /* Execute unit tests */
             tttHelper.loopThruScenarios()
-
+         
+            tttHelper.passResultsToJunit()
         }
 
         /* 
@@ -122,6 +136,8 @@ def call(Map pipelineParams)
         */ 
         stage("Check SonarQube Quality Gate") 
         {
+            ispwHelper.downloadCopyBooks(workspace)            
+
             sonarHelper.scan("UT")
 
             String sonarGateResult = sonarHelper.checkQualityGate()
@@ -139,7 +155,11 @@ def call(Map pipelineParams)
             }
             else
             {
-                mailMessageExtension = "Generated code passed the Quality gate and may be promoted."
+                mailMessageExtension = "Generated code passed the Quality gate and may be promoted. \n" +
+                    "SonarQube results may be reviewed at " + 
+                    pConfig.sqServerUrl + 
+                    "/dashboard?id=" + 
+                    sonarHelper.determineUtProjectName()
             }   
         }
 

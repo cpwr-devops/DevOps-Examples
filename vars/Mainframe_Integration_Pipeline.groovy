@@ -131,8 +131,8 @@ def call(Map pipelineParams)
                 echo "Sonar quality gate failure: ${sonarGateResult}"
                 echo "Pipeline will be aborted and ISPW Assignment will be regressed"
 
-                mailMessageExtension = "Generated code failed the Quality gate. Review Logs and apply corrections as indicated."
-                currentBuild.result = "FAILURE"
+                mailMessageExtension    = "Generated code failed the Quality gate. Review Logs and apply corrections as indicated."
+                currentBuild.result     = "FAILURE"
 
                 error "Exiting Pipeline" // Exit the pipeline with an error if the SonarQube Quality Gate is failing
             }
@@ -157,7 +157,6 @@ def call(Map pipelineParams)
                         body:       '$DEFAULT_CONTENT \n' + mailMessageExtension,
                         replyTo:    '$DEFAULT_REPLYTO',
                         to:         "${pConfig.mailRecipient}"
-
         } 
 
     }
