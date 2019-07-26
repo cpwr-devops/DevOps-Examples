@@ -7,17 +7,19 @@ class JclSkeleton implements Serializable {
 
     def steps
 
-    private String skeletonPath     = 'skels'               // Path containing JCL "skeletons" after downloading them from Git Hub Repository 'config\\skels'
-    private String jobCardSkel      = 'JobCard.jcl'         // Skeleton for job cards
-    private String iebcopySkel      = 'iebcopy.skel'        // Skeleton for IEBCOPY job
-    private String iebcopyInDdSkel  = 'iebcopyInDd.skel'    // Skeleton for input DDs for IEBCOPY job
-    private String deleteDsSkel     = 'deleteDs.skel'       // Skeleton for deleting the PDS after downloading copy books
+    private String skeletonPath         = 'skels'               // Path containing JCL "skeletons" after downloading them from Git Hub Repository 'config\\skels'
+    private String jobCardSkel          = 'JobCard.jcl'         // Skeleton for job cards
+    private String iebcopySkel          = 'iebcopy.skel'        // Skeleton for IEBCOPY job
+    private String iebcopyInDdSkel      = 'iebcopyInDd.skel'    // Skeleton for input DDs for IEBCOPY job
+    private String deleteDsSkel         = 'deleteDs.skel'       // Skeleton for deleting the PDS after downloading copy books
+    private String cleanUpCcRepoSkel    = 'cleanUpCcRepo.skel'  // Skeleton for deleting the PDS after downloading copy books
 
     private String workspace
 
     String jobCardJcl
     String iebcopyCopyBooksJclSkel
     String cleanUpDatasetJclSkel
+    String cleanUpCcRepoJclSkel
     String ispwApplication
     String ispwPathNum
 
@@ -37,6 +39,8 @@ class JclSkeleton implements Serializable {
         this.cleanUpDatasetJclSkel      = readSkelFile(deleteDsSkel).join("\n")
 
         this.iebcopyCopyBooksJclSkel    = buildIebcopySkel()
+
+        this.cleanUpCcRepoJclSkel       = readSkelFile(cleanUpCcRepoSkel).join("\n")
     }
 
     def String buildIebcopySkel()
@@ -69,31 +73,79 @@ class JclSkeleton implements Serializable {
     def String createIebcopyCopyBooksJcl(String targetDsn, List copyMembers)
     {
 
-        def iebcopyCopyBooksJcl = this.jobCardJcl
         def selectStatements    = []
 
-        copyMembers.each {
+        copyMembers.each 
+        {
             selectStatements.add("  SELECT MEMBER=${it}")
         }
 
         def selectJcl       = selectStatements.join("\n")  
 
-        iebcopyCopyBooksJcl = iebcopyCopyBooksJcl + "\n" + iebcopyCopyBooksJclSkel
-        iebcopyCopyBooksJcl = iebcopyCopyBooksJcl.replace("<target_dsn>", targetDsn)
-        iebcopyCopyBooksJcl = iebcopyCopyBooksJcl.replace("<select_list>",selectJcl)
-
+        def iebcopyCopyBooksJcl =   buildFinalJcl(jobCardJcl,
+                                        iebcopyCopyBooksJclSkel,
+                                        [
+                                            [
+                                                parmName:   "<target_dsn>",
+                                                parmValue:  targetDsn
+                                            ],
+                                            [
+                                                parmName:   "<select_list>",
+                                                parmValue:  selectJcl
+                                            ]
+                                        ]
+                                    )
+                                    
         return iebcopyCopyBooksJcl
-
     }
 
     def String createDeleteTempDsn(String targetDsn)
     {
-        def deleteJcl   = jobCardJcl
-
-        deleteJcl       = deleteJcl + "\n" + cleanUpDatasetJclSkel
-        deleteJcl       = deleteJcl.replace("<clean_dsn>", targetDsn)
+        def deleteJcl   =   buildFinalJcl(jobCardJcl, 
+                                cleanUpDatasetJclSkel,
+                                [
+                                    [
+                                        parmName:      "<clean_dsn>", 
+                                        parmValue:     targetDsn
+                                    ]
+                                ]
+                            )
 
         return deleteJcl
+    }
+
+    def String createCleanUpCcRepo(String systemName, String testId)
+    {
+        def cleanUpJcl  =   buildFinalJcl(jobCardJcl, 
+                                cleanUpCcRepoJclSkel,
+                                [
+                                    [
+                                        parmName:      "<cc_sysname>", 
+                                        parmValue:     systemName
+                                    ],
+                                    [
+                                        parmName:      "<cc_test_id>", 
+                                        parmValue:     testId                                    
+                                    ]
+                                ]
+                            )
+
+        return cleanUpJcl
+    }
+
+    private String buildFinalJcl(jobCard, jclSkel, parametersMap)
+    {
+        String finalJcl
+
+        finalJcl    = jobCard
+        finalJcl    = finalJcl + "\n" + jclSkel
+
+        parametersMap.each
+        {
+            finalJcl    = finalJcl.replace(it.parmName, it.parmValue)
+        }
+
+        return finalJcl
     }
 
     def readSkelFile(String fileName)

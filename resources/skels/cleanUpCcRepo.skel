@@ -1,0 +1,8 @@
+//DELETE  EXEC PGM=XVTTADEL                        
+//STEPLIB  DD  DISP=SHR,DSN=SYS2.CW.&CWGAXV..SLXVLOAD
+//XCOVER   DD  DISP=SHR,DSN=HDDRXM0.DEMO.COCO.REPOS
+//SYSPRINT DD  SYSOUT=A                            
+//SYSOUT   DD  DUMMY                               
+//SYSABEND DD  SYSOUT=A                            
+//SYSIN    DD  *                                   
+  DELETE TYPE=C SYS='<cc_sysname>' TESTID='<cc_test_id>'

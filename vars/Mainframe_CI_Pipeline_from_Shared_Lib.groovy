@@ -104,6 +104,8 @@ def call(Map pipelineParams)
             tttHelper.cleanUpCodeCoverageResults()
 
             tttHelper.loopThruScenarios()
+            
+            tttHelper.passResultsToJunit()
         }
 
         /* 
