@@ -1,0 +1,101 @@
+/**
+ This is an example Jenkins Pipeline Script that runs sources through the SonarQube Scanner
+ The sources get downloaded from an ISPW assignment
+*/
+
+String ispwSourceFolder     = "TTTReport"  // Name of folder, the downloaded sources will end up in
+                                            // Each PDS will create a sub folder within this folder
+
+String hciConnectionId      = 'de2ad7c3-e924-4dc2-84d5-d0c3afd3e756'    // Defined via Manage Jenkins / Configure System / Compuware COnfigurations / Host connections
+                                                                        // Use Syntax Generater for Checkout / ISPW / HCI Connection to determine the internal ID
+String hostCredentialsToken = 'ea48408b-b2be-4810-8f4e-5b5f35977eb1'    // Host userid and password credentials ID as defined in Manage Credentials
+
+String ftSonarReportFile    = 'SonarTestReport.xml'
+
+// Set parameters required by Sonar scanner
+String sqScannerName        = "scanner"     // Use the name of the Sonar Scanner installation as defined in Manage Jenkins / Global Tool Configuration / SonarQube Scanner     
+String sqServerName         = "localhost"   // Use the name of the SonarQube server defined in Manage Jenkins / Configure Systems / SonarQube server section  
+String sonarProjectName     = "RNU_Test"    // Use name of SonarQube project (if not existing, a new one will be created by SonarQube)
+
+String sonarSourcesPath     = ispwSourceFolder  // Path in workpspace to sources downloaded from ISPW
+String sonarSourceSuffixes  = 'cbl,xaunit,xares'         // Suffix for COBOL program files
+String sonarCopySuffixes    = 'cpy'         // Suffix for COBOL copybook files
+
+node
+{
+    
+    stage("Download Test Cases")
+    {
+        dir(".\\") 
+        {
+            deleteDir()
+        }
+
+        // May use my GitHub repo for functional tests. Contains several test scenarios for e.g. CWXTCOB, GENAPP, and XATester samples
+        checkout changelog: false, 
+            poll: false, 
+            scm: [$class: 'GitSCM', 
+                branches: [[name: '*/master']], 
+            doGenerateSubmoduleConfigurations: false, 
+            extensions: [], 
+            submoduleCfg: [], 
+            // Change the credentials ID to your Jenkins Credentials ID for GitHub
+            // May use these, if you don't have any
+            userRemoteConfigs: [[credentialsId: '67a3fb18-073f-498b-adee-1a3c75192745', 
+                url: 'https://github.com/ralphnuessecpwr/FTSDEMO_RXN1_Functional_Tests']]]
+    }
+    
+    stage("Execute Functional Tests")
+    {
+        totaltest credentialsId: 'ea48408b-b2be-4810-8f4e-5b5f35977eb1', 
+            environmentId: '5b508b8a787be73b59238d38', 
+            folderPath: '', 
+            serverUrl: 'http://cwcc.compuware.com:2020', 
+            sonarVersion: '6'
+    }
+ 
+    /* 
+    This stage pushes the Source Code into SonarQube scanner and then checks the status of the SonarQube Quality Gate.
+    */ 
+    stage("Check SonarQube Quality Gate") 
+    {
+        // Retrieve the root folder location of the SonarQube Scanner  
+        def scannerHome = tool sqScannerName
+
+        // Setup SonarQube environment
+        withSonarQubeEnv(sqServerName)       
+        {
+
+            // Build string with parameters to be passed to the Sonar scanner
+            String sqScannerProperties  =   "-Dsonar.projectKey=${sonarProjectName} " +
+                                            "-Dsonar.projectName=${sonarProjectName} " + 
+                                            "-Dsonar.projectVersion=1.0 " + 
+                                            "-Dsonar.testExecutionReportPaths=${sonarSourcesPath}/${ftSonarReportFile}"
+                                            "-Dsonar.sources=${sonarSourcesPath} " +
+                                            "-Dsonar.cobol.copy.directories=${sonarSourcesPath} " +
+                                            "-Dsonar.cobol.file.suffixes=${sonarSourceSuffixes} " +
+                                            "-Dsonar.cobol.copy.suffixes=${sonarCopySuffixes} " +
+                                            "-Dsonar.sourceEncoding=UTF-8"
+
+            bat "${scannerHome}/bin/sonar-scanner " + sqScannerProperties
+        }
+    
+        // Wait up to 2 minutes, for the results of the SonarQube Quality Gate
+        timeout(time: 2, unit: 'MINUTES') 
+        {
+            
+            // Wait for webhook call back from SonarQube.  SonarQube webhook for callback to Jenkins must be configured on the SonarQube server.
+            def qualityGate = waitForQualityGate()
+            
+            // Evaluate the status of the Quality Gate and set reslut state of Jenkins job accordingly
+            if (qualityGate.status == 'OK')
+            {
+                currentBuild.result = 'SUCCESS'
+            }
+            else
+            {
+                currentBuild.result = 'FAILURE'
+            }
+        }   
+    }
+}
