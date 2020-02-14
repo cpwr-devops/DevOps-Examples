@@ -20,7 +20,7 @@ param(
  [string]$moduleName = "CWBWCOBX",                          #for task load
  [string]$moduleType = "COB",                               #for task load
  [string]$type = "program",                                 #for task load
- [string]$dpenvlst = "CW01QA CW02QA"                        #for deploy CWCCQA CW01QA CW02QA CW40QA
+ [string]$dpenvlst                                          #for deploy CWCCQA CW01QA CW02QA CW40QA
  )
 
 if ($ISPWFunction -eq "ContainerOperation"){
