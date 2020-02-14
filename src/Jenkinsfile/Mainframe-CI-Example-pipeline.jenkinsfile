@@ -357,7 +357,7 @@ node{
             def TTTScenarioPath        = it.path // Path to the  Total Test Scenario file relative to the root of the Jenkins workspace
             def TTTProjectName         = TTTScenarioPath.substring(0, TTTScenarioPath.indexOf('\\Unit Test')) // Anything up to the sub folder "Unit Test" will be the Project Folder name
             def TTTScenarioFullName    = it.name  // Get the full name of the testscenario file i.e. "name.testscenario"
-            def TTTScenarioName        = TTTScenarioFullName.substring(0,'.testscenario')  // Get the name of the scenario file without ".testscenario"
+            def TTTScenarioName        = TTTScenarioFullName.substring(0, TTTScenarioFullName.indexOf('.testscenario'))  // Get the name of the scenario file without ".testscenario"
             def TTTScenarioTarget      = TTTScenarioName.substring(0, '\\_')  // Target Program will be the first part of the scenario name (convention)
     
             // For each of the scenarios loop through the list of source files and determine if the target matches one of the programs
