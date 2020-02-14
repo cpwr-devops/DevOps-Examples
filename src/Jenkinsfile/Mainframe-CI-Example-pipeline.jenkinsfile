@@ -310,7 +310,7 @@ node{
             scm: [$class: 'GitSCM', 
             branches: [[name: "*/${Git_Branch}"]], 
             doGenerateSubmoduleConfigurations: false, 
-            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${Folder}"]], 
+            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${TTT_Folder}"]], 
             submoduleCfg: [], 
             userRemoteConfigs: [[credentialsId: "${Credentials}", name: 'origin', url: "${URL}"]]]
         }
