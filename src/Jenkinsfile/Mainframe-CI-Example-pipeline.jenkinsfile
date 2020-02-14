@@ -249,7 +249,7 @@ def regressAssignments()
 node{
     // Determine the current ISPW Path and Level that the code Promotion is from
     // E.g. if the level passed from ISPW is DEV3, the code takes the character at the last position of this string 
-    def PathNum = ISPW_Src_Level.charAt(ISPW_Level.length() - 1)
+    def PathNum = ISPW_Src_Level.charAt(ISPW_Src_Level.length() - 1)
 
     // Use the Path Number to determine the right Runner JCL to use (different STEPLIB concatenations)
     def TTT_Jcl = "Runner_PATH" + PathNum + ".jcl"
