@@ -308,7 +308,7 @@ node{
         // "Sample step": Checkout, "SCM": Git
         checkout changelog: false, poll: false, 
             scm: [$class: 'GitSCM', 
-            branches: [[name: "*/${Branch}"]], 
+            branches: [[name: "*/${Git_Branch}"]], 
             doGenerateSubmoduleConfigurations: false, 
             extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${Folder}"]], 
             submoduleCfg: [], 
