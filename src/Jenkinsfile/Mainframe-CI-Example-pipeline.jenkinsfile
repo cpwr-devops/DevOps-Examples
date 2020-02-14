@@ -181,8 +181,6 @@ def regressAssignments()
                                         value:      "${cesToken}"
                                         ]]
         )
-
-        
     }
 
     // Use method getSetTaskIdList to extract the list of Task IDs from the response of the httpRequest
@@ -325,9 +323,6 @@ node{
     */
 
     // findFiles method requires the "Pipeline Utilities Plugin"
-    // Get all testscenario files in the current workspace into an array
-    def TTTListOfScenarios = findFiles(glob: '**/*.testscenario')
-
     // Get all Cobol Sources in the MF_Source folder into an array 
     def ListOfSources  = findFiles(glob: "**/${ISPW_Application}/${MF_Source}/*.cbl")
 
@@ -337,12 +332,13 @@ node{
     // Determine program names for each source member
     ListOfSources.each
     {
-        // The split method uses regex to search for patterns, therefore
-        // Backslashes, Dots and Underscores which mean certain patterns in regex need to be escaped 
-        // The backslash in Windows paths is duplicated in Java, therefore it need to be escaped twice
-        // Trim ./cbl from the Source members to populate the array of program names
-        ListOfPrograms.add(it.name.trim().split("\\.")[0])
+        // Determine the program name from the current file name
+        // and add the name to the list of programs
+        ListOfPrograms.add(it.name.substring(0, it.name.indexOf('.cbl')))
     }
+
+    // Get all testscenario files in the current workspace into an array
+    def TTTListOfScenarios = findFiles(glob: '**/*.testscenario')
 
     /* 
      This stage executes any Total Test Projects related to the mainframe source that was downloaded
@@ -474,8 +470,9 @@ node{
                 " -Dsonar.projectVersion=1.0" +
                 " -Dsonar.sources=${ISPW_Application}\\${MF_Source}" +
                 " -Dsonar.cobol.copy.directories=${ISPW_Application}\\${MF_Source}" +
-                " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub -Dsonar.cobol.copy.suffixes=cpy " +
-                " -Dsonar.tests=tests" +
+                " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub" + 
+                " -Dsonar.cobol.copy.suffixes=cpy " +
+                " -Dsonar.tests=" + TTT_Folder + 
                 " -Dsonar.testExecutionReportPaths=" + SQ_TestResult + 
                 " -Dsonar.sourceEncoding=UTF-8" +
                 " -Dsonar.coverageReportPaths=Coverage/CodeCoverage.xml"
