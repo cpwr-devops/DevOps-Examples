@@ -1,0 +1,20 @@
+!!com.compuware.ispw.wzzms.models.IspwRoot
+ispwApplication:
+  host: <host_url>
+  port: <hci_port>
+  runtimeConfig: <runtime_config>
+  stream: <stream_name>
+  application: <application>
+  pathMappings:
+  - path: "**/Sources/**"
+    types:
+    - fileExtension: cbl
+      ispwType: COB
+    - fileExtension: pli
+      ispwType: PLI
+    - fileExtension: cpy
+      ispwType: COPY
+    - fileExtension: incl
+      ispwType: INCL
+    - fileExtension: jcl
+      ispwType: JOB
