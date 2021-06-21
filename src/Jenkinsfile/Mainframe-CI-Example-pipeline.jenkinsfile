@@ -265,7 +265,7 @@ node{
             // Folder containing the (mainframe) copybooks
                 " -Dsonar.cobol.copy.directories=${ISPW_Application}/${MF_Source}"   + 
             // File extensions Sonar is supposed to recognize for "sources". The list also needs to contain any TTT related extensions                    
-                " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub,results,scenario"                             +
+                " -Dsonar.cobol.file.suffixes=cbl,testsuite,testscenario,stub,result,scenario"                             +
             // File extensions Sonar is supposed to recognize for "copybooks"                   
                 " -Dsonar.cobol.copy.suffixes=cpy"                                                                          +
                 " -Dsonar.sourceEncoding=UTF-8"
