@@ -1,26 +1,26 @@
 #this script requires powershell 5.1 or higher to run.  Powershell 5.1 can be found here->https://www.microsoft.com/en-us/download/details.aspx?id=54616
 
 param(
- [string]$ISPWFunction = "TaskLoad",              #ContainerCreate, ContainerOperation,TaskLoad
- [string]$ces = "cwca:2077",                                #dtw-pmsonarqube.nasa.cpwr.corp:2020
- [string]$runtimeconfig = "ISPW",
- [string]$containerType = "releases",                    #assignments, releases
- [string]$operation = "deploy",                            #generate, promote, deploy, regress
- [string]$container = "BAW1000004",
- [string]$level = "DEV1",
- [string]$token = "hjghg2aa5-5ee9-4d95-8368-7a5effd6e79f",   
- [string]$stream = "FTSDEMO",
- [string]$application = "BAW1",
- [string]$ISPWServer = "ispw",
- [string]$description = "Created from the API",             #for create container
- [string]$prefix = "PLAY",                                  #for create container
- [string]$refnumber = "CWE-1001",                           #for create container
- [string]$usertag = "API",                                  #for create container
- [string]$owner = "PXHDAE-",                                #for create container
- [string]$moduleName = "CWBWCOBX",                          #for task load
- [string]$moduleType = "COB",                               #for task load
- [string]$type = "program",                                 #for task load
- [string]$dpenvlst                                          #for deploy CWCCQA CW01QA CW02QA CW40QA
+ [string]$ISPWFunction = "TaskLoad",    #ContainerCreate, ContainerOperation,TaskLoad
+ [string]$ces,                                  
+ [string]$runtimeconfig,
+ [string]$containerType,                #assignments, releases
+ [string]$operation,                    #generate, promote, deploy, regress
+ [string]$container,
+ [string]$level,
+ [string]$token,   
+ [string]$stream,
+ [string]$application,
+ [string]$ISPWServer,
+ [string]$description,                  #for create container
+ [string]$prefix,                       #for create container
+ [string]$refnumber,                    #for create container
+ [string]$usertag,                      #for create container
+ [string]$owner,                        #for create container
+ [string]$moduleName,                   #for task load
+ [string]$moduleType,                   #for task load
+ [string]$type,                         #for task load
+ [string]$dpenvlst                      #for deploy
  )
 
 if ($ISPWFunction -eq "ContainerOperation"){
@@ -28,15 +28,15 @@ if ($ISPWFunction -eq "ContainerOperation"){
     $ISPWRelease.ContainerOperation()
 }
 elseif ($ISPWFunction -eq "ContainerCreate"){
-    $ISPWRelease = [ISPW_API_Request]::new($ces, $ISPWServer, $containerType, $stream, $application, $level, $token, $container, $description, $prefix, $refnumber, $usertag, $owner)
+    $ISPWRelease = [ISPW_API_Request]::new($ces, $ISPWServer, $containerType, $stream, $application, $level, $token, $container, $runtimeconfig, $description, $prefix, $refnumber, $usertag, $owner)
     $ISPWRelease.ContainerCreate()
 }
 elseif ($ISPWFunction -eq "TaskLoad"){
-    $ISPWRelease = [ISPW_API_Request]::new($ces, $ISPWServer, $containerType, $stream, $application, $level, $token, $container, $runtimeconfig, $operation)
+    $ISPWRelease = [ISPW_API_Request]::new($ces, $ISPWServer, $containerType, $stream, $application, $level, $token, $container, $runtimeconfig)
     $ISPWRelease.TaskLoad($moduleName, $moduleType, $type)
 }
 else{
-    Write-Host "Please supply an ISPW Operation to perform.  Valid Operations are ContainerCreate, ContainterOperation"
+    Write-Host "Please supply an ISPW Operation to perform.  Valid Operations are ContainerCreate, ContainterOperation, TaskLoad"
 }
 
 Class ISPW_API_Request{
@@ -87,7 +87,7 @@ Class ISPW_API_Request{
         $this.dpenvlst = $dpenvlst
     }
     #constructor for Container Create
-    ISPW_API_Request ([string] $ces, $ISPWServer, $containerType, $stream, $application, $level, $token, $container, $description, $prefix, $refnumber, $usertag, $owner){
+    ISPW_API_Request ([string] $ces, $ISPWServer, $containerType, $stream, $application, $level, $token, $container, $runtimeconfig, $description, $prefix, $refnumber, $usertag, $owner){
         $this.ces = $ces
         $this.ISPWServer = $ISPWServer
         $this.containerType = $containerType
@@ -102,6 +102,19 @@ Class ISPW_API_Request{
         $this.usertag = $usertag
         $this.owner = $owner
     }
+
+    #constructor for Task Load
+    ISPW_API_Request ([string] $ces, $ISPWServer, $containerType, $stream, $application, $level, $token, $container, $runtimeconfig){
+        $this.ces = $ces
+        $this.ISPWServer = $ISPWServer
+        $this.containerType = $containerType
+        $this.stream = $stream
+        $this.application = $application
+        $this.level = $level
+        $this.token = $token
+        $this.container = $container
+    }
+
 
     [void]TaskLoad([string] $moduleName, $moduleType, $type){
     try{

@@ -3,7 +3,7 @@ param(
     [string]$gitRepo
  )
 
-C:\'Program Files'\Git\cmd\git.exe init C:\Users\cwde-rnuesse.EMEA\Software\Azure_DevOps_Workspace\tests # timeout=10
+C:\'Program Files'\Git\cmd\git.exe init $workspaceRoot\tests # timeout=10
 
 C:\'Program Files'\Git\cmd\git.exe --version # timeout=10
 
