@@ -1,0 +1,76 @@
+executionEnvironments: 
+  git:
+    repoUrl:                  <git_server_repository_url>
+    credentialsId:            gitCredentials
+  environment:
+    hci:
+      connectionId:           hostConnectionId
+      credentialsId:          hostCredentialsId
+    ces:
+      url:                    http://ces.url:<port>
+      credentialsId:          cesCredentialsId
+    sonar:
+      scanner:                scanner
+      server:                 localhost
+    xlr:
+      template:               xlrTemplateName
+      credentials:            xlrCredentials
+  ispw:
+    mfProject:
+      rootFolder:             './<mainframe_project_root_folder>'
+      sourcesFolder:          '/Sources'
+    configFile:
+      folder:                 './<mainframe_project_root_folder>'
+      name:                   'ispwconfig.yml'
+    automaticBuildFile:       './automaticBuildParams.txt'
+    changedProgramsFile:      './changedPrograms.json'
+    branchInfo:
+      feature/FT1:
+        ispwLevel:            FT1
+        mapRule:              per-branch
+      feature/FT2:
+        ispwLevel:            FT2
+        mapRule:              per-branch
+      feature/FT3:
+        ispwLevel:            FT3
+        mapRule:              per-branch
+      feature/FT4:
+        ispwLevel:            FT4
+        mapRule:              per-branch
+      bugfix:
+        ispwLevel:            HFIX
+        mapRule:              per-branch
+      development:
+        ispwLevel:            DEVL
+        mapRule:              per-branch
+      main:
+        ispwLevel:            MAIN
+        mapRule:              per-branch
+  ttt:
+    folders:               
+      root:                   '/Tests'
+      virtualizedTests:       '/Unit'
+      nonVirtualizedTests:    '/Integration'
+    environmentIds:
+      virtualized:            <ttt_virtualized_test_environment_id>
+      nonVirtualized:
+        batch:                <ttt_non_virtualized_test_batch_environment_id>
+        cics:                 <ttt_non_virtualized_test_cics_environment_id>
+    results:
+      sonar:
+        folder:               './TTTSonar'    
+        origFile:             'generated.cli.suite.sonar.xml'
+        targetFiles:
+          virtualized:        'generated.cli.vt.suite.sonar.xml'
+          nonVirtualized:
+            batch:            'generated.cli.nvt.batch.suite.sonar.xml'
+            cics:             'generated.cli.nvt.cics.suite.sonar.xml'
+      jUnit:
+        folder:               './TTTUnit'
+        file:                 'generated.cli.suite.junit.xml'
+  coco: 
+    repo:                     <code_coverage_repository_dataset_name> 
+    results:
+      sonar:
+        folder:               './Coverage'
+        file:                 'CodeCoverage.xml'    

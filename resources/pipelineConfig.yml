@@ -1,0 +1,29 @@
+git:
+  url:                    "https://github.com"
+  tttRepoExtension:       "_Total_Tests.git"
+  branch:                 "master"
+sq:
+  scannerName:            "scanner"
+  serverName:             "localhost"         
+xlr:
+  template:               "A Release from Jenkins"
+  user:                   "admin"                   
+ttt:
+  general:
+    folder:               "Tests"
+    sonarResultsFolder:   "./TTTSonar"
+    sonarResultsFile:     "generated.cli.suite.sonar.xml"
+  virtualized:            
+    folder:               "Virtualized_Tests"
+    environment:          "123456789012345678901234"
+    targetSonarResults:   "generated.cli.vt.suite.sonar.xml"
+  nonVirtualized:
+    folder:               "Non_Virtualized_Tests"                 
+    environment:          "123456789012345678901234"
+    targetSonarResults:   "generated.cli.nvt.suite.sonar.xml"
+ces:
+  url:                    "http://ces.url:2020"
+ispw:
+  runtime:                "ispw"
+  changedProgramsFile:    "changedPrograms.json"
+  mfSourceFolder:         "MF_Source"
